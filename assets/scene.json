@@ -1,0 +1,72 @@
+[
+  {
+    "name": "MainCanvas",
+    "components": {
+      "canvas": {}
+    }
+  },
+  {
+    "name": "Sprite",
+    "components": {
+      "rect_transform": {
+        "rect": {
+          "position": {
+            "x": -400,
+            "y": 45
+          },
+          "dimensions": {
+            "x": 100,
+            "y": 100
+          }
+        },
+        "anchor": "center",
+        "rotation": 0,
+        "parent": "MainCanvas"
+      },
+      "sprite": {
+        "sprite": {
+          "uri": "file://sprites.json$mainchar_idle_1"
+        },
+        "center": {
+          "x": 50,
+          "y": 50
+        }
+      }
+    }
+  },
+  {
+    "name": "Overlay",
+    "components": {
+      "rect_transform": {
+        "rect": {
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "dimensions": {
+            "x": 700,
+            "y": 200
+          }
+        },
+        "anchor": "center",
+        "rotation": 0,
+        "parent": "MainCanvas"
+      },
+      "text": {
+        "text": "Foxtrot",
+        "fontPath": "fonts/Rye-Regular.ttf",
+        "pixelSize": {
+          "x": 0,
+          "y": 150
+        },
+        "textColor": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 255
+        },
+        "lineHeight": 150
+      }
+    }
+  }
+]

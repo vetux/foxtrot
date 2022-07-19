@@ -1,0 +1,217 @@
+{
+  "sprites": [
+    {
+      "name": "pistol",
+      "image": {
+        "uri": "images/foxtrot_pistol.png"
+      }
+    },
+    {
+      "name": "mainchar_idle_0",
+      "image": {
+        "uri": "images/foxtrot_mainchar_idle.png"
+      },
+      "offset": {
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "mainchar_idle_1",
+      "image": {
+        "uri": "images/foxtrot_mainchar_idle.png"
+      },
+      "offset": {
+        "position": {
+          "x": 32
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "mainchar_run_0",
+      "image": {
+        "uri": "images/foxtrot_mainchar_run.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "mainchar_run_1",
+      "image": {
+        "uri": "images/foxtrot_mainchar_run.png"
+      },
+      "offset": {
+        "position": {
+          "x": 32
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "mainchar_run_2",
+      "image": {
+        "uri": "images/foxtrot_mainchar_run.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "mainchar_run_3",
+      "image": {
+        "uri": "images/foxtrot_mainchar_run.png"
+      },
+      "offset": {
+        "position": {
+          "x": 96
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "slime_idle_0",
+      "image": {
+        "uri": "images/foxtrot_slime_idle.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "slime_idle_1",
+      "image": {
+        "uri": "images/foxtrot_slime_idle.png"
+      },
+      "offset": {
+        "position": {
+          "x": 32
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "slime_idle_2",
+      "image": {
+        "uri": "images/foxtrot_slime_idle.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "slime_idle_3",
+      "image": {
+        "uri": "images/foxtrot_slime_idle.png"
+      },
+      "offset": {
+        "position": {
+          "x": 96
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "slime_move_0",
+      "image": {
+        "uri": "images/foxtrot_slime_move.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "slime_move_1",
+      "image": {
+        "uri": "images/foxtrot_slime_move.png"
+      },
+      "offset": {
+        "position": {
+          "x": 32
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "slime_move_2",
+      "image": {
+        "uri": "images/foxtrot_slime_move.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "slime_move_3",
+      "image": {
+        "uri": "images/foxtrot_slime_move.png"
+      },
+      "offset": {
+        "position": {
+          "x": 96
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}
