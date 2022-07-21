@@ -1,0 +1,20 @@
+{
+  "sprite-animations": [    {
+    "keyframes": [
+      {
+        "sprite": {
+          "uri": "sprites/john_idle_0.json"
+        },
+        "duration": 10
+      },
+      {
+        "sprite": {
+          "uri": "sprites/john_idle_1.json"
+        },
+        "duration": 1
+      }
+    ],
+    "animationDuration": 6
+  }
+  ]
+}

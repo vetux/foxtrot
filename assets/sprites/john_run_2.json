@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "john_run_2",
+      "image": {
+        "uri": "images/john_run.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}

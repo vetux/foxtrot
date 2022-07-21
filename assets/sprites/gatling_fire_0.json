@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "gatling_fire_0",
+      "image": {
+        "uri": "images/gatling_fire.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}

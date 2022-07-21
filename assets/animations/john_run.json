@@ -1,0 +1,33 @@
+{
+  "sprite-animations": [
+    {
+      "keyframes": [
+        {
+          "sprite": {
+            "uri": "sprites/john_run_0.json"
+          },
+          "duration": 1
+        },
+        {
+          "sprite": {
+            "uri": "sprites/john_run_1.json"
+          },
+          "duration": 1
+        },
+        {
+          "sprite": {
+            "uri": "sprites/john_run_2.json"
+          },
+          "duration": 1
+        },
+        {
+          "sprite": {
+            "uri": "sprites/john_run_3.json"
+          },
+          "duration": 1
+        }
+      ],
+      "animationFps": 12
+    }
+  ]
+}

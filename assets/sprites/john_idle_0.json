@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "john_idle_0",
+      "image": {
+        "uri": "images/john_idle.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}

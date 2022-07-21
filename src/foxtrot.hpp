@@ -51,7 +51,7 @@ protected:
     void start() override {
         scene = std::make_shared<EntityScene>();
 
-        ecs.setSystems({canvasRenderSystem});
+        ecs.setSystems({spriteAnimationSystem, canvasRenderSystem});
         ecs.setScene(scene);
         ecs.start();
 
@@ -80,6 +80,7 @@ private:
     Renderer2D ren2d;
     ECS ecs;
     CanvasRenderSystem canvasRenderSystem;
+    SpriteAnimationSystem spriteAnimationSystem;
     std::shared_ptr<EntityScene> scene;
 };
 

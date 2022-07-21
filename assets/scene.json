@@ -25,7 +25,42 @@
       },
       "sprite": {
         "sprite": {
-          "uri": "file://sprites.json$mainchar_idle_1"
+          "uri": "sprites/john_idle_0.json"
+        },
+        "center": {
+          "x": 50,
+          "y": 50
+        },
+        "layer": 1
+      },
+      "sprite_animation": {
+        "animation": {
+          "uri": "animations/gatling_fire.json"
+        }
+      }
+    }
+  },
+  {
+    "name": "Player",
+    "components": {
+      "rect_transform": {
+        "rect": {
+          "position": {
+            "x": -450,
+            "y": 45
+          },
+          "dimensions": {
+            "x": 100,
+            "y": 100
+          }
+        },
+        "anchor": "center",
+        "rotation": 0,
+        "parent": "MainCanvas"
+      },
+      "sprite": {
+        "sprite": {
+          "uri": "sprites/john_idle_0.json"
         },
         "center": {
           "x": 50,

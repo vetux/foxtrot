@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "gatling_lowammo_6",
+      "image": {
+        "uri": "images/gatling_fire.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}
