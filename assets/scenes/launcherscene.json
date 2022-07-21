@@ -41,41 +41,6 @@
     }
   },
   {
-    "name": "Slime",
-    "components": {
-      "rect_transform": {
-        "rect": {
-          "position": {
-            "x": 450,
-            "y": 45
-          },
-          "dimensions": {
-            "x": 100,
-            "y": 100
-          }
-        },
-        "anchor": "center",
-        "rotation": 0,
-        "parent": "MainCanvas"
-      },
-      "sprite": {
-        "sprite": {
-          "uri": "sprites/slime_idle_0.json"
-        },
-        "center": {
-          "x": 50,
-          "y": 50
-        },
-        "layer": 1
-      },
-      "sprite_animation": {
-        "animation": {
-          "uri": "animations/slime_idle.json"
-        }
-      }
-    }
-  },
-  {
     "name": "Player",
     "components": {
       "rect_transform": {
@@ -100,6 +65,41 @@
         "center": {
           "x": 50,
           "y": 50
+        }
+      }
+    }
+  },
+  {
+    "name": "Slime",
+    "components": {
+      "rect_transform": {
+        "rect": {
+          "position": {
+            "x": 500,
+            "y": 50
+          },
+          "dimensions": {
+            "x": 100,
+            "y": 100
+          }
+        },
+        "anchor": "center",
+        "rotation": 0,
+        "parent": "MainCanvas"
+      },
+      "sprite": {
+        "sprite": {
+          "uri": "sprites/slime_idle_0.json"
+        },
+        "center": {
+          "x": 50,
+          "y": 50
+        },
+        "layer": 1
+      },
+      "sprite_animation": {
+        "animation": {
+          "uri": "animations/slime_idle.json"
         }
       }
     }

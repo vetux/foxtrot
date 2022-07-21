@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "pistol",
+      "image": {
+        "uri": "images/pistol.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 16,
+          "y": 8
+        }
+      }
+    }
+  ]
+}

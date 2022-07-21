@@ -55,7 +55,7 @@ protected:
         ecs.setScene(scene);
         ecs.start();
 
-        auto stream = archive.open("scene.json");
+        auto stream = archive.open("scenes/launcherscene.json");
         *scene << JsonProtocol().deserialize(*stream);
     }
 
