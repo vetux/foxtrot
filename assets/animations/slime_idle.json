@@ -1,0 +1,33 @@
+{
+  "sprite-animations": [
+    {
+      "keyframes": [
+        {
+          "sprite": {
+            "uri": "sprites/slime_idle_0.json"
+          },
+          "duration": 1
+        },
+        {
+          "sprite": {
+            "uri": "sprites/slime_idle_1.json"
+          },
+          "duration": 1
+        },
+        {
+          "sprite": {
+            "uri": "sprites/slime_idle_2.json"
+          },
+          "duration": 1
+        },
+        {
+          "sprite": {
+            "uri": "sprites/slime_idle_3.json"
+          },
+          "duration": 1
+        }
+      ],
+      "animationDuration": 0.75
+    }
+  ]
+}

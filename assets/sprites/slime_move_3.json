@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "slime_move_3",
+      "image": {
+        "uri": "images/slime_move.png"
+      },
+      "offset": {
+        "position": {
+          "x": 96
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}

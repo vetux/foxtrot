@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "slime_idle_3",
+      "image": {
+        "uri": "images/slime_idle.png"
+      },
+      "offset": {
+        "position": {
+          "x": 96
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}
