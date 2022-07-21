@@ -1,13 +1,13 @@
 {
   "sprites": [
     {
-      "name": "gatling",
+      "name": "gatling_unloaded_1",
       "image": {
         "uri": "images/gatling.png"
       },
       "offset": {
         "position": {
-          "x": 32
+          "x": 288
         },
         "dimensions": {
           "x": 32,

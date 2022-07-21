@@ -35,7 +35,7 @@
       },
       "sprite_animation": {
         "animation": {
-          "uri": "animations/gatling_fire.json"
+          "uri": "animations/gatling_fire_unloaded.json"
         }
       }
     }
