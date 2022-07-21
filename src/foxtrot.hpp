@@ -65,7 +65,7 @@ protected:
 
     void update(DeltaTime deltaTime) override {
         ren2d.renderClear(window->getRenderTarget(),
-                          ColorRGBA::white(),
+                          ColorRGBA::black(),
                           {},
                           window->getRenderTarget().getDescription().size);
         ecs.update(deltaTime);
