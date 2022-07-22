@@ -1,0 +1,203 @@
+{
+  "name": "menu",
+  "entities": [
+    {
+      "name": "MainCanvas",
+      "components": {
+        "canvas": {}
+      }
+    },
+    {
+      "name": "Gatling",
+      "components": {
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": -450,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 100,
+              "y": 100
+            }
+          },
+          "anchor": "center",
+          "center": {
+            "x": 50,
+            "y": 50
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/gatling_unloaded_0.json"
+          },
+          "layer": 1
+        },
+        "sprite_animation": {
+          "animation": {
+            "uri": "animations/gatling_fire_unloaded.json"
+          }
+        }
+      }
+    },
+    {
+      "name": "Player",
+      "components": {
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": -500,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 100,
+              "y": 100
+            }
+          },
+          "anchor": "center",
+          "center": {
+            "x": 50,
+            "y": 50
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/john_idle_0.json"
+          }
+        }
+      }
+    },
+    {
+      "name": "Slime",
+      "components": {
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 500,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 100,
+              "y": 100
+            }
+          },
+          "anchor": "center",
+          "center": {
+            "x": 50,
+            "y": 50
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/slime_idle_0.json"
+          },
+          "layer": 1
+        },
+        "sprite_animation": {
+          "animation": {
+            "uri": "animations/slime_idle.json"
+          }
+        }
+      }
+    },
+    {
+      "name": "TitleText",
+      "components": {
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 700,
+              "y": 200
+            }
+          },
+          "anchor": "center",
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "text": {
+          "text": "Foxtrot",
+          "fontPath": "fonts/rye/Rye-Regular.ttf",
+          "pixelSize": {
+            "x": 0,
+            "y": 150
+          },
+          "textColor": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 255
+          },
+          "lineHeight": 120
+        }
+      }
+    },
+    {
+      "name": "Button",
+      "components": {
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 0,
+              "y": 200
+            },
+            "dimensions": {
+              "x": 200,
+              "y": 100
+            }
+          },
+          "anchor": "center",
+          "center": {
+            "x": 100,
+            "y": 50
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "button": {
+          "id": "button_start",
+          "sprite": {
+            "uri": "sprites/button_a.json"
+          },
+          "spriteHover": {
+            "uri": "sprites/button_a_hover.json"
+          },
+          "spritePressed": {
+            "uri": "sprites/button_a_pressed.json"
+          }
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/button_a.json"
+          },
+          "layer": 1
+        },
+        "text": {
+          "text": "Start",
+          "fontPath": "fonts/rye/Rye-Regular.ttf",
+          "pixelSize": {
+            "x": 0,
+            "y": 30
+          },
+          "textColor": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 255
+          },
+          "lineHeight": 25,
+          "layer": 2
+        }
+      }
+    }
+  ]
+}

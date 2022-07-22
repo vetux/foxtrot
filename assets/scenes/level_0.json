@@ -1,0 +1,41 @@
+{
+  "name": "level_0",
+  "entities": [
+    {
+      "name": "MainCanvas",
+      "components": {
+        "canvas": {}
+      }
+    },
+    {
+      "name": "Backdrop",
+      "components": {
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": -50,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 500,
+              "y": 500
+            }
+          },
+          "anchor": "bottom_center",
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/gatling_unloaded_0.json"
+          },
+          "center": {
+            "x": 250,
+            "y": 500
+          },
+          "layer": 1
+        }
+      }
+    }
+  ]
+}

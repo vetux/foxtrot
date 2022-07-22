@@ -23,6 +23,8 @@
 #include "app/application.hpp"
 #include "xengine.hpp"
 
+#include "scenemanager.hpp"
+
 using namespace xng;
 
 class Foxtrot : public Application {
@@ -35,6 +37,9 @@ public:
                                       ren2d(*renderDevice,
                                             *shaderCompiler,
                                             *shaderDecompiler),
+                                      ecs(),
+                                      sceneManager(scenes),
+                                      guiEventSystem(*window, eventBus),
                                       canvasRenderSystem(ren2d,
                                                          window->getRenderTarget(),
                                                          *fontDriver,
@@ -49,14 +54,13 @@ public:
 
 protected:
     void start() override {
-        scene = std::make_shared<EntityScene>();
+        scenes = loadScenes({"scenes/menu.json", "scenes/level_0.json"});
 
-        ecs.setSystems({spriteAnimationSystem, canvasRenderSystem});
-        ecs.setScene(scene);
+        sceneManager = SceneManager(scenes);
+
+        ecs.setSystems({guiEventSystem, spriteAnimationSystem, canvasRenderSystem});
+        ecs.setScene(sceneManager.loadScene("menu"));
         ecs.start();
-
-        auto stream = archive.open("scenes/launcherscene.json");
-        *scene << JsonProtocol().deserialize(*stream);
     }
 
     void stop() override {
@@ -73,15 +77,29 @@ protected:
     }
 
 private:
+    std::vector<std::shared_ptr<EntityScene>> loadScenes(const std::vector<std::string> &paths) {
+        std::vector<std::shared_ptr<EntityScene>> ret;
+        for (auto &path: paths) {
+            auto scene = std::make_shared<EntityScene>();
+            auto stream = archive.open(path);
+            *scene << JsonProtocol().deserialize(*stream);
+            ret.emplace_back(scene);
+        }
+        return ret;
+    }
+
     std::unique_ptr<FontDriver> fontDriver;
     std::unique_ptr<SPIRVCompiler> shaderCompiler;
     std::unique_ptr<SPIRVDecompiler> shaderDecompiler;
     DirectoryArchive archive;
     Renderer2D ren2d;
+    EventBus eventBus;
     ECS ecs;
+    GuiEventSystem guiEventSystem;
     CanvasRenderSystem canvasRenderSystem;
     SpriteAnimationSystem spriteAnimationSystem;
-    std::shared_ptr<EntityScene> scene;
+    std::vector<std::shared_ptr<EntityScene>> scenes;
+    SceneManager sceneManager;
 };
 
 #endif //FOXTROT_FOXTROT_HPP
