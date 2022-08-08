@@ -17,27 +17,23 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FOXTROT_SCENEMANAGER_HPP
-#define FOXTROT_SCENEMANAGER_HPP
+#ifndef FOXTROT_LOADLEVELEVENT_HPP
+#define FOXTROT_LOADLEVELEVENT_HPP
 
-#include "ecs/ecs.hpp"
+#include "event/event.hpp"
 
-namespace xng {
-    class SceneManager {
-    public:
-        explicit SceneManager(const std::vector<std::shared_ptr<EntityScene>> &entScenes = {}) {
-            for (auto &scene: entScenes) {
-                scenes[scene->getName()] = scene;
-            }
-        }
+#include "level.hpp"
 
-        const std::shared_ptr<EntityScene> &loadScene(const std::string &name) {
-            return scenes.at(name);
-        }
+using namespace xng;
 
-    private:
-        std::map<std::string, std::shared_ptr<EntityScene>> scenes;
-    };
-}
+struct LoadLevelEvent : public Event {
+    std::type_index getEventType() const override {
+        return typeid(LoadLevelEvent);
+    }
 
-#endif //FOXTROT_SCENEMANAGER_HPP
+    LevelName name;
+
+    LoadLevelEvent(LevelName name) : name(name) {}
+};
+
+#endif //FOXTROT_LOADLEVELEVENT_HPP

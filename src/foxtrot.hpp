@@ -23,11 +23,14 @@
 #include "app/application.hpp"
 #include "xengine.hpp"
 
-#include "scenemanager.hpp"
+#include "levels/mainmenu.hpp"
+#include "levels/level0.hpp"
+
+#include "loadlevelevent.hpp"
 
 using namespace xng;
 
-class Foxtrot : public Application {
+class Foxtrot : public Application, public EventListener {
 public:
     Foxtrot(int argc, char *argv[]) : Application(argc, argv),
                                       fontDriver(DriverRegistry::load<FontDriver>("freetype")),
@@ -37,42 +40,71 @@ public:
                                       ren2d(*renderDevice,
                                             *shaderCompiler,
                                             *shaderDecompiler),
-                                      ecs(),
-                                      sceneManager(scenes),
-                                      guiEventSystem(*window, eventBus),
-                                      canvasRenderSystem(ren2d,
-                                                         window->getRenderTarget(),
-                                                         *fontDriver,
-                                                         archive) {
+                                      ecs() {
         ResourceRegistry::getDefaultRegistry().addArchive("file", std::make_shared<DirectoryArchive>(archive));
         ResourceRegistry::getDefaultRegistry().setDefaultScheme("file");
         auto parsers = std::vector<std::unique_ptr<ResourceParser>>();
         parsers.emplace_back(std::make_unique<JsonParser>());
         parsers.emplace_back(std::make_unique<StbiParser>());
         ResourceRegistry::getDefaultRegistry().setImporter(ResourceImporter(std::move(parsers)));
+
+        currentLevel = MAIN_MENU;
+        targetLevel = MAIN_MENU;
+
+        eventBus.addListener(*this);
+
+        ren2d.renderClear(window->getRenderTarget(), ColorRGBA::black(),  {}, window->getRenderTarget().getDescription().size);
+
+        window->swapBuffers();
+        window->update();
+    }
+
+    ~Foxtrot() override {
+        eventBus.removeListener(*this);
+    }
+
+    void loadLevel(LevelName level){
+        levels.at(currentLevel)->onDestroy(ecs);
+        currentLevel = level;
+        levels.at(currentLevel)->onCreate(ecs);
+    }
+
+    void onEvent(const Event &event) override {
+        if (event.getEventType() == typeid(LoadLevelEvent)){
+            auto &ev = event.as<LoadLevelEvent>();
+            targetLevel = ev.name;
+        }
     }
 
 protected:
     void start() override {
         scenes = loadScenes({"scenes/menu.json", "scenes/level_0.json"});
 
-        sceneManager = SceneManager(scenes);
+        levels[MAIN_MENU] = std::make_unique<MainMenu>(eventBus, *window, ren2d, *fontDriver, archive, scenes);
+        levels[LEVEL_0] = std::make_unique<Level0>(eventBus, *window, ren2d, *fontDriver, archive, scenes);
 
-        ecs.setSystems({guiEventSystem, spriteAnimationSystem, canvasRenderSystem});
-        ecs.setScene(sceneManager.loadScene("menu"));
+        levels.at(currentLevel)->onCreate(ecs);
+
         ecs.start();
     }
 
     void stop() override {
+        levels.at(currentLevel)->onDestroy(ecs);
+
         ecs.stop();
     }
 
     void update(DeltaTime deltaTime) override {
+        if (currentLevel != targetLevel){
+            loadLevel(targetLevel);
+            targetLevel = currentLevel;
+        }
         ren2d.renderClear(window->getRenderTarget(),
                           ColorRGBA::black(),
                           {},
                           window->getRenderTarget().getDescription().size);
         ecs.update(deltaTime);
+        levels.at(currentLevel)->onUpdate(ecs, deltaTime);
         Application::update(deltaTime);
     }
 
@@ -91,15 +123,18 @@ private:
     std::unique_ptr<FontDriver> fontDriver;
     std::unique_ptr<SPIRVCompiler> shaderCompiler;
     std::unique_ptr<SPIRVDecompiler> shaderDecompiler;
+
     DirectoryArchive archive;
     Renderer2D ren2d;
     EventBus eventBus;
     ECS ecs;
-    GuiEventSystem guiEventSystem;
-    CanvasRenderSystem canvasRenderSystem;
-    SpriteAnimationSystem spriteAnimationSystem;
+
     std::vector<std::shared_ptr<EntityScene>> scenes;
-    SceneManager sceneManager;
+
+    LevelName currentLevel;
+    LevelName targetLevel;
+
+    std::map<LevelName, std::unique_ptr<Level>> levels;
 };
 
 #endif //FOXTROT_FOXTROT_HPP
