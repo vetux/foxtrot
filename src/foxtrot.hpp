@@ -55,6 +55,7 @@ public:
 
         ren2d.renderClear(window->getRenderTarget(), ColorRGBA::black(),  {}, window->getRenderTarget().getDescription().size);
 
+        window->setTitle("Foxtrot");
         window->swapBuffers();
         window->update();
     }

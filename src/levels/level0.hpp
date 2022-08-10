@@ -22,6 +22,8 @@
 
 #include "level.hpp"
 
+#include "systems/playercontrollersystem.hpp"
+
 class Level0 : public Level, public EventListener {
 public:
     Level0(EventBus &eventBus,
@@ -33,6 +35,7 @@ public:
             : eventBus(eventBus),
               target(window.getRenderTarget()),
               guiEventSystem(window, eventBus),
+              playerControllerSystem(window.getInput()),
               canvasRenderSystem(ren2d,
                                  window.getRenderTarget(),
                                  fontDriver,
@@ -49,14 +52,15 @@ public:
 
     void onCreate(ECS &ecs) override {
         eventBus.addListener(*this);
-canvasRenderSystem.setDrawDebug(true);
-        ecs.setSystems({guiEventSystem, spriteAnimationSystem, physicsSystem, canvasRenderSystem});
+        canvasRenderSystem.setDrawDebug(true);
+        ecs.setSystems(
+                {playerControllerSystem, guiEventSystem, spriteAnimationSystem, physicsSystem, canvasRenderSystem});
         ecs.setScene(scenes.at(1));
         ecs.start();
     }
 
     void onUpdate(ECS &ecs, DeltaTime deltaTime) override {
-       // ren2d.renderClear(target, ColorRGBA::green(), {}, target.getDescription().size);
+        // ren2d.renderClear(target, ColorRGBA::green(), {}, target.getDescription().size);
     }
 
     void onDestroy(ECS &ecs) override {
@@ -70,14 +74,17 @@ canvasRenderSystem.setDrawDebug(true);
 private:
     RenderTarget &target;
     Renderer2D &ren2d;
+
+    std::unique_ptr<PhysicsDriver> physicsDriver;
+    std::unique_ptr<World> world;
+    std::vector<std::shared_ptr<EntityScene>> scenes;
+    EventBus &eventBus;
+
     GuiEventSystem guiEventSystem;
     CanvasRenderSystem canvasRenderSystem;
     SpriteAnimationSystem spriteAnimationSystem;
-    std::unique_ptr<PhysicsDriver> physicsDriver;
-    std::unique_ptr<World> world;
+    PlayerControllerSystem playerControllerSystem;
     PhysicsSystem physicsSystem;
-    std::vector<std::shared_ptr<EntityScene>> scenes;
-    EventBus &eventBus;
 };
 
 #endif //FOXTROT_LEVEL0_HPP

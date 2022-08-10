@@ -8,8 +8,15 @@
       }
     },
     {
-      "name": "Backdrop",
+      "name": "Body",
       "components": {
+        "transform": {
+          "transform": {
+            "rotation": {
+              "z": 15
+            }
+          }
+        },
         "rect_transform": {
           "rect": {
             "position": {
@@ -17,8 +24,67 @@
               "y": 0
             },
             "dimensions": {
-              "x": 500,
-              "y": 500
+              "x": 50,
+              "y": 50
+            }
+          },
+          "anchor": "top_left",
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/gatling_unloaded_0.json"
+          },
+          "layer": 1
+        },
+        "rigidbody": {
+          "type": "dynamic",
+          "is2D": true,
+          "colliders": [
+            {
+              "density": 10,
+              "shape": {
+                "vertices": [
+                  {
+                    "x": -10,
+                    "y": -10
+                  },
+                  {
+                    "x": 10,
+                    "y": -10
+                  },
+                  {
+                    "x": 0,
+                    "y": 10
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bottom",
+      "components": {
+        "transform": {
+          "transform": {
+            "position": {
+              "x": 0,
+              "y": -100
+            }
+          }
+        },
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 5000,
+              "y": 1
             }
           },
           "anchor": "bottom_center",
@@ -29,11 +95,35 @@
           "sprite": {
             "uri": "sprites/gatling_unloaded_0.json"
           },
-          "center": {
-            "x": 250,
-            "y": 500
-          },
           "layer": 1
+        },
+        "rigidbody": {
+          "is2D": true,
+          "colliders": [
+            {
+              "shape": {
+                "primitive": "quad",
+                "vertices": [
+                  {
+                    "x": -5000,
+                    "y": 1
+                  },
+                  {
+                    "x": 5000,
+                    "y": 1
+                  },
+                  {
+                    "x": 5000,
+                    "y": -1
+                  },
+                  {
+                    "x": -5000,
+                    "y": -1
+                  }
+                ]
+              }
+            }
+          ]
         }
       }
     }
