@@ -23,6 +23,7 @@
 #include "level.hpp"
 
 #include "systems/playercontrollersystem.hpp"
+#include "systems/camerasystem.hpp"
 
 class Level0 : public Level, public EventListener {
 public:
@@ -43,6 +44,7 @@ public:
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
               physicsSystem(*world, eventBus),
+              cameraSystem(window.getRenderTarget()),
               scenes(scenes),
               ren2d(ren2d) {}
 
@@ -54,7 +56,12 @@ public:
         eventBus.addListener(*this);
         canvasRenderSystem.setDrawDebug(true);
         ecs.setSystems(
-                {playerControllerSystem, guiEventSystem, spriteAnimationSystem, physicsSystem, canvasRenderSystem});
+                {guiEventSystem,
+                 spriteAnimationSystem,
+                 playerControllerSystem,
+                 physicsSystem,
+                 cameraSystem,
+                 canvasRenderSystem});
         ecs.setScene(scenes.at(1));
         ecs.start();
     }
@@ -85,6 +92,7 @@ private:
     SpriteAnimationSystem spriteAnimationSystem;
     PlayerControllerSystem playerControllerSystem;
     PhysicsSystem physicsSystem;
+    CameraSystem cameraSystem;
 };
 
 #endif //FOXTROT_LEVEL0_HPP

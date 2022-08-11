@@ -22,6 +22,8 @@
 
 #include "xengine.hpp"
 
+#include "components/playercontrollercomponent.hpp"
+
 using namespace xng;
 
 class PlayerControllerSystem : public System {
@@ -31,9 +33,10 @@ public:
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         auto inp = getInput();
-        for (auto &pair: scene.getPool<RigidBodyComponent>()) {
+        for (auto &pair: scene.getPool<PlayerControllerComponent>()) {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
-            auto rb = pair.second;
+            auto rb = scene.lookup<RigidBodyComponent>(pair.first);
+
             const float factor = 100000;
             rb.force = inp * Vec3f(factor);
             rb.forcePoint = tcomp.transform.getPosition();
@@ -42,6 +45,7 @@ public:
             } else if (input.getKeyboard().getKey(KEY_E)) {
                 rb.torque = Vec3f(0, 0, factor);
             }
+
             scene.updateComponent(pair.first, rb);
         }
     }

@@ -26,6 +26,8 @@
 #include "levels/mainmenu.hpp"
 #include "levels/level0.hpp"
 
+#include "foxtrotscene.hpp"
+
 #include "loadlevelevent.hpp"
 
 using namespace xng;
@@ -113,7 +115,7 @@ private:
     std::vector<std::shared_ptr<EntityScene>> loadScenes(const std::vector<std::string> &paths) {
         std::vector<std::shared_ptr<EntityScene>> ret;
         for (auto &path: paths) {
-            auto scene = std::make_shared<EntityScene>();
+            auto scene = std::make_shared<FoxtrotScene>();
             auto stream = archive.open(path);
             *scene << JsonProtocol().deserialize(*stream);
             ret.emplace_back(scene);

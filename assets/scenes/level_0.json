@@ -38,6 +38,7 @@
           },
           "layer": 1
         },
+        "player": {},
         "rigidbody": {
           "type": "dynamic",
           "is2D": true,
@@ -83,11 +84,10 @@
               "y": 0
             },
             "dimensions": {
-              "x": 5000,
+              "x": 1,
               "y": 1
             }
           },
-          "anchor": "bottom_center",
           "rotation": 0,
           "parent": "MainCanvas"
         },
@@ -105,19 +105,19 @@
                 "primitive": "quad",
                 "vertices": [
                   {
-                    "x": -5000,
+                    "x": -100,
                     "y": 1
                   },
                   {
-                    "x": 5000,
+                    "x": 100,
                     "y": 1
                   },
                   {
-                    "x": 5000,
+                    "x": 100,
                     "y": -1
                   },
                   {
-                    "x": -5000,
+                    "x": -100,
                     "y": -1
                   }
                 ]

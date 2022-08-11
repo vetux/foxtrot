@@ -17,11 +17,24 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FOXTROT_PLAYERCONTROLLERCOMPONENT_HPP
-#define FOXTROT_PLAYERCONTROLLERCOMPONENT_HPP
+#ifndef FOXTROT_FOXTROTSCENE_HPP
+#define FOXTROT_FOXTROTSCENE_HPP
 
 #include "xengine.hpp"
 
-struct PlayerControllerComponent {};
+#include "components/playercontrollercomponent.hpp"
 
-#endif //FOXTROT_PLAYERCONTROLLERCOMPONENT_HPP
+using namespace xng;
+
+class FoxtrotScene : public EntityScene {
+public:
+    void deserializeComponent(const EntityHandle &entity, const std::string &type, const Message &message) override {
+        if (type == "player") {
+            createComponent(entity, PlayerControllerComponent());
+        } else {
+            EntityScene::deserializeComponent(entity, type, message);
+        }
+    }
+};
+
+#endif //FOXTROT_FOXTROTSCENE_HPP
