@@ -62,6 +62,11 @@ public:
         }
     }
 
+    void setCameraBounds(const Vec2f &boundMin, const Vec2f &boundMax) {
+        cameraBoundMin = boundMin;
+        cameraBoundMax = boundMax;
+    }
+
 private:
     RenderTarget &target;
 
