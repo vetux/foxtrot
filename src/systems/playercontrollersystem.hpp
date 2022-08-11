@@ -37,7 +37,7 @@ public:
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
             auto rb = scene.lookup<RigidBodyComponent>(pair.first);
 
-            const float factor = 100000;
+            const float factor = 10;
             rb.force = inp * Vec3f(factor);
             rb.forcePoint = tcomp.transform.getPosition();
             if (input.getKeyboard().getKey(KEY_Q)) {

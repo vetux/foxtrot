@@ -43,7 +43,7 @@ public:
                                  archive),
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
-              physicsSystem(*world, eventBus),
+              physicsSystem(*world, eventBus, 20),
               cameraSystem(window.getRenderTarget()),
               scenes(scenes),
               ren2d(ren2d) {}
