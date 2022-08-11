@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "button_b",
+      "image": {
+        "uri": "images/button_b.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 16
+        }
+      }
+    }
+  ]
+}

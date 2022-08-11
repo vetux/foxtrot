@@ -166,18 +166,18 @@
         "button": {
           "id": "button_start",
           "sprite": {
-            "uri": "sprites/button_a.json"
+            "uri": "sprites/button_b.json"
           },
           "spriteHover": {
-            "uri": "sprites/button_a_hover.json"
+            "uri": "sprites/button_b_hover.json"
           },
           "spritePressed": {
-            "uri": "sprites/button_a_pressed.json"
+            "uri": "sprites/button_b_pressed.json"
           }
         },
         "sprite": {
           "sprite": {
-            "uri": "sprites/button_a.json"
+            "uri": "sprites/button_b.json"
           },
           "layer": 1
         },
