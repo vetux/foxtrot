@@ -70,8 +70,8 @@ public:
 private:
     RenderTarget &target;
 
-    Vec2f cameraBoundMin = Vec2f(-2000, -2000);
-    Vec2f cameraBoundMax = Vec2f(2000, 2000);
+    Vec2f cameraBoundMin = Vec2f(-5000, -2500);
+    Vec2f cameraBoundMax = Vec2f(5000, 2500);
 };
 
 #endif //FOXTROT_CAMERASYSTEM_HPP

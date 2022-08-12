@@ -71,13 +71,13 @@
       }
     },
     {
-      "name": "Bottom",
+      "name": "Bounds left",
       "components": {
         "transform": {
           "transform": {
             "position": {
-              "x": 0,
-              "y": -100
+              "x": 5000,
+              "y": 0
             }
           }
         },
@@ -109,19 +109,202 @@
                 "primitive": "quad",
                 "vertices": [
                   {
-                    "x": -100,
+                    "x": 1,
+                    "y": -2500
+                  },
+                  {
+                    "x": 1,
+                    "y": 2500
+                  },
+                  {
+                    "x": -1,
+                    "y": 2500
+                  },
+                  {
+                    "x": -1,
+                    "y": -2500
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bounds right",
+      "components": {
+        "transform": {
+          "transform": {
+            "position": {
+              "x": -5000,
+              "y": 0
+            }
+          }
+        },
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/gatling_unloaded_0.json"
+          },
+          "layer": 1
+        },
+        "rigidbody": {
+          "is2D": true,
+          "colliders": [
+            {
+              "shape": {
+                "primitive": "quad",
+                "vertices": [
+                  {
+                    "x": 1,
+                    "y": -2500
+                  },
+                  {
+                    "x": 1,
+                    "y": 2500
+                  },
+                  {
+                    "x": -1,
+                    "y": 2500
+                  },
+                  {
+                    "x": -1,
+                    "y": -2500
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bounds top",
+      "components": {
+        "transform": {
+          "transform": {
+            "position": {
+              "x": 0,
+              "y": 2500
+            }
+          }
+        },
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/gatling_unloaded_0.json"
+          },
+          "layer": 1
+        },
+        "rigidbody": {
+          "is2D": true,
+          "colliders": [
+            {
+              "shape": {
+                "primitive": "quad",
+                "vertices": [
+                  {
+                    "x": -5000,
                     "y": 1
                   },
                   {
-                    "x": 100,
+                    "x": 5000,
                     "y": 1
                   },
                   {
-                    "x": 100,
+                    "x": 5000,
                     "y": -1
                   },
                   {
-                    "x": -100,
+                    "x": -5000,
+                    "y": -1
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bounds bottom",
+      "components": {
+        "transform": {
+          "transform": {
+            "position": {
+              "x": 0,
+              "y": -2500
+            }
+          }
+        },
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 1,
+              "y": 1
+            }
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/gatling_unloaded_0.json"
+          },
+          "layer": 1
+        },
+        "rigidbody": {
+          "is2D": true,
+          "colliders": [
+            {
+              "shape": {
+                "primitive": "quad",
+                "vertices": [
+                  {
+                    "x": -5000,
+                    "y": 1
+                  },
+                  {
+                    "x": 5000,
+                    "y": 1
+                  },
+                  {
+                    "x": 5000,
+                    "y": -1
+                  },
+                  {
+                    "x": -5000,
                     "y": -1
                   }
                 ]
