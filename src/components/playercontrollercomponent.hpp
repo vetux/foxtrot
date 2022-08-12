@@ -22,6 +22,26 @@
 
 #include "xengine.hpp"
 
-struct PlayerControllerComponent {};
+struct PlayerControllerComponent : public Messageable {
+    ResourceHandle<SpriteAnimation> idleAnimation;
+    ResourceHandle<SpriteAnimation> walkAnimation;
+
+    bool facingLeft = false;
+
+    Messageable &operator<<(const Message &message) override {
+        idleAnimation << message.value("idleAnimation");
+        walkAnimation << message.value("walkAnimation");
+        facingLeft  = message.value("facingLeft", false);
+        return *this;
+    }
+
+    Message &operator>>(Message &message) const override {
+        message = Message(xng::Message::DICTIONARY);
+        idleAnimation >> message["idleAnimation"];
+        walkAnimation >> message["walkAnimation"];
+        message["facingLeft"] = facingLeft;
+        return message;
+    }
+};
 
 #endif //FOXTROT_PLAYERCONTROLLERCOMPONENT_HPP

@@ -8,15 +8,9 @@
       }
     },
     {
-      "name": "Body",
+      "name": "Player",
       "components": {
-        "transform": {
-          "transform": {
-            "rotation": {
-              "z": 15
-            }
-          }
-        },
+        "transform": {},
         "rect_transform": {
           "rect": {
             "position": {
@@ -24,9 +18,13 @@
               "y": 0
             },
             "dimensions": {
-              "x": 50,
-              "y": 50
+              "x": 100,
+              "y": 100
             }
+          },
+          "center": {
+            "x": 50,
+            "y": 50
           },
           "anchor": "top_left",
           "rotation": 0,
@@ -34,34 +32,44 @@
         },
         "sprite": {
           "sprite": {
-            "uri": "sprites/gatling_unloaded_0.json"
+            "uri": "sprites/john_idle_0.json"
           },
           "layer": 1
         },
-        "player": {},
+        "player": {
+          "idleAnimation": {
+            "uri": "animations/john_idle.json"
+          },
+          "walkAnimation": {
+            "uri": "animations/john_run.json"
+          }
+        },
         "rigidbody": {
           "type": "dynamic",
           "is2D": true,
+          "lockedAxes": {
+            "z": true
+          },
           "colliders": [
             {
-              "density": 10,
+              "density": 2,
               "shape": {
                 "vertices": [
                   {
-                    "x": -10,
-                    "y": -10
+                    "x": -50,
+                    "y": -50
                   },
                   {
-                    "x": 10,
-                    "y": -10
+                    "x": 50,
+                    "y": -50
                   },
                   {
-                    "x": 10,
-                    "y": 10
+                    "x": 50,
+                    "y": 50
                   },
                   {
-                    "x": -10,
-                    "y": 10
+                    "x": -50,
+                    "y": 50
                   }
                 ]
               }

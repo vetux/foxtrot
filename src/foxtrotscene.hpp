@@ -30,7 +30,9 @@ class FoxtrotScene : public EntityScene {
 public:
     void deserializeComponent(const EntityHandle &entity, const std::string &type, const Message &message) override {
         if (type == "player") {
-            createComponent(entity, PlayerControllerComponent());
+            PlayerControllerComponent comp;
+            comp << message;
+            createComponent(entity, comp);
         } else {
             EntityScene::deserializeComponent(entity, type, message);
         }
