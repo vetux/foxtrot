@@ -26,7 +26,7 @@
 
 #include "systems/playercontrollersystem.hpp"
 #include "systems/camerasystem.hpp"
-#include "systems/daytimesystem.hpp"
+#include "systems/timesystem.hpp"
 
 class Level0 : public Level, public EventListener {
 public:
@@ -108,7 +108,7 @@ private:
 
     EventSystem eventSystem;
     GuiEventSystem guiEventSystem;
-    DaytimeSystem daytimeSystem;
+    TimeSystem daytimeSystem;
     CanvasRenderSystem canvasRenderSystem;
     SpriteAnimationSystem spriteAnimationSystem;
     PlayerControllerSystem playerControllerSystem;

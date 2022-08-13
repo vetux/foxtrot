@@ -17,8 +17,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FOXTROT_DAYTIMESYSTEM_HPP
-#define FOXTROT_DAYTIMESYSTEM_HPP
+#ifndef FOXTROT_TIMESYSTEM_HPP
+#define FOXTROT_TIMESYSTEM_HPP
 
 #include "xengine.hpp"
 
@@ -26,21 +26,25 @@
 
 using namespace xng;
 
-class DaytimeSystem : public System {
+class TimeSystem : public System {
 public:
-    explicit DaytimeSystem(float dayDuration = 120,
-                           float nightDuration = 180,
-                           float duskSpeed = 1)
-            : dayDuration(dayDuration),
+    explicit TimeSystem(double time = 0,
+                        float dayDuration = 120,
+                        float nightDuration = 180,
+                        float duskSpeed = 1)
+            : time(time),
+              dayDuration(dayDuration),
               nightDuration(nightDuration),
               duskSpeed(duskSpeed) {}
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
-        accumulatedTime += deltaTime;
-        if (accumulatedTime > dayDuration + nightDuration) {
-            accumulatedTime = 0;
-        }
-        bool isDay = accumulatedTime < dayDuration;
+        time += deltaTime;
+
+        const auto totalDuration = dayDuration + nightDuration;
+        auto days = numeric_cast<int>(time / totalDuration);
+        auto timeOfDay = time - (days * totalDuration);
+
+        bool isDay = timeOfDay < dayDuration;
 
         for (auto &pair: scene.getPool<BackdropComponent>()) {
             auto sprite = scene.lookup<SpriteComponent>(pair.first);
@@ -63,11 +67,19 @@ public:
         }
     }
 
+    void setTime(double value) {
+        time = value;
+    }
+
+    double getTime() const {
+        return time;
+    }
+
 private:
-    DeltaTime accumulatedTime = std::numeric_limits<DeltaTime>::max();
+    double time;
     const float dayDuration;
     const float nightDuration;
     const float duskSpeed;
 };
 
-#endif //FOXTROT_DAYTIMESYSTEM_HPP
+#endif //FOXTROT_TIMESYSTEM_HPP
