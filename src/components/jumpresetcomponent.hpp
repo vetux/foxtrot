@@ -17,29 +17,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FOXTROT_FOXTROTSCENE_HPP
-#define FOXTROT_FOXTROTSCENE_HPP
+#ifndef FOXTROT_JUMPRESETCOMPONENT_HPP
+#define FOXTROT_JUMPRESETCOMPONENT_HPP
 
-#include "xengine.hpp"
+struct JumpResetComponent {};
 
-#include "components/playercontrollercomponent.hpp"
-#include "components/jumpresetcomponent.hpp"
-
-using namespace xng;
-
-class FoxtrotScene : public EntityScene {
-public:
-    void deserializeComponent(const EntityHandle &entity, const std::string &type, const Message &message) override {
-        if (type == "player") {
-            PlayerControllerComponent comp;
-            comp << message;
-            createComponent(entity, comp);
-        } else if (type == "jump_reset") {
-            createComponent(entity, JumpResetComponent());
-        }else {
-            EntityScene::deserializeComponent(entity, type, message);
-        }
-    }
-};
-
-#endif //FOXTROT_FOXTROTSCENE_HPP
+#endif //FOXTROT_JUMPRESETCOMPONENT_HPP

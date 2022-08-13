@@ -10,7 +10,13 @@
     {
       "name": "Player",
       "components": {
-        "transform": {},
+        "transform": {
+          "transform": {
+            "position": {
+              "y": -2000
+            }
+          }
+        },
         "rect_transform": {
           "rect": {
             "position": {
@@ -36,6 +42,11 @@
           },
           "layer": 1
         },
+        "sprite_animation": {
+          "animation": {
+            "uri": "animations/john_idle.json"
+          }
+        },
         "player": {
           "idleAnimation": {
             "uri": "animations/john_idle.json"
@@ -52,24 +63,50 @@
           },
           "colliders": [
             {
-              "density": 2,
+              "density": 5,
+              "friction": 1,
               "shape": {
                 "vertices": [
                   {
-                    "x": -50,
+                    "x": -10,
                     "y": -50
                   },
                   {
-                    "x": 50,
+                    "x": 10,
                     "y": -50
                   },
                   {
-                    "x": 50,
+                    "x": 10,
                     "y": 50
                   },
                   {
-                    "x": -50,
+                    "x": -10,
                     "y": 50
+                  }
+                ]
+              }
+            },
+            {
+              "density": 5,
+              "friction": 1,
+              "isSensor": true,
+              "shape": {
+                "vertices": [
+                  {
+                    "x": -10,
+                    "y": -50
+                  },
+                  {
+                    "x": 10,
+                    "y": -50
+                  },
+                  {
+                    "x": 10,
+                    "y": -55
+                  },
+                  {
+                    "x": -10,
+                    "y": -55
                   }
                 ]
               }
@@ -286,6 +323,7 @@
           "rotation": 0,
           "parent": "MainCanvas"
         },
+        "jump_reset": {},
         "sprite": {
           "sprite": {
             "uri": "sprites/gatling_unloaded_0.json"

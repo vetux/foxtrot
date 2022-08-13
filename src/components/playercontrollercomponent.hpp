@@ -28,6 +28,8 @@ struct PlayerControllerComponent : public Messageable {
 
     bool facingLeft = false;
 
+    std::set<EntityHandle> collidingEntities;
+
     Messageable &operator<<(const Message &message) override {
         idleAnimation << message.value("idleAnimation");
         walkAnimation << message.value("walkAnimation");

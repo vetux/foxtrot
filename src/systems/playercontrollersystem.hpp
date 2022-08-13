@@ -23,30 +23,113 @@
 #include "xengine.hpp"
 
 #include "components/playercontrollercomponent.hpp"
+#include "components/jumpresetcomponent.hpp"
 
 using namespace xng;
 
-class PlayerControllerSystem : public System {
+class PlayerControllerSystem : public System, public EventListener {
 public:
-    explicit PlayerControllerSystem(Input &input)
-            : input(input) {}
+    explicit PlayerControllerSystem(Input &input, EventBus &eventBus)
+            : input(input), eventBus(eventBus) {
+        eventBus.addListener(*this);
+    }
+
+    virtual ~PlayerControllerSystem() {
+        eventBus.removeListener(*this);
+    }
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
+        for (auto &ev: contactEvents) {
+            EntityHandle playerEnt;
+            EntityHandle otherEnt;
+
+            if (scene.check<PlayerControllerComponent>(ev.entityA)) {
+                playerEnt = ev.entityA;
+                otherEnt = ev.entityB;
+            } else if (scene.check<PlayerControllerComponent>(ev.entityB)) {
+                playerEnt = ev.entityB;
+                otherEnt = ev.entityA;
+            }
+
+            if (playerEnt && otherEnt) {
+                auto pl = scene.lookup<PlayerControllerComponent>(playerEnt);
+                if (ev.type == xng::ContactEvent::BEGIN_CONTACT) {
+                    pl.collidingEntities.insert(otherEnt);
+                } else {
+                    pl.collidingEntities.erase(otherEnt);
+                }
+                scene.updateComponent(playerEnt, pl);
+            }
+        }
+
+        contactEvents.clear();
+
         auto inp = getInput();
         for (auto &pair: scene.getPool<PlayerControllerComponent>()) {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
             auto rb = scene.lookup<RigidBodyComponent>(pair.first);
+            auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
+            auto sprite = scene.lookup<SpriteComponent>(pair.first);
+            auto player = pair.second;
 
-            const float factor = 100;
-            rb.force = inp * Vec3f(factor);
-            rb.forcePoint = tcomp.transform.getPosition();
-            if (input.getKeyboard().getKey(KEY_Q)) {
-                rb.torque = Vec3f(0, 0, -factor);
-            } else if (input.getKeyboard().getKey(KEY_E)) {
-                rb.torque = Vec3f(0, 0, factor);
+            if (rb.velocity.x < 0.1 && rb.velocity.x > -0.1) {
+                anim.animation = pair.second.idleAnimation;
+            } else {
+                anim.animation = pair.second.walkAnimation;
+            }
+
+            if (rb.velocity.x != 0) {
+                player.facingLeft = rb.velocity.x > 0;
+                sprite.flipSprite.x = player.facingLeft;
+            }
+
+            const float factor = 50;
+
+            if (inp.x != 0) {
+                rb.velocity.x = inp.x * factor;
+            } else {
+                if (rb.velocity.x < -drag) {
+                    rb.velocity.x += drag;
+                } else if (rb.velocity.x > drag) {
+                    rb.velocity.x -= drag;
+                }
+            }
+
+            if (inp.y > 0) {
+                bool canJump = false;
+                for (auto &ent : player.collidingEntities){
+                    if (scene.check<JumpResetComponent>(ent)){
+                        canJump = true;
+                        break;
+                    }
+                }
+                if (canJump) {
+                    rb.impulse = Vec3f(0, 10, 0);
+                    rb.impulsePoint = tcomp.transform.getPosition();
+                }
+            }
+
+            if (rb.velocity.x < 0.1 && rb.velocity.x > -0.1) {
+                anim.animation = pair.second.idleAnimation;
+            } else {
+                anim.animation = pair.second.walkAnimation;
+            }
+
+            if (rb.velocity.x != 0) {
+                player.facingLeft = rb.velocity.x > 0;
+                sprite.flipSprite.x = player.facingLeft;
             }
 
             scene.updateComponent(pair.first, rb);
+            scene.updateComponent(pair.first, anim);
+            scene.updateComponent(pair.first, sprite);
+            scene.updateComponent(pair.first, player);
+        }
+    }
+
+    void onEvent(const Event &event) override {
+        if (event.getEventType() == typeid(ContactEvent)) {
+            contactEvents.emplace_back(event.as<ContactEvent>());
         }
     }
 
@@ -68,6 +151,11 @@ private:
     }
 
     Input &input;
+    EventBus &eventBus;
+
+    std::vector<ContactEvent> contactEvents;
+
+    const float drag = 0.1f;
 };
 
 #endif //FOXTROT_PLAYERCONTROLLERSYSTEM_HPP

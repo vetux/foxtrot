@@ -36,7 +36,7 @@ public:
             : eventBus(eventBus),
               target(window.getRenderTarget()),
               guiEventSystem(window, eventBus),
-              playerControllerSystem(window.getInput()),
+              playerControllerSystem(window.getInput(), eventBus),
               canvasRenderSystem(ren2d,
                                  window.getRenderTarget(),
                                  fontDriver,
