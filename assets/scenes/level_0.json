@@ -171,6 +171,7 @@
           },
           "layer": 1
         },
+        "floor": {},
         "rigidbody": {
           "is2D": true,
           "colliders": [
@@ -442,7 +443,7 @@
           "rotation": 0,
           "parent": "MainCanvas"
         },
-        "jump_reset": {},
+        "floor": {},
         "sprite": {
           "sprite": {
             "uri": "sprites/gatling_unloaded_0.json"

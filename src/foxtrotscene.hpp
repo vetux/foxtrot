@@ -34,7 +34,7 @@ public:
             PlayerControllerComponent comp;
             comp << message;
             createComponent(entity, comp);
-        } else if (type == "jump_reset") {
+        } else if (type == "floor") {
             createComponent(entity, FloorComponent());
         }else {
             EntityScene::deserializeComponent(entity, type, message);
