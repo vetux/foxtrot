@@ -28,6 +28,13 @@ using namespace xng;
 
 class DaytimeSystem : public System {
 public:
+    explicit DaytimeSystem(float dayDuration = 120,
+                           float nightDuration = 200,
+                           float duskSpeed = 1)
+            : dayDuration(dayDuration),
+              nightDuration(nightDuration),
+              duskSpeed(duskSpeed) {}
+
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         accumulatedTime += deltaTime;
         if (accumulatedTime > dayDuration + nightDuration) {
@@ -46,7 +53,7 @@ public:
                         sprite.blendScale = 0;
                 }
             } else {
-                if (sprite.blendScale != 1){
+                if (sprite.blendScale != 1) {
                     sprite.blendScale += duskSpeed * deltaTime;
                     if (sprite.blendScale > 1)
                         sprite.blendScale = 1;
@@ -58,9 +65,9 @@ public:
 
 private:
     DeltaTime accumulatedTime = std::numeric_limits<DeltaTime>::max();
-    const float dayDuration = 10;
-    const float nightDuration = 15;
-    const float duskSpeed = 1;
+    const float dayDuration;
+    const float nightDuration;
+    const float duskSpeed;
 };
 
 #endif //FOXTROT_DAYTIMESYSTEM_HPP
