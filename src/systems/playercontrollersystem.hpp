@@ -157,7 +157,7 @@ private:
 
     std::vector<ContactEvent> contactEvents;
 
-    const float maxVelocity = 20;
+    const float maxVelocity = 10;
     const float acceleration = 5;
     const float drag = 0.2f;
 };

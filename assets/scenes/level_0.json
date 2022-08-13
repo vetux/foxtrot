@@ -146,6 +146,7 @@
     {
       "name": "Gunshop Railing",
       "components": {
+        "transform": {},
         "rect_transform": {
           "rect": {
             "position": {
@@ -169,6 +170,34 @@
             "uri": "sprites/gunshop_railing.json"
           },
           "layer": 1
+        },
+        "rigidbody": {
+          "is2D": true,
+          "colliders": [
+            {
+              "friction": 0.5,
+              "shape": {
+                "vertices": [
+                  {
+                    "x": 200,
+                    "y": 0
+                  },
+                  {
+                    "x": 150,
+                    "y": 50
+                  },
+                  {
+                    "x": -150,
+                    "y": 50
+                  },
+                  {
+                    "x": -200,
+                    "y": 0
+                  }
+                ]
+              }
+            }
+          ]
         }
       }
     },
