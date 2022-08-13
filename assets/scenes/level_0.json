@@ -213,6 +213,14 @@
             }
           }
         },
+        "backdrop": {
+          "daySprite": {
+            "uri": "sprites/backdrop.json"
+          },
+          "nightSprite": {
+            "uri": "sprites/backdrop_night.json"
+          }
+        },
         "rect_transform": {
           "rect": {
             "position": {

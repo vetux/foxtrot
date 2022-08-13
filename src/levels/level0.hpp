@@ -26,6 +26,7 @@
 
 #include "systems/playercontrollersystem.hpp"
 #include "systems/camerasystem.hpp"
+#include "systems/daytimesystem.hpp"
 
 class Level0 : public Level, public EventListener {
 public:
@@ -63,7 +64,8 @@ public:
     void onCreate(ECS &ecs) override {
         eventBus.addListener(*this);
         ecs.setSystems(
-                {eventSystem,
+                {daytimeSystem,
+                 eventSystem,
                  guiEventSystem,
                  spriteAnimationSystem,
                  playerControllerSystem,
@@ -106,6 +108,7 @@ private:
 
     EventSystem eventSystem;
     GuiEventSystem guiEventSystem;
+    DaytimeSystem daytimeSystem;
     CanvasRenderSystem canvasRenderSystem;
     SpriteAnimationSystem spriteAnimationSystem;
     PlayerControllerSystem playerControllerSystem;

@@ -1,0 +1,17 @@
+{
+  "sprites": [
+    {
+      "name": "backdrop_night",
+      "image": {
+        "uri": "images/backdrop_night.png"
+      },
+      "offset": {
+        "position": {},
+        "dimensions": {
+          "x": 5000,
+          "y": 2500
+        }
+      }
+    }
+  ]
+}

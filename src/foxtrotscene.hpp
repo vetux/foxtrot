@@ -36,7 +36,11 @@ public:
             createComponent(entity, comp);
         } else if (type == "floor") {
             createComponent(entity, FloorComponent());
-        }else {
+        } else if (type == "backdrop") {
+            BackdropComponent comp;
+            comp << message;
+            createComponent(entity, comp);
+        } else {
             EntityScene::deserializeComponent(entity, type, message);
         }
     }
