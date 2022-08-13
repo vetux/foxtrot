@@ -23,7 +23,7 @@
 #include "xengine.hpp"
 
 #include "components/playercontrollercomponent.hpp"
-#include "components/jumpresetcomponent.hpp"
+#include "components/floorcomponent.hpp"
 
 using namespace xng;
 
@@ -35,7 +35,7 @@ public:
             comp << message;
             createComponent(entity, comp);
         } else if (type == "jump_reset") {
-            createComponent(entity, JumpResetComponent());
+            createComponent(entity, FloorComponent());
         }else {
             EntityScene::deserializeComponent(entity, type, message);
         }

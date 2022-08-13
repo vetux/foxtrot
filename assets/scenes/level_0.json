@@ -13,7 +13,7 @@
         "transform": {
           "transform": {
             "position": {
-              "y": -2000
+              "y": 100
             }
           }
         },
@@ -32,7 +32,6 @@
             "x": 50,
             "y": 50
           },
-          "anchor": "top_left",
           "rotation": 0,
           "parent": "MainCanvas"
         },
@@ -63,17 +62,17 @@
           },
           "colliders": [
             {
-              "density": 5,
+              "density": 100,
               "friction": 1,
               "shape": {
                 "vertices": [
                   {
                     "x": -10,
-                    "y": -50
+                    "y": -45
                   },
                   {
                     "x": 10,
-                    "y": -50
+                    "y": -45
                   },
                   {
                     "x": 10,
@@ -94,24 +93,57 @@
                 "vertices": [
                   {
                     "x": -10,
-                    "y": -50
+                    "y": -45
                   },
                   {
                     "x": 10,
-                    "y": -50
+                    "y": -45
                   },
                   {
                     "x": 10,
-                    "y": -55
+                    "y": -47
                   },
                   {
                     "x": -10,
-                    "y": -55
+                    "y": -47
                   }
                 ]
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "name": "Backdrop",
+      "components": {
+        "transform": {
+          "transform": {
+            "position": {
+              "x": 5000,
+              "y": 2500
+            }
+          }
+        },
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 10000,
+              "y": 5000
+            }
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/backdrop.json"
+          },
+          "layer": -1
         }
       }
     },
@@ -244,7 +276,7 @@
           "transform": {
             "position": {
               "x": 0,
-              "y": 2500
+              "y": 5000
             }
           }
         },
@@ -305,7 +337,7 @@
           "transform": {
             "position": {
               "x": 0,
-              "y": -2500
+              "y": 0
             }
           }
         },

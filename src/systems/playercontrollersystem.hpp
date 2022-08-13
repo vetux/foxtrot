@@ -23,7 +23,7 @@
 #include "xengine.hpp"
 
 #include "components/playercontrollercomponent.hpp"
-#include "components/jumpresetcomponent.hpp"
+#include "components/floorcomponent.hpp"
 
 using namespace xng;
 
@@ -44,11 +44,15 @@ public:
             EntityHandle otherEnt;
 
             if (scene.check<PlayerControllerComponent>(ev.entityA)) {
-                playerEnt = ev.entityA;
-                otherEnt = ev.entityB;
+                if (ev.colliderIndexA == 1) {
+                    playerEnt = ev.entityA;
+                    otherEnt = ev.entityB;
+                }
             } else if (scene.check<PlayerControllerComponent>(ev.entityB)) {
-                playerEnt = ev.entityB;
-                otherEnt = ev.entityA;
+                if (ev.colliderIndexB == 1) {
+                    playerEnt = ev.entityB;
+                    otherEnt = ev.entityA;
+                }
             }
 
             if (playerEnt && otherEnt) {
@@ -72,21 +76,20 @@ public:
             auto sprite = scene.lookup<SpriteComponent>(pair.first);
             auto player = pair.second;
 
-            if (rb.velocity.x < 0.1 && rb.velocity.x > -0.1) {
-                anim.animation = pair.second.idleAnimation;
-            } else {
-                anim.animation = pair.second.walkAnimation;
+            bool isOnFloor = false;
+            for (auto &ent: player.collidingEntities) {
+                if (scene.check<FloorComponent>(ent)) {
+                    isOnFloor = true;
+                    break;
+                }
             }
 
-            if (rb.velocity.x != 0) {
-                player.facingLeft = rb.velocity.x > 0;
-                sprite.flipSprite.x = player.facingLeft;
-            }
-
-            const float factor = 50;
-
+            // Apply movement
             if (inp.x != 0) {
-                rb.velocity.x = inp.x * factor;
+                if ((inp.x < 0 && rb.velocity.x > -maxVelocity)
+                    || (inp.x > 0 && rb.velocity.x < maxVelocity)) {
+                    rb.velocity.x += inp.x * acceleration;
+                }
             } else {
                 if (rb.velocity.x < -drag) {
                     rb.velocity.x += drag;
@@ -95,28 +98,27 @@ public:
                 }
             }
 
+            // Apply jumping
             if (inp.y > 0) {
-                bool canJump = false;
-                for (auto &ent : player.collidingEntities){
-                    if (scene.check<JumpResetComponent>(ent)){
-                        canJump = true;
-                        break;
-                    }
-                }
-                if (canJump) {
-                    rb.impulse = Vec3f(0, 10, 0);
+                if (isOnFloor) {
+                    rb.impulse = Vec3f(0, rb.mass, 0);
                     rb.impulsePoint = tcomp.transform.getPosition();
                 }
             }
 
+            // Apply animation
             if (rb.velocity.x < 0.1 && rb.velocity.x > -0.1) {
                 anim.animation = pair.second.idleAnimation;
             } else {
                 anim.animation = pair.second.walkAnimation;
             }
 
-            if (rb.velocity.x != 0) {
+            // Apply direction
+            if (rb.velocity.x != 0 && inp.x != 0) {
                 player.facingLeft = rb.velocity.x > 0;
+                if (player.facingLeft) {
+                    int x = 0;
+                }
                 sprite.flipSprite.x = player.facingLeft;
             }
 
@@ -155,7 +157,9 @@ private:
 
     std::vector<ContactEvent> contactEvents;
 
-    const float drag = 0.1f;
+    const float maxVelocity = 20;
+    const float acceleration = 5;
+    const float drag = 0.2f;
 };
 
 #endif //FOXTROT_PLAYERCONTROLLERSYSTEM_HPP
