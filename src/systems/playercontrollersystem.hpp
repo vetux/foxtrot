@@ -89,6 +89,10 @@ public:
                 if ((inp.x < 0 && rb.velocity.x > -maxVelocity)
                     || (inp.x > 0 && rb.velocity.x < maxVelocity)) {
                     rb.velocity.x += inp.x * acceleration;
+                    if (rb.velocity.x < -maxVelocity)
+                        rb.velocity.x = -maxVelocity;
+                    else if (rb.velocity.x > maxVelocity)
+                        rb.velocity.x = maxVelocity;
                 }
             } else {
                 if (rb.velocity.x < -drag) {

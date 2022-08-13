@@ -87,7 +87,7 @@
             },
             {
               "density": 5,
-              "friction": 1,
+              "friction": 0,
               "isSensor": true,
               "shape": {
                 "vertices": [
