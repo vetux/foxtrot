@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "gunshop_open",
+      "image": {
+        "uri": "images/gunshop.png"
+      },
+      "offset": {
+        "position": {
+          "x": 100
+        },
+        "dimensions": {
+          "x": 100,
+          "y": 100
+        }
+      }
+    }
+  ]
+}

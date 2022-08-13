@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "gunshop_closed",
+      "image": {
+        "uri": "images/gunshop.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 100,
+          "y": 100
+        }
+      }
+    }
+  ]
+}

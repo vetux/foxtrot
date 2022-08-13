@@ -55,7 +55,8 @@ public:
 
         eventBus.addListener(*this);
 
-        ren2d.renderClear(window->getRenderTarget(), ColorRGBA::black(),  {}, window->getRenderTarget().getDescription().size);
+        ren2d.renderClear(window->getRenderTarget(), ColorRGBA::black(), {},
+                          window->getRenderTarget().getDescription().size);
 
         window->setTitle("Foxtrot");
         window->swapBuffers();
@@ -66,14 +67,14 @@ public:
         eventBus.removeListener(*this);
     }
 
-    void loadLevel(LevelName level){
+    void loadLevel(LevelName level) {
         levels.at(currentLevel)->onDestroy(ecs);
         currentLevel = level;
         levels.at(currentLevel)->onCreate(ecs);
     }
 
     void onEvent(const Event &event) override {
-        if (event.getEventType() == typeid(LoadLevelEvent)){
+        if (event.getEventType() == typeid(LoadLevelEvent)) {
             auto &ev = event.as<LoadLevelEvent>();
             targetLevel = ev.name;
         }
@@ -98,7 +99,7 @@ protected:
     }
 
     void update(DeltaTime deltaTime) override {
-        if (currentLevel != targetLevel){
+        if (currentLevel != targetLevel) {
             loadLevel(targetLevel);
             targetLevel = currentLevel;
         }

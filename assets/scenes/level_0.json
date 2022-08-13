@@ -39,7 +39,7 @@
           "sprite": {
             "uri": "sprites/john_idle_0.json"
           },
-          "layer": 1
+          "layer": 0
         },
         "sprite_animation": {
           "animation": {
@@ -115,6 +115,64 @@
       }
     },
     {
+      "name": "Gunshop",
+      "components": {
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 400,
+              "y": 400
+            }
+          },
+          "center": {
+            "x": 200,
+            "y": 400
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/gunshop_closed.json"
+          },
+          "layer": -1
+        }
+      }
+    },
+    {
+      "name": "Gunshop Railing",
+      "components": {
+        "rect_transform": {
+          "rect": {
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "dimensions": {
+              "x": 400,
+              "y": 400
+            }
+          },
+          "center": {
+            "x": 200,
+            "y": 400
+          },
+          "rotation": 0,
+          "parent": "MainCanvas"
+        },
+        "sprite": {
+          "sprite": {
+            "uri": "sprites/gunshop_railing.json"
+          },
+          "layer": 1
+        }
+      }
+    },
+    {
       "name": "Backdrop",
       "components": {
         "transform": {
@@ -143,7 +201,7 @@
           "sprite": {
             "uri": "sprites/backdrop.json"
           },
-          "layer": -1
+          "layer": -10
         }
       }
     },
