@@ -29,7 +29,7 @@ using namespace xng;
 class DaytimeSystem : public System {
 public:
     explicit DaytimeSystem(float dayDuration = 120,
-                           float nightDuration = 200,
+                           float nightDuration = 180,
                            float duskSpeed = 1)
             : dayDuration(dayDuration),
               nightDuration(nightDuration),

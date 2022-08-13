@@ -28,7 +28,10 @@ using namespace xng;
 
 class CameraSystem : public System {
 public:
-    explicit CameraSystem(RenderTarget &target) : target(target) {}
+    explicit CameraSystem(RenderTarget &target, Vec2f cameraMin, Vec2f cameraMax)
+            : target(target),
+              cameraBoundMin(std::move(cameraMin)),
+              cameraBoundMax(std::move(cameraMax)) {}
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         Vec3f playerPosition;
@@ -70,8 +73,8 @@ public:
 private:
     RenderTarget &target;
 
-    Vec2f cameraBoundMin = Vec2f(-5000, -5000);
-    Vec2f cameraBoundMax = Vec2f(5000, 0);
+    Vec2f cameraBoundMin;
+    Vec2f cameraBoundMax;
 };
 
 #endif //FOXTROT_CAMERASYSTEM_HPP
