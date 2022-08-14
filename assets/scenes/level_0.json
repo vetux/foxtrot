@@ -139,7 +139,7 @@
           "sprite": {
             "uri": "sprites/gunshop_closed.json"
           },
-          "layer": -1
+          "layer": -10
         }
       }
     },
@@ -239,7 +239,7 @@
           "sprite": {
             "uri": "sprites/backdrop.json"
           },
-          "layer": -10
+          "layer": -100
         }
       }
     },

@@ -48,7 +48,7 @@ public:
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
               physicsSystem(*world, eventBus, 30),
-              cameraSystem(window.getRenderTarget(),Vec2f(-10000, -10000), Vec2f(10000, 0)),
+              cameraSystem(window.getRenderTarget(), Vec2f(-10000, -10000), Vec2f(10000, 0)),
               scenes(std::move(scenes)),
               ren2d(ren2d) {
         world->setGravity(Vec3f(0, -20, 0));

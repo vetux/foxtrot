@@ -3,7 +3,7 @@
     {
       "name": "gatling_lowammo_1",
       "image": {
-        "uri": "images/gatling_fire.png"
+        "uri": "images/gatling.png"
       },
       "offset": {
         "position": {

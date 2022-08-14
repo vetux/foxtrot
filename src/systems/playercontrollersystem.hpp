@@ -24,6 +24,7 @@
 
 #include "components/playercontrollercomponent.hpp"
 #include "components/floorcomponent.hpp"
+#include "components/muzzleflashcomponent.hpp"
 
 using namespace xng;
 
@@ -69,12 +70,16 @@ public:
         contactEvents.clear();
 
         auto inp = getInput();
-        for (auto &pair: scene.getPool<PlayerControllerComponent>()) {
+        for (auto pair: scene.getPool<PlayerControllerComponent>()) {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
             auto rb = scene.lookup<RigidBodyComponent>(pair.first);
             auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
             auto sprite = scene.lookup<SpriteComponent>(pair.first);
-            auto player = pair.second;
+            auto &player = pair.second;
+
+            if (weaponEntities.find(pair.first) == weaponEntities.end()) {
+                createWeaponEntity(pair.first, scene);
+            }
 
             bool isOnFloor = false;
             for (auto &ent: player.collidingEntities) {
@@ -86,13 +91,17 @@ public:
 
             // Apply movement
             if (inp.x != 0) {
-                if ((inp.x < 0 && rb.velocity.x > -maxVelocity)
-                    || (inp.x > 0 && rb.velocity.x < maxVelocity)) {
+                auto maxVel = maxVelocity;
+                if (player.player.getEquippedWeapon() != Weapon::NONE) {
+                    maxVel = maxVel * player.player.getWeapon().weight();
+                }
+                if ((inp.x < 0 && rb.velocity.x > -maxVel)
+                    || (inp.x > 0 && rb.velocity.x < maxVel)) {
                     rb.velocity.x += inp.x * acceleration;
-                    if (rb.velocity.x < -maxVelocity)
-                        rb.velocity.x = -maxVelocity;
-                    else if (rb.velocity.x > maxVelocity)
-                        rb.velocity.x = maxVelocity;
+                    if (rb.velocity.x < -maxVel)
+                        rb.velocity.x = -maxVel;
+                    else if (rb.velocity.x > maxVel)
+                        rb.velocity.x = maxVel;
                 }
             } else {
                 if (rb.velocity.x < -drag) {
@@ -111,7 +120,7 @@ public:
             }
 
             // Apply animation
-            if (rb.velocity.x < 0.1 && rb.velocity.x > -0.1) {
+            if (player.player.getEquippedWeapon() != Weapon::NONE || (rb.velocity.x < 0.1 && rb.velocity.x > -0.1)) {
                 anim.animation = pair.second.idleAnimation;
             } else {
                 anim.animation = pair.second.walkAnimation;
@@ -120,16 +129,49 @@ public:
             // Apply direction
             if (rb.velocity.x != 0 && inp.x != 0) {
                 player.facingLeft = rb.velocity.x > 0;
-                if (player.facingLeft) {
-                    int x = 0;
-                }
                 sprite.flipSprite.x = player.facingLeft;
             }
+
+            if (input.getKeyboard().getKeyDown(xng::KEY_1)) {
+                pair.second.player.setEquippedWeapon(Weapon::NONE);
+            } else if (input.getKeyboard().getKeyDown(xng::KEY_2)) {
+                pair.second.player.setEquippedWeapon(Weapon::PISTOL);
+            } else if (input.getKeyboard().getKeyDown(xng::KEY_3)) {
+                pair.second.player.setEquippedWeapon(Weapon::GATLING);
+            }
+
+            scene.updateComponent(pair.first, pair.second);
+
+            auto weaponEnt = weaponEntities.at(pair.first);
+            auto weaponSprite = weaponEnt.getComponent<SpriteComponent>();
+            auto weaponTransform = weaponEnt.getComponent<TransformComponent>();
+            auto weaponRect = weaponEnt.getComponent<RectTransformComponent>();
+
+            auto visuals = pair.second.player.getWeapon().getVisuals();
+
+            weaponSprite.layer = -1;
+            weaponSprite.sprite = visuals.sprite;
+            weaponTransform.transform.setPosition(
+                    {player.facingLeft
+                     ? tcomp.transform.getPosition().x - visuals.offset.x
+                     : tcomp.transform.getPosition().x + visuals.offset.x,
+                     tcomp.transform.getPosition().y + visuals.offset.y,
+                     0});
+            weaponRect.parent = "MainCanvas";
+            weaponRect.rect.dimensions = visuals.size;
+            weaponRect.center = visuals.center;
+            if (player.facingLeft) {
+                weaponRect.center.x = weaponRect.rect.dimensions.x - weaponRect.center.x;
+            }
+            weaponSprite.flipSprite.x = player.facingLeft;
+
+            weaponEnt.updateComponent(weaponSprite);
+            weaponEnt.updateComponent(weaponTransform);
+            weaponEnt.updateComponent(weaponRect);
 
             scene.updateComponent(pair.first, rb);
             scene.updateComponent(pair.first, anim);
             scene.updateComponent(pair.first, sprite);
-            scene.updateComponent(pair.first, player);
         }
     }
 
@@ -156,10 +198,32 @@ private:
         return ret;
     }
 
+    Entity &createWeaponEntity(EntityHandle targetPlayer, EntityScene &scene) {
+        auto it = weaponEntities.find(targetPlayer);
+        if (it != weaponEntities.end())
+            scene.destroyEntity(it->second);
+
+        auto ent = scene.createEntity();
+        TransformComponent transform;
+        RectTransformComponent rect;
+        SpriteComponent sprite;
+
+        ent.createComponent(transform);
+        ent.createComponent(rect);
+        ent.createComponent(sprite);
+
+        weaponEntities[targetPlayer] = ent;
+
+        return weaponEntities[targetPlayer];
+    }
+
     Input &input;
     EventBus &eventBus;
 
     std::vector<ContactEvent> contactEvents;
+
+    std::map<EntityHandle, Entity> weaponEntities;
+    std::map<EntityHandle, Entity> muzzleFlashEntities;
 
     const float maxVelocity = 10;
     const float acceleration = 5;

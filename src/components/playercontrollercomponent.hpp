@@ -22,7 +22,11 @@
 
 #include "xengine.hpp"
 
+#include "player.hpp"
+
 struct PlayerControllerComponent : public Messageable {
+    bool enabled = true;
+
     ResourceHandle<SpriteAnimation> idleAnimation;
     ResourceHandle<SpriteAnimation> walkAnimation;
 
@@ -30,7 +34,10 @@ struct PlayerControllerComponent : public Messageable {
 
     std::set<EntityHandle> collidingEntities;
 
+    Player player;
+
     Messageable &operator<<(const Message &message) override {
+        enabled = message.value("enabled", true);
         idleAnimation << message.value("idleAnimation");
         walkAnimation << message.value("walkAnimation");
         facingLeft  = message.value("facingLeft", false);
@@ -39,6 +46,7 @@ struct PlayerControllerComponent : public Messageable {
 
     Message &operator>>(Message &message) const override {
         message = Message(xng::Message::DICTIONARY);
+        message["enabled"] = enabled;
         idleAnimation >> message["idleAnimation"];
         walkAnimation >> message["walkAnimation"];
         message["facingLeft"] = facingLeft;
