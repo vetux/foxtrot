@@ -237,18 +237,30 @@ public:
                 muzzleSprite.sprite = flash.getFrame();
                 muzzleSprite.layer = -1;
 
-                if (player.facingLeft){
-                    visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
+                if (!lockWeaponRotation) {
+                    if (player.facingLeft) {
+                        visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
+                    }
+                    auto shootDir = rotateVectorAroundPoint(visuals.muzzleOffset, {}, angle);
+                    muzzleTransform.transform.setPosition(
+                            weaponTransform.transform.getPosition() + Vec3f(shootDir.x, shootDir.y, 0));
+                } else {
+                    if (player.facingLeft) {
+                        visuals.muzzleOffset.x = -visuals.muzzleOffset.x;
+                    }
+                    muzzleTransform.transform.setPosition(weaponTransform.transform.getPosition() +
+                                                          Vec3f(visuals.muzzleOffset.x,
+                                                                visuals.muzzleOffset.y, 0));
                 }
-                auto shootDir = rotateVectorAroundPoint(visuals.muzzleOffset, {}, angle);
-
-                muzzleTransform.transform.setPosition(
-                        weaponTransform.transform.getPosition() + Vec3f(shootDir.x, shootDir.y, 0));
 
                 muzzleRect.parent = "MainCanvas";
                 muzzleRect.rect.dimensions = visuals.muzzleSize;
                 muzzleRect.center = visuals.muzzleCenter;
-                muzzleRect.rotation = angle;
+                if (!lockWeaponRotation) {
+                    muzzleRect.rotation = angle;
+                } else {
+                    muzzleRect.rotation = player.facingLeft ? 180 : 0;
+                }
 
                 muzzleEnt.updateComponent(muzzleSprite);
                 muzzleEnt.updateComponent(muzzleTransform);
