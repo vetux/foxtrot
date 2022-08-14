@@ -35,9 +35,16 @@ public:
         Vec2f size;
         Vec2f center; // The rotation center of the sprite
         Vec2f offset; // The transform offset relative to the player facing to the right
+
+        ResourceHandle<SpriteAnimation> muzzleFlash;
+        Vec2f muzzleSize;
+        Vec2f muzzleCenter;
+        Vec2f muzzleOffset; // The muzzle offset relative to offset
     };
 
     virtual ~Weapon() = default;
+
+    virtual void update(DeltaTime deltaTime) {}
 
     virtual Type getType() { return NONE; }
 

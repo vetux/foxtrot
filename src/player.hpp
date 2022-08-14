@@ -58,6 +58,11 @@ public:
         return equippedWeapon;
     }
 
+    void update(DeltaTime deltaTime){
+        pistol.update(deltaTime);
+        gatling.update(deltaTime);
+    }
+
 private:
     Weapon::Type equippedWeapon = Weapon::NONE;
 

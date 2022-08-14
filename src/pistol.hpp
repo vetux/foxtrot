@@ -31,6 +31,15 @@ public:
 
     ~Pistol() override = default;
 
+    void update(DeltaTime deltaTime) override {
+        if (chamberTimer > 0) {
+            chamberTimer -= deltaTime;
+            if (chamberTimer < 0) {
+                chamberTimer = 0;
+            }
+        }
+    }
+
     Type getType() override {
         return PISTOL;
     }
@@ -41,6 +50,12 @@ public:
         ret.center = {10, 16};
         ret.offset = {-15, 7};
         ret.sprite = sprite;
+
+        ret.muzzleFlash = ResourceHandle<SpriteAnimation>(Uri("animations/muzzle_a.json"));
+        ret.muzzleSize = {50, 50};
+        ret.muzzleCenter = {5, 25};
+        ret.muzzleOffset = {-40, 10};
+
         return ret;
     }
 
@@ -53,9 +68,10 @@ public:
     }
 
     bool shoot() override {
-        if (ammo <= 0)
+        if (ammo <= 0 || chamberTimer > 0)
             return false;
         ammo--;
+        chamberTimer += 1.0f / roundsPerSecond;
         return true;
     }
 
@@ -69,6 +85,10 @@ public:
 
 private:
     int ammo = 0;
+
+    float roundsPerSecond = 1;
+
+    float chamberTimer = 0;
 
     ResourceHandle<Sprite> sprite;
 };

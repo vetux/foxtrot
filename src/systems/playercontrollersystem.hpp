@@ -40,6 +40,16 @@ public:
     }
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
+        std::set<EntityHandle> delHandles;
+        for (auto &pair: scene.getPool<MuzzleFlashComponent>()) {
+            auto &anim = scene.lookup<SpriteAnimationComponent>(pair.first);
+            if (anim.finished) {
+                delHandles.insert(pair.first);
+            }
+        }
+        for (auto &ent: delHandles) {
+            scene.destroy(ent);
+        }
         for (auto &ev: contactEvents) {
             EntityHandle playerEnt;
             EntityHandle otherEnt;
@@ -136,12 +146,30 @@ public:
                 sprite.flipSprite.x = player.facingLeft;
             }
 
+            player.player.update(deltaTime);
+
+            // Apply Input
             if (input.getKeyboard().getKeyDown(xng::KEY_1)) {
                 pair.second.player.setEquippedWeapon(Weapon::NONE);
             } else if (input.getKeyboard().getKeyDown(xng::KEY_2)) {
                 pair.second.player.setEquippedWeapon(Weapon::PISTOL);
             } else if (input.getKeyboard().getKeyDown(xng::KEY_3)) {
                 pair.second.player.setEquippedWeapon(Weapon::GATLING);
+            }
+
+            if (input.getKeyboard().getKeyDown(KEY_T)) {
+                lockWeaponRotation = !lockWeaponRotation;
+            }
+
+            bool shoot = false;
+
+            if (input.getMouse().getButton(xng::LEFT)
+                || input.getKeyboard().getKey(xng::KEY_SPACE)) {
+                shoot = player.player.getWeapon().shoot();
+            }
+
+            if (input.getKeyboard().getKeyDown(KEY_R)) {
+                player.player.getWeapon().setAmmo(player.player.getWeapon().getAmmo() + 10);
             }
 
             scene.updateComponent(pair.first, pair.second);
@@ -186,6 +214,46 @@ public:
             } else {
                 angle = std::clamp(angle, bounds.x, bounds.y);
                 weaponRect.rotation = angle;
+            }
+
+            if (lockWeaponRotation) {
+                weaponRect.rotation = 0;
+            }
+
+            if (shoot) {
+                auto muzzleEnt = createMuzzleEntity(pair.first, scene);
+
+                auto muzzleSprite = muzzleEnt.getComponent<SpriteComponent>();
+                auto muzzleTransform = muzzleEnt.getComponent<TransformComponent>();
+                auto muzzleRect = muzzleEnt.getComponent<RectTransformComponent>();
+                auto muzzleAnim = muzzleEnt.getComponent<SpriteAnimationComponent>();
+
+                muzzleAnim.animation = visuals.muzzleFlash;
+                muzzleAnim.enabled = true;
+
+                muzzleRect.rect.dimensions = visuals.muzzleSize;
+
+                auto flash = visuals.muzzleFlash.get();
+                muzzleSprite.sprite = flash.getFrame();
+                muzzleSprite.layer = -1;
+
+                if (player.facingLeft){
+                    visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
+                }
+                auto shootDir = rotateVectorAroundPoint(visuals.muzzleOffset, {}, angle);
+
+                muzzleTransform.transform.setPosition(
+                        weaponTransform.transform.getPosition() + Vec3f(shootDir.x, shootDir.y, 0));
+
+                muzzleRect.parent = "MainCanvas";
+                muzzleRect.rect.dimensions = visuals.muzzleSize;
+                muzzleRect.center = visuals.muzzleCenter;
+                muzzleRect.rotation = angle;
+
+                muzzleEnt.updateComponent(muzzleSprite);
+                muzzleEnt.updateComponent(muzzleTransform);
+                muzzleEnt.updateComponent(muzzleRect);
+                muzzleEnt.updateComponent(muzzleAnim);
             }
 
             weaponEnt.updateComponent(weaponSprite);
@@ -236,8 +304,32 @@ private:
         ent.createComponent(sprite);
 
         weaponEntities[targetPlayer] = ent;
-
         return weaponEntities[targetPlayer];
+    }
+
+    Entity createMuzzleEntity(EntityHandle targetPlayer, EntityScene &scene) {
+        auto ent = scene.createEntity();
+
+        TransformComponent transform;
+        RectTransformComponent rect;
+        SpriteComponent sprite;
+        MuzzleFlashComponent muzzleFlashComponent;
+        SpriteAnimationComponent animationComponent;
+
+        sprite.sprite = {};
+        animationComponent.enabled = false;
+
+        ent = scene.createEntity();
+
+        ent.createComponent(transform);
+        ent.createComponent(rect);
+        ent.createComponent(sprite);
+        ent.createComponent(animationComponent);
+        ent.createComponent(muzzleFlashComponent);
+
+        muzzleFlashEntities[targetPlayer].emplace_back(ent);
+
+        return ent;
     }
 
     Input &input;
@@ -246,11 +338,13 @@ private:
     std::vector<ContactEvent> contactEvents;
 
     std::map<EntityHandle, Entity> weaponEntities;
-    std::map<EntityHandle, Entity> muzzleFlashEntities;
+    std::map<EntityHandle, std::vector<Entity>> muzzleFlashEntities;
 
     const float maxVelocity = 10;
     const float acceleration = 5;
     const float drag = 0.2f;
+
+    bool lockWeaponRotation = false;
 };
 
 #endif //FOXTROT_PLAYERCONTROLLERSYSTEM_HPP

@@ -49,6 +49,15 @@ public:
 
     ~Gatling() override = default;
 
+    void update(DeltaTime deltaTime) override {
+        if (chamberTimer > 0) {
+            chamberTimer -= deltaTime;
+            if (chamberTimer < 0) {
+                chamberTimer = 0;
+            }
+        }
+    }
+
     Type getType() override {
         return GATLING;
     }
@@ -58,6 +67,7 @@ public:
         ret.size = {100, 100};
         ret.center = {20, 50};
         ret.offset = {-20, 5};
+
         switch (ammo) {
             case 0:
                 ret.sprite = gatling_unloaded_0;
@@ -84,6 +94,11 @@ public:
                 ret.sprite = ammo % 2 == 0 ? gatling_fire_0 : gatling_fire_1;
                 break;
         }
+
+        ret.muzzleFlash = ResourceHandle<SpriteAnimation>(Uri("animations/muzzle_a.json"));
+        ret.muzzleSize = {100, 100};
+        ret.muzzleCenter = {10, 50};
+        ret.muzzleOffset = {-80, 0};
         return ret;
     }
 
@@ -96,9 +111,10 @@ public:
     }
 
     bool shoot() override {
-        if (ammo <= 0)
+        if (ammo <= 0 || chamberTimer > 0)
             return false;
         ammo--;
+        chamberTimer += 1.0f / roundsPerSecond;
         return true;
     }
 
@@ -112,6 +128,10 @@ public:
 
 private:
     int ammo = 0;
+
+    float roundsPerSecond = 10;
+
+    float chamberTimer = 0;
 
     ResourceHandle<Sprite> gatling_fire_0;
     ResourceHandle<Sprite> gatling_fire_1;

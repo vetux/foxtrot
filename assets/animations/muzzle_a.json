@@ -1,0 +1,34 @@
+{
+  "sprite-animations": [
+    {
+      "keyframes": [
+        {
+          "sprite": {
+            "uri": "sprites/muzzle_a_0.json"
+          },
+          "duration": 1
+        },
+        {
+          "sprite": {
+            "uri": "sprites/muzzle_a_1.json"
+          },
+          "duration": 2
+        },
+        {
+          "sprite": {
+            "uri": "sprites/muzzle_a_2.json"
+          },
+          "duration": 1
+        },
+        {
+          "sprite": {
+            "uri": "sprites/muzzle_a_3.json"
+          },
+          "duration": 2
+        }
+      ],
+      "animationFps": 12,
+      "loop": false
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "muzzle_a_1",
+      "image": {
+        "uri": "images/muzzle_a.png"
+      },
+      "offset": {
+        "position": {
+          "x": 32
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}
