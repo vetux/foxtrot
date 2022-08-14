@@ -63,6 +63,10 @@ public:
         return 0.75f;
     }
 
+    Vec2f getAngleBounds() override {
+        return {-360, 360};
+    }
+
 private:
     int ammo = 0;
 

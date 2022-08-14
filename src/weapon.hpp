@@ -50,6 +50,8 @@ public:
     virtual bool shoot() { return false; }
 
     virtual float weight() { return 1; }
+
+    virtual Vec2f getAngleBounds() { return {}; }
 };
 
 #endif //FOXTROT_WEAPON_HPP

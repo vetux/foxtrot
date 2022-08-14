@@ -69,13 +69,17 @@ public:
 
         contactEvents.clear();
 
+        auto mousePos = input.getMouse().position;
         auto inp = getInput();
         for (auto pair: scene.getPool<PlayerControllerComponent>()) {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
+            auto &rt = scene.lookup<RectTransformComponent>(pair.first);
             auto rb = scene.lookup<RigidBodyComponent>(pair.first);
             auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
             auto sprite = scene.lookup<SpriteComponent>(pair.first);
             auto &player = pair.second;
+
+            auto &canvas = scene.lookup<CanvasComponent>(scene.getEntityByName(rt.parent));
 
             if (weaponEntities.find(pair.first) == weaponEntities.end()) {
                 createWeaponEntity(pair.first, scene);
@@ -164,6 +168,25 @@ public:
                 weaponRect.center.x = weaponRect.rect.dimensions.x - weaponRect.center.x;
             }
             weaponSprite.flipSprite.x = player.facingLeft;
+
+            auto dir = mousePos.convert<float>() -
+                       Vec2f(-weaponTransform.transform.getPosition().x - canvas.cameraPosition.x,
+                             -weaponTransform.transform.getPosition().y - canvas.cameraPosition.y);
+
+            auto angle = numeric_cast<float>(getAngle(dir));
+
+            auto bounds = player.player.getWeapon().getAngleBounds();
+
+            if (player.facingLeft) {
+                if (angle < 0)
+                    angle = std::clamp(angle + 360, bounds.x + 180, bounds.y + 180);
+                else
+                    angle = std::clamp(angle, bounds.x + 180, bounds.y + 180);
+                weaponRect.rotation = angle + 180;
+            } else {
+                angle = std::clamp(angle, bounds.x, bounds.y);
+                weaponRect.rotation = angle;
+            }
 
             weaponEnt.updateComponent(weaponSprite);
             weaponEnt.updateComponent(weaponTransform);
