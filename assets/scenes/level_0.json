@@ -8,6 +8,12 @@
       }
     },
     {
+      "name": "GuiCanvas",
+      "components": {
+        "canvas": {}
+      }
+    },
+    {
       "name": "Player",
       "components": {
         "transform": {

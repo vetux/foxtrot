@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "crosshair_duplex",
+      "image": {
+        "uri": "images/crosshair.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 64,
+          "y": 64
+        }
+      }
+    }
+  ]
+}

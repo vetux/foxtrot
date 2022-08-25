@@ -30,6 +30,12 @@ struct PlayerControllerComponent : public Messageable {
     ResourceHandle<SpriteAnimation> idleAnimation;
     ResourceHandle<SpriteAnimation> walkAnimation;
 
+    float maxVelocity = 10;
+    float acceleration = 5;
+    float drag = 0.2f;
+
+    bool isAiming = false;
+
     bool facingLeft = false;
 
     std::set<EntityHandle> collidingEntities;
@@ -40,7 +46,7 @@ struct PlayerControllerComponent : public Messageable {
         enabled = message.value("enabled", true);
         idleAnimation << message.value("idleAnimation");
         walkAnimation << message.value("walkAnimation");
-        facingLeft  = message.value("facingLeft", false);
+        facingLeft = message.value("facingLeft", false);
         return *this;
     }
 

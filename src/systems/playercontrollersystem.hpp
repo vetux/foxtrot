@@ -39,6 +39,24 @@ public:
         eventBus.removeListener(*this);
     }
 
+    void start(EntityScene &scene) override {
+        Entity ent = scene.createEntity();
+        auto rt = RectTransformComponent();
+        rt.center = Vec2f(32, 32);
+        rt.rect.dimensions = Vec2f(64, 64);
+        rt.parent = "GuiCanvas";
+        ent.createComponent(rt);
+        auto sprite = SpriteComponent();
+        sprite.sprite = ResourceHandle<Sprite>(Uri("file://sprites/crosshair_duplex.json"));
+        sprite.layer = 10;
+        ent.createComponent(sprite);
+        crossHairEntity = ent.getHandle();
+    }
+
+    void stop(EntityScene &scene) override {
+        scene.destroy(crossHairEntity);
+    }
+
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         std::set<EntityHandle> delHandles;
         for (auto &pair: scene.getPool<MuzzleFlashComponent>()) {
@@ -79,6 +97,8 @@ public:
 
         contactEvents.clear();
 
+        bool isAiming = false;
+
         auto mousePos = input.getMouse().position;
         auto inp = getInput();
         for (auto pair: scene.getPool<PlayerControllerComponent>()) {
@@ -105,23 +125,23 @@ public:
 
             // Apply movement
             if (inp.x != 0) {
-                auto maxVel = maxVelocity;
+                auto maxVel = player.maxVelocity;
                 if (player.player.getEquippedWeapon() != Weapon::NONE) {
                     maxVel = maxVel * player.player.getWeapon().weight();
                 }
                 if ((inp.x < 0 && rb.velocity.x > -maxVel)
                     || (inp.x > 0 && rb.velocity.x < maxVel)) {
-                    rb.velocity.x += inp.x * acceleration;
+                    rb.velocity.x += inp.x * player.acceleration;
                     if (rb.velocity.x < -maxVel)
                         rb.velocity.x = -maxVel;
                     else if (rb.velocity.x > maxVel)
                         rb.velocity.x = maxVel;
                 }
             } else {
-                if (rb.velocity.x < -drag) {
-                    rb.velocity.x += drag;
-                } else if (rb.velocity.x > drag) {
-                    rb.velocity.x -= drag;
+                if (rb.velocity.x < -player.drag) {
+                    rb.velocity.x += player.drag;
+                } else if (rb.velocity.x > player.drag) {
+                    rb.velocity.x -= player.drag;
                 }
             }
 
@@ -158,7 +178,7 @@ public:
             }
 
             if (input.getKeyboard().getKeyDown(KEY_T)) {
-                lockWeaponRotation = !lockWeaponRotation;
+                player.isAiming = !player.isAiming;
             }
 
             bool shoot = false;
@@ -216,7 +236,7 @@ public:
                 weaponRect.rotation = angle;
             }
 
-            if (lockWeaponRotation) {
+            if (!player.isAiming) {
                 weaponRect.rotation = 0;
             }
 
@@ -237,7 +257,7 @@ public:
                 muzzleSprite.sprite = flash.getFrame();
                 muzzleSprite.layer = -1;
 
-                if (!lockWeaponRotation) {
+                if (player.isAiming) {
                     if (player.facingLeft) {
                         visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
                     }
@@ -256,7 +276,7 @@ public:
                 muzzleRect.parent = "MainCanvas";
                 muzzleRect.rect.dimensions = visuals.muzzleSize;
                 muzzleRect.center = visuals.muzzleCenter;
-                if (!lockWeaponRotation) {
+                if (player.isAiming) {
                     muzzleRect.rotation = angle;
                 } else {
                     muzzleRect.rotation = player.facingLeft ? 180 : 0;
@@ -275,7 +295,16 @@ public:
             scene.updateComponent(pair.first, rb);
             scene.updateComponent(pair.first, anim);
             scene.updateComponent(pair.first, sprite);
+
+            isAiming = player.isAiming;
         }
+
+        auto rt = scene.lookup<RectTransformComponent>(crossHairEntity);
+        rt.enabled = isAiming;
+        rt.rect.position = input.getMouse().position.convert<float>();
+        scene.updateComponent(crossHairEntity, rt);
+
+        input.setMouseCursorHidden(isAiming);
     }
 
     void onEvent(const Event &event) override {
@@ -352,11 +381,7 @@ private:
     std::map<EntityHandle, Entity> weaponEntities;
     std::map<EntityHandle, std::vector<Entity>> muzzleFlashEntities;
 
-    const float maxVelocity = 10;
-    const float acceleration = 5;
-    const float drag = 0.2f;
-
-    bool lockWeaponRotation = false;
+    EntityHandle crossHairEntity;
 };
 
 #endif //FOXTROT_PLAYERCONTROLLERSYSTEM_HPP
