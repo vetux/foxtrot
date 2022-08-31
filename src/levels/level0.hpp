@@ -31,6 +31,7 @@
 #include "systems/inputsystem.hpp"
 #include "systems/charactercontrollersystem.hpp"
 #include "systems/playercontrollersystem.hpp"
+#include "systems/gameguisystem.hpp"
 
 class Level0 : public Level, public EventListener {
 public:
@@ -52,6 +53,7 @@ public:
                                  fontDriver,
                                  archive),
               bulletSystem(eventBus),
+              gameGuiSystem(eventBus),
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
               physicsSystem(*world, eventBus, 30),
@@ -126,6 +128,7 @@ private:
     InputSystem inputSystem;
     CharacterControllerSystem characterControllerSystem;
     PlayerControllerSystem playerControllerSystem;
+    GameGuiSystem gameGuiSystem;
 
     PhysicsSystem physicsSystem;
     CameraSystem cameraSystem;

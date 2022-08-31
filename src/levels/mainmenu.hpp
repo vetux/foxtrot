@@ -25,9 +25,11 @@
 #include "level.hpp"
 #include "events/loadlevelevent.hpp"
 
+#include "systems/menuguisystem.hpp"
+
 using namespace xng;
 
-class MainMenu : public Level, public EventListener {
+class MainMenu : public Level {
 public:
     MainMenu(EventBus &eventBus,
              Window &window,
@@ -41,39 +43,26 @@ public:
                                  window.getRenderTarget(),
                                  fontDriver,
                                  archive),
+              menuGuiSystem(eventBus),
               scenes(scenes) {}
-
-    void onEvent(const Event &event) override {
-        if (event.getEventType() == typeid(GuiEvent)) {
-            auto &ev = event.as<GuiEvent>();
-            if (ev.id == "button_start") {
-                if (ev.type == GuiEvent::BUTTON_CLICK) {
-                    eventBus.invoke(LoadLevelEvent(LEVEL_0));
-                }
-            }
-        }
-    }
 
     LevelName getName() override {
         return MAIN_MENU;
     }
 
     void onCreate(ECS &ecs) override {
-        eventBus.addListener(*this);
-
-        ecs.setSystems({guiEventSystem, spriteAnimationSystem, canvasRenderSystem});
+        ecs.setSystems({guiEventSystem, menuGuiSystem, spriteAnimationSystem, canvasRenderSystem});
         ecs.setScene(scenes.at(0));
         ecs.start();
     }
 
-    void onDestroy(ECS &ecs) override {
-        eventBus.removeListener(*this);
-    }
+    void onDestroy(ECS &ecs) override {}
 
 private:
     GuiEventSystem guiEventSystem;
     CanvasRenderSystem canvasRenderSystem;
     SpriteAnimationSystem spriteAnimationSystem;
+    MenuGuiSystem menuGuiSystem;
     std::vector<std::shared_ptr<EntityScene>> scenes;
     EventBus &eventBus;
 };

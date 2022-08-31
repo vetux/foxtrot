@@ -74,7 +74,7 @@ public:
             comp.aimPosition = mouse.position.convert<float>();
 
             comp.fire = mouse.getButton(xng::LEFT);
-            comp.reload = kb.getKey(xng::KEY_R);
+            comp.reload = kb.getKeyDown(xng::KEY_R);
 
             aiming = comp.aim;
 

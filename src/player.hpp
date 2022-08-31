@@ -22,8 +22,10 @@
 
 #include "gatling.hpp"
 #include "pistol.hpp"
+#include "inventory.hpp"
+#include "account.hpp"
 
-class Player {
+class Player : public Messageable {
 public:
     Player()
             : pistol(ResourceHandle<Sprite>(Uri("sprites/pistol.json"))),
@@ -58,12 +60,45 @@ public:
         return equippedWeapon;
     }
 
-    void update(DeltaTime deltaTime){
+    void setInventory(const Inventory &inv) {
+        inventory = inv;
+    }
+
+    const Inventory &getInventory() const {
+        return inventory;
+    }
+
+    void setAccount(const Account &acc) {
+        account = acc;
+    }
+
+    const Account &getAccount() const {
+        return account;
+    }
+
+    void update(DeltaTime deltaTime) {
         pistol.update(deltaTime);
         gatling.update(deltaTime);
     }
 
+    Messageable &operator<<(const Message &message) override {
+        account << message.value("account");
+        inventory << message.value("inventory");
+        equippedWeapon = (Weapon::Type) message.value("equippedWeapon", (int) Weapon::NONE);
+        return *this;
+    }
+
+    Message &operator>>(Message &message) const override {
+        message = Message(xng::Message::DICTIONARY);
+        account >> message["account"];
+        inventory >> message["inventory"];
+        message["equippedWeapon"] = equippedWeapon;
+        return message;
+    }
+
 private:
+    Account account;
+    Inventory inventory;
     Weapon::Type equippedWeapon = Weapon::NONE;
 
     Weapon noWeapon;
