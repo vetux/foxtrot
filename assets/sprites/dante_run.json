@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "0",
+      "image": {
+        "uri": "images/dante.png"
+      },
+      "offset": {
+        "position": {
+          "x": 192
+        },
+        "dimensions": {
+          "x": 64,
+          "y": 64
+        }
+      }
+    }
+  ]
+}

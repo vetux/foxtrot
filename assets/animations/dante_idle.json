@@ -1,0 +1,32 @@
+{
+  "sprite-animations": [    {
+    "keyframes": [
+      {
+        "sprite": {
+          "uri": "sprites/dante_idle.json"
+        },
+        "duration": 1
+      },
+      {
+        "sprite": {
+          "uri": "sprites/dante_idle_1.json"
+        },
+        "duration": 1
+      },
+      {
+        "sprite": {
+          "uri": "sprites/dante_idle_2.json"
+        },
+        "duration": 1
+      },
+      {
+        "sprite": {
+          "uri": "sprites/dante_idle_3.json"
+        },
+        "duration": 1
+      }
+    ],
+    "animationFps": 12
+  }
+  ]
+}

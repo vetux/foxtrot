@@ -1,0 +1,32 @@
+{
+  "sprite-animations": [    {
+    "keyframes": [
+      {
+        "sprite": {
+          "uri": "sprites/dante_run.json"
+        },
+        "duration": 1
+      },
+      {
+        "sprite": {
+          "uri": "sprites/dante_run_1.json"
+        },
+        "duration": 1
+      },
+      {
+        "sprite": {
+          "uri": "sprites/dante_run_2.json"
+        },
+        "duration": 1
+      },
+      {
+        "sprite": {
+          "uri": "sprites/dante_run_3.json"
+        },
+        "duration": 1
+      }
+    ],
+    "animationFps": 12
+  }
+  ]
+}

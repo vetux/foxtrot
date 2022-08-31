@@ -57,10 +57,10 @@
         "input": {},
         "character": {
           "idleAnimation": {
-            "uri": "animations/john_idle.json"
+            "uri": "animations/dante_idle.json"
           },
           "walkAnimation": {
-            "uri": "animations/john_run.json"
+            "uri": "animations/dante_run.json"
           }
         },
         "rigidbody": {
