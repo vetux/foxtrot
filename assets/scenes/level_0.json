@@ -52,7 +52,10 @@
             "uri": "animations/john_idle.json"
           }
         },
-        "player": {
+        "player": {},
+        "health": {},
+        "input": {},
+        "character": {
           "idleAnimation": {
             "uri": "animations/john_idle.json"
           },

@@ -22,7 +22,7 @@
 
 #include "xengine.hpp"
 
-#include "components/playercontrollercomponent.hpp"
+#include "components/charactercontrollercomponent.hpp"
 
 using namespace xng;
 
@@ -35,7 +35,7 @@ public:
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         Vec3f playerPosition;
-        for (auto &pair: scene.getPool<PlayerControllerComponent>()) {
+        for (auto &pair: scene.getPool<CharacterControllerComponent>()) {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
             playerPosition = tcomp.transform.getPosition();
             break;

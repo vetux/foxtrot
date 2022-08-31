@@ -17,47 +17,24 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FOXTROT_PLAYERCONTROLLERCOMPONENT_HPP
-#define FOXTROT_PLAYERCONTROLLERCOMPONENT_HPP
+#ifndef FOXTROT_HEALTHCOMPONENT_HPP
+#define FOXTROT_HEALTHCOMPONENT_HPP
 
 #include "xengine.hpp"
 
-#include "player.hpp"
-
-struct PlayerControllerComponent : public Messageable {
-    bool enabled = true;
-
-    ResourceHandle<SpriteAnimation> idleAnimation;
-    ResourceHandle<SpriteAnimation> walkAnimation;
-
-    float maxVelocity = 10;
-    float acceleration = 5;
-    float drag = 0.2f;
-
-    bool isAiming = false;
-
-    bool facingLeft = false;
-
-    std::set<EntityHandle> collidingEntities;
-
-    Player player;
+struct HealthComponent : public Messageable {
+    float health = 100.0f;
 
     Messageable &operator<<(const Message &message) override {
-        enabled = message.value("enabled", true);
-        idleAnimation << message.value("idleAnimation");
-        walkAnimation << message.value("walkAnimation");
-        facingLeft = message.value("facingLeft", false);
+        health = message.value("health", 100.0f);
         return *this;
     }
 
     Message &operator>>(Message &message) const override {
         message = Message(xng::Message::DICTIONARY);
-        message["enabled"] = enabled;
-        idleAnimation >> message["idleAnimation"];
-        walkAnimation >> message["walkAnimation"];
-        message["facingLeft"] = facingLeft;
+        message["health"] = health;
         return message;
     }
 };
 
-#endif //FOXTROT_PLAYERCONTROLLERCOMPONENT_HPP
+#endif //FOXTROT_HEALTHCOMPONENT_HPP

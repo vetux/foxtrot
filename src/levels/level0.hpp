@@ -24,9 +24,13 @@
 
 #include "level.hpp"
 
-#include "systems/playercontrollersystem.hpp"
+#include "systems/inputsystem.hpp"
 #include "systems/camerasystem.hpp"
 #include "systems/timesystem.hpp"
+#include "systems/bulletsystem.hpp"
+#include "systems/inputsystem.hpp"
+#include "systems/charactercontrollersystem.hpp"
+#include "systems/playercontrollersystem.hpp"
 
 class Level0 : public Level, public EventListener {
 public:
@@ -40,11 +44,14 @@ public:
               target(window.getRenderTarget()),
               eventSystem(window, eventBus),
               guiEventSystem(window, eventBus),
-              playerControllerSystem(window.getInput(), eventBus),
+              inputSystem(window.getInput()),
+              characterControllerSystem(eventBus),
+              playerControllerSystem(),
               canvasRenderSystem(ren2d,
                                  window.getRenderTarget(),
                                  fontDriver,
                                  archive),
+              bulletSystem(eventBus),
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
               physicsSystem(*world, eventBus, 30),
@@ -64,13 +71,18 @@ public:
     void onCreate(ECS &ecs) override {
         eventBus.addListener(*this);
         ecs.setSystems(
-                {daytimeSystem,
-                 eventSystem,
+                {eventSystem,
                  guiEventSystem,
-                 spriteAnimationSystem,
+
+                 daytimeSystem,
+                 inputSystem,
+                 characterControllerSystem,
                  playerControllerSystem,
-                 physicsSystem,
+                 bulletSystem,
                  cameraSystem,
+
+                 physicsSystem,
+                 spriteAnimationSystem,
                  canvasRenderSystem});
         ecs.setScene(scenes.at(1));
         ecs.start();
@@ -111,9 +123,13 @@ private:
     TimeSystem daytimeSystem;
     CanvasRenderSystem canvasRenderSystem;
     SpriteAnimationSystem spriteAnimationSystem;
+    InputSystem inputSystem;
+    CharacterControllerSystem characterControllerSystem;
     PlayerControllerSystem playerControllerSystem;
+
     PhysicsSystem physicsSystem;
     CameraSystem cameraSystem;
+    BulletSystem bulletSystem;
 
     bool drawDebug = false;
 };

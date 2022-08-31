@@ -22,7 +22,7 @@
 
 #include "xengine.hpp"
 
-#include "components/playercontrollercomponent.hpp"
+#include "components/charactercontrollercomponent.hpp"
 #include "components/floorcomponent.hpp"
 
 using namespace xng;
@@ -31,13 +31,25 @@ class FoxtrotScene : public EntityScene {
 public:
     void deserializeComponent(const EntityHandle &entity, const std::string &type, const Message &message) override {
         if (type == "player") {
-            PlayerControllerComponent comp;
+            PlayerComponent comp;
             comp << message;
             createComponent(entity, comp);
         } else if (type == "floor") {
             createComponent(entity, FloorComponent());
         } else if (type == "backdrop") {
             BackdropComponent comp;
+            comp << message;
+            createComponent(entity, comp);
+        } else if (type == "health") {
+            HealthComponent comp;
+            comp << message;
+            createComponent(entity, comp);
+        } else if (type == "input"){
+            InputComponent comp;
+            comp << message;
+            createComponent(entity, comp);
+        } else if (type == "character"){
+            CharacterControllerComponent comp;
             comp << message;
             createComponent(entity, comp);
         } else {

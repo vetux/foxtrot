@@ -28,7 +28,7 @@
 
 #include "foxtrotscene.hpp"
 
-#include "loadlevelevent.hpp"
+#include "events/loadlevelevent.hpp"
 
 using namespace xng;
 

@@ -1,0 +1,14 @@
+{
+  "sprite-animations": [    {
+    "keyframes": [
+      {
+        "sprite": {
+          "uri": "sprites/bullet_small.json"
+        },
+        "duration": 1
+      }
+    ],
+    "animationDuration": 1
+  }
+  ]
+}

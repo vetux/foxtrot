@@ -22,23 +22,14 @@
 
 #include "xengine.hpp"
 
-#include "components/playercontrollercomponent.hpp"
-#include "components/floorcomponent.hpp"
 #include "components/muzzleflashcomponent.hpp"
+#include "components/charactercontrollercomponent.hpp"
+
+#include "bullets/smallbullet.hpp"
 
 using namespace xng;
 
-class PlayerControllerSystem : public System, public EventListener {
-public:
-    explicit PlayerControllerSystem(Input &input, EventBus &eventBus)
-            : input(input), eventBus(eventBus) {
-        eventBus.addListener(*this);
-    }
-
-    virtual ~PlayerControllerSystem() {
-        eventBus.removeListener(*this);
-    }
-
+class PlayerControllerSystem : public System {
     void start(EntityScene &scene) override {
         Entity ent = scene.createEntity();
         auto rt = RectTransformComponent();
@@ -68,46 +59,21 @@ public:
         for (auto &ent: delHandles) {
             scene.destroy(ent);
         }
-        for (auto &ev: contactEvents) {
-            EntityHandle playerEnt;
-            EntityHandle otherEnt;
-
-            if (scene.check<PlayerControllerComponent>(ev.entityA)) {
-                if (ev.colliderIndexA == 1) {
-                    playerEnt = ev.entityA;
-                    otherEnt = ev.entityB;
-                }
-            } else if (scene.check<PlayerControllerComponent>(ev.entityB)) {
-                if (ev.colliderIndexB == 1) {
-                    playerEnt = ev.entityB;
-                    otherEnt = ev.entityA;
-                }
-            }
-
-            if (playerEnt && otherEnt) {
-                auto pl = scene.lookup<PlayerControllerComponent>(playerEnt);
-                if (ev.type == xng::ContactEvent::BEGIN_CONTACT) {
-                    pl.collidingEntities.insert(otherEnt);
-                } else {
-                    pl.collidingEntities.erase(otherEnt);
-                }
-                scene.updateComponent(playerEnt, pl);
-            }
-        }
-
-        contactEvents.clear();
 
         bool isAiming = false;
+        Vec2f aimPosition = {};
 
-        auto mousePos = input.getMouse().position;
-        auto inp = getInput();
-        for (auto pair: scene.getPool<PlayerControllerComponent>()) {
+        std::map<EntityHandle, PlayerComponent> playerUpdates;
+        for (auto &pair: scene.getPool<PlayerComponent>()) {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
             auto &rt = scene.lookup<RectTransformComponent>(pair.first);
             auto rb = scene.lookup<RigidBodyComponent>(pair.first);
             auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
             auto sprite = scene.lookup<SpriteComponent>(pair.first);
-            auto &player = pair.second;
+            auto health = scene.lookup<HealthComponent>(pair.first);
+            auto character = scene.lookup<CharacterControllerComponent>(pair.first);
+            auto input = scene.lookup<InputComponent>(pair.first);
+            auto player = pair.second;
 
             auto &canvas = scene.lookup<CanvasComponent>(scene.getEntityByName(rt.parent));
 
@@ -115,96 +81,30 @@ public:
                 createWeaponEntity(pair.first, scene);
             }
 
-            bool isOnFloor = false;
-            for (auto &ent: player.collidingEntities) {
-                if (scene.check<FloorComponent>(ent)) {
-                    isOnFloor = true;
-                    break;
-                }
-            }
-
-            // Apply movement
-            if (inp.x != 0) {
-                auto maxVel = player.maxVelocity;
-                if (player.player.getEquippedWeapon() != Weapon::NONE) {
-                    maxVel = maxVel * player.player.getWeapon().weight();
-                }
-                if ((inp.x < 0 && rb.velocity.x > -maxVel)
-                    || (inp.x > 0 && rb.velocity.x < maxVel)) {
-                    rb.velocity.x += inp.x * player.acceleration;
-                    if (rb.velocity.x < -maxVel)
-                        rb.velocity.x = -maxVel;
-                    else if (rb.velocity.x > maxVel)
-                        rb.velocity.x = maxVel;
-                }
-            } else {
-                if (rb.velocity.x < -player.drag) {
-                    rb.velocity.x += player.drag;
-                } else if (rb.velocity.x > player.drag) {
-                    rb.velocity.x -= player.drag;
-                }
-            }
-
-            // Apply jumping
-            if (inp.y > 0) {
-                if (isOnFloor) {
-                    rb.impulse = Vec3f(0, rb.mass, 0);
-                    rb.impulsePoint = tcomp.transform.getPosition();
-                }
-            }
-
-            // Apply animation
-            if (player.player.getEquippedWeapon() != Weapon::NONE || (rb.velocity.x < 0.1 && rb.velocity.x > -0.1)) {
-                anim.animation = pair.second.idleAnimation;
-            } else {
-                anim.animation = pair.second.walkAnimation;
-            }
-
-            // Apply direction
-            if (rb.velocity.x != 0 && inp.x != 0) {
-                player.facingLeft = rb.velocity.x > 0;
-                sprite.flipSprite.x = player.facingLeft;
-            }
-
+            player.player.setEquippedWeapon(input.weapon);
             player.player.update(deltaTime);
-
-            // Apply Input
-            if (input.getKeyboard().getKeyDown(xng::KEY_1)) {
-                pair.second.player.setEquippedWeapon(Weapon::NONE);
-            } else if (input.getKeyboard().getKeyDown(xng::KEY_2)) {
-                pair.second.player.setEquippedWeapon(Weapon::PISTOL);
-            } else if (input.getKeyboard().getKeyDown(xng::KEY_3)) {
-                pair.second.player.setEquippedWeapon(Weapon::GATLING);
-            }
-
-            if (input.getKeyboard().getKeyDown(KEY_T)) {
-                player.isAiming = !player.isAiming;
-            }
 
             bool shoot = false;
 
-            if (input.getMouse().getButton(xng::LEFT)
-                || input.getKeyboard().getKey(xng::KEY_SPACE)) {
+            if (input.fire) {
                 shoot = player.player.getWeapon().shoot();
             }
 
-            if (input.getKeyboard().getKeyDown(KEY_R)) {
+            if (input.reload) {
                 player.player.getWeapon().setAmmo(player.player.getWeapon().getAmmo() + 10);
             }
-
-            scene.updateComponent(pair.first, pair.second);
 
             auto weaponEnt = weaponEntities.at(pair.first);
             auto weaponSprite = weaponEnt.getComponent<SpriteComponent>();
             auto weaponTransform = weaponEnt.getComponent<TransformComponent>();
             auto weaponRect = weaponEnt.getComponent<RectTransformComponent>();
 
-            auto visuals = pair.second.player.getWeapon().getVisuals();
+            auto visuals = player.player.getWeapon().getVisuals();
 
             weaponSprite.layer = -1;
             weaponSprite.sprite = visuals.sprite;
             weaponTransform.transform.setPosition(
-                    {player.facingLeft
+                    {character.facingLeft
                      ? tcomp.transform.getPosition().x - visuals.offset.x
                      : tcomp.transform.getPosition().x + visuals.offset.x,
                      tcomp.transform.getPosition().y + visuals.offset.y,
@@ -212,12 +112,12 @@ public:
             weaponRect.parent = "MainCanvas";
             weaponRect.rect.dimensions = visuals.size;
             weaponRect.center = visuals.center;
-            if (player.facingLeft) {
+            if (character.facingLeft) {
                 weaponRect.center.x = weaponRect.rect.dimensions.x - weaponRect.center.x;
             }
-            weaponSprite.flipSprite.x = player.facingLeft;
+            weaponSprite.flipSprite.x = character.facingLeft;
 
-            auto dir = mousePos.convert<float>() -
+            auto dir = input.aimPosition.convert<float>() -
                        Vec2f(-weaponTransform.transform.getPosition().x - canvas.cameraPosition.x,
                              -weaponTransform.transform.getPosition().y - canvas.cameraPosition.y);
 
@@ -225,7 +125,7 @@ public:
 
             auto bounds = player.player.getWeapon().getAngleBounds();
 
-            if (player.facingLeft) {
+            if (character.facingLeft) {
                 if (angle < 0)
                     angle = std::clamp(angle + 360, bounds.x + 180, bounds.y + 180);
                 else
@@ -236,7 +136,7 @@ public:
                 weaponRect.rotation = angle;
             }
 
-            if (!player.isAiming) {
+            if (!input.aim) {
                 weaponRect.rotation = 0;
             }
 
@@ -257,15 +157,15 @@ public:
                 muzzleSprite.sprite = flash.getFrame();
                 muzzleSprite.layer = -1;
 
-                if (player.isAiming) {
-                    if (player.facingLeft) {
+                if (input.aim) {
+                    if (character.facingLeft) {
                         visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
                     }
                     auto shootDir = rotateVectorAroundPoint(visuals.muzzleOffset, {}, angle);
                     muzzleTransform.transform.setPosition(
                             weaponTransform.transform.getPosition() + Vec3f(shootDir.x, shootDir.y, 0));
                 } else {
-                    if (player.facingLeft) {
+                    if (character.facingLeft) {
                         visuals.muzzleOffset.x = -visuals.muzzleOffset.x;
                     }
                     muzzleTransform.transform.setPosition(weaponTransform.transform.getPosition() +
@@ -276,16 +176,24 @@ public:
                 muzzleRect.parent = "MainCanvas";
                 muzzleRect.rect.dimensions = visuals.muzzleSize;
                 muzzleRect.center = visuals.muzzleCenter;
-                if (player.isAiming) {
+                if (input.aim) {
                     muzzleRect.rotation = angle;
                 } else {
-                    muzzleRect.rotation = player.facingLeft ? 180 : 0;
+                    muzzleRect.rotation = character.facingLeft ? 180 : 0;
                 }
 
                 muzzleEnt.updateComponent(muzzleSprite);
                 muzzleEnt.updateComponent(muzzleTransform);
                 muzzleEnt.updateComponent(muzzleRect);
                 muzzleEnt.updateComponent(muzzleAnim);
+
+                auto shootDir = rotateVectorAroundPoint(visuals.muzzleOffset, {}, angle);
+
+                SmallBullet::create(scene,
+                                    Transform(muzzleTransform.transform.getPosition(),
+                                              Vec3f(0, 0, muzzleRect.rotation), Vec3f(1)),
+                                    Vec3f(shootDir.x, shootDir.y, 0) * 1,
+                                    "MainCanvas");
             }
 
             weaponEnt.updateComponent(weaponSprite);
@@ -296,40 +204,23 @@ public:
             scene.updateComponent(pair.first, anim);
             scene.updateComponent(pair.first, sprite);
 
-            isAiming = player.isAiming;
+            playerUpdates[pair.first] = player;
+
+            isAiming = input.aim;
+            aimPosition = input.aimPosition;
+        }
+
+        for (auto &pair: playerUpdates) {
+            scene.updateComponent(pair.first, pair.second);
         }
 
         auto rt = scene.lookup<RectTransformComponent>(crossHairEntity);
         rt.enabled = isAiming;
-        rt.rect.position = input.getMouse().position.convert<float>();
+        rt.rect.position = aimPosition;
         scene.updateComponent(crossHairEntity, rt);
-
-        input.setMouseCursorHidden(isAiming);
-    }
-
-    void onEvent(const Event &event) override {
-        if (event.getEventType() == typeid(ContactEvent)) {
-            contactEvents.emplace_back(event.as<ContactEvent>());
-        }
     }
 
 private:
-    Vec3f getInput() {
-        Vec3f ret;
-        auto &kb = input.getKeyboard();
-        if (kb.getKey(KEY_W)) {
-            ret.y = 1;
-        } else if (kb.getKey(KEY_S)) {
-            ret.y = -1;
-        }
-        if (kb.getKey(KEY_A)) {
-            ret.x = 1;
-        } else if (kb.getKey(KEY_D)) {
-            ret.x = -1;
-        }
-        return ret;
-    }
-
     Entity &createWeaponEntity(EntityHandle targetPlayer, EntityScene &scene) {
         auto it = weaponEntities.find(targetPlayer);
         if (it != weaponEntities.end())
@@ -372,11 +263,6 @@ private:
 
         return ent;
     }
-
-    Input &input;
-    EventBus &eventBus;
-
-    std::vector<ContactEvent> contactEvents;
 
     std::map<EntityHandle, Entity> weaponEntities;
     std::map<EntityHandle, std::vector<Entity>> muzzleFlashEntities;

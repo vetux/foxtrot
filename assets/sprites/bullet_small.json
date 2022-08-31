@@ -1,0 +1,17 @@
+{
+  "sprites": [
+    {
+      "name": "bullet_small",
+      "image": {
+        "uri": "images/bullet_small.png"
+      },
+      "offset": {
+        "position": {},
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}
