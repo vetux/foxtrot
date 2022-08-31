@@ -76,14 +76,16 @@ public:
                 {eventSystem,
                  guiEventSystem,
 
+                 physicsSystem,
+
                  daytimeSystem,
                  inputSystem,
                  characterControllerSystem,
                  playerControllerSystem,
                  bulletSystem,
+
                  cameraSystem,
 
-                 physicsSystem,
                  spriteAnimationSystem,
                  canvasRenderSystem});
         ecs.setScene(scenes.at(1));

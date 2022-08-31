@@ -76,7 +76,7 @@ public:
     }
 
     float weight() override {
-        return 0.75f;
+        return 0.1f;
     }
 
     Vec2f getAngleBounds() override {

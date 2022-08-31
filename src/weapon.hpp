@@ -56,7 +56,7 @@ public:
 
     virtual bool shoot() { return false; }
 
-    virtual float weight() { return 1; }
+    virtual float weight() { return 0; }
 
     virtual Vec2f getAngleBounds() { return {}; }
 };

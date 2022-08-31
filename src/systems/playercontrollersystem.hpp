@@ -68,7 +68,7 @@ class PlayerControllerSystem : public System {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
             auto &rt = scene.lookup<RectTransformComponent>(pair.first);
             auto &rb = scene.lookup<RigidBodyComponent>(pair.first);
-            auto &anim = scene.lookup<SpriteAnimationComponent>(pair.first);
+            auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
             auto &sprite = scene.lookup<SpriteComponent>(pair.first);
             auto &health = scene.lookup<HealthComponent>(pair.first);
             auto character = scene.lookup<CharacterControllerComponent>(pair.first);
@@ -198,7 +198,7 @@ class PlayerControllerSystem : public System {
                                     "MainCanvas");
             }
 
-            switch (player.player.getEquippedWeapon()){
+            switch (player.player.getEquippedWeapon()) {
                 case Weapon::PISTOL:
                     character.idleAnimation = player.idleAnimation;
                     character.walkAnimation = player.walkAnimation;
@@ -214,7 +214,24 @@ class PlayerControllerSystem : public System {
             weaponEnt.updateComponent(weaponTransform);
             weaponEnt.updateComponent(weaponRect);
 
+            character.maxVelocity = 20 * (1 - player.player.getWeapon().weight());
+
+            if (anim.animation.assigned()) {
+                if (rb.velocity.x >= 0) {
+                    anim.animationDurationOverride = anim.animation.get().getDuration() +
+                                                     (anim.animation.get().getDuration() -
+                                                      (anim.animation.get().getDuration() * (rb.velocity.x / 20)));
+                } else {
+                    anim.animationDurationOverride = anim.animation.get().getDuration() +
+                                                     (anim.animation.get().getDuration() -
+                                                      (anim.animation.get().getDuration() * (-rb.velocity.x / 20)));
+                }
+            } else {
+                anim.animationDurationOverride = 0;
+            }
+
             scene.updateComponent(pair.first, character);
+            scene.updateComponent(pair.first, anim);
 
             playerUpdates[pair.first] = player;
 
