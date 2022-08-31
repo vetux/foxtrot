@@ -187,12 +187,14 @@ class PlayerControllerSystem : public System {
                 muzzleEnt.updateComponent(muzzleRect);
                 muzzleEnt.updateComponent(muzzleAnim);
 
-                auto shootDir = rotateVectorAroundPoint(visuals.muzzleOffset, {}, angle);
 
+                auto shootDir = normalize(rotateVectorAroundPoint(Vec2f(-1, 0), {}, muzzleRect.rotation));
+
+                auto rotation = Vec3f(0, 0, muzzleRect.rotation);
                 SmallBullet::create(scene,
                                     Transform(muzzleTransform.transform.getPosition(),
-                                              Vec3f(0, 0, muzzleRect.rotation), Vec3f(1)),
-                                    Vec3f(shootDir.x, shootDir.y, 0) * 1,
+                                              rotation, Vec3f(1)),
+                                    Vec3f(shootDir.x, shootDir.y, 0) * 100,
                                     "MainCanvas");
             }
 

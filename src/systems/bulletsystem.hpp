@@ -58,6 +58,8 @@ public:
                 if (other) {
                     if (scene.check<HealthComponent>(other))
                         health = other;
+                    else if (scene.check<BulletComponent>(other))
+                        continue;
                 }
                 if (bullet && health) {
                     auto bulletComp = scene.lookup<BulletComponent>(bullet);
