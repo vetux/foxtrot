@@ -27,13 +27,28 @@
 using namespace xng;
 
 struct PlayerComponent : public Messageable {
+    ResourceHandle<SpriteAnimation> idleAnimation;
+    ResourceHandle<SpriteAnimation> walkAnimation;
+
+    ResourceHandle<SpriteAnimation> idleAnimationLow;
+    ResourceHandle<SpriteAnimation> walkAnimationLow;
+
     Player player;
 
     Messageable &operator<<(const Message &message) override {
+        idleAnimation << message.value("idleAnimation");
+        walkAnimation << message.value("walkAnimation");
+        idleAnimationLow << message.value("idleAnimationLow");
+        walkAnimationLow << message.value("walkAnimationLow");
         return *this;
     }
 
     Message &operator>>(Message &message) const override {
+        message = Message(xng::Message::DICTIONARY);
+        idleAnimation >> message["idleAnimation"];
+        walkAnimation >> message["walkAnimation"];
+        idleAnimationLow >> message["idleAnimationLow"];
+        walkAnimationLow >> message["walkAnimationLow"];
         return message;
     }
 };

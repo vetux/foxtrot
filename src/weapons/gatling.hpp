@@ -66,7 +66,7 @@ public:
         Visuals ret;
         ret.size = {100, 100};
         ret.center = {20, 50};
-        ret.offset = {-20, 5};
+        ret.offset = {-25, 5};
 
         switch (ammo) {
             case 0:

@@ -20,8 +20,8 @@
 #ifndef FOXTROT_PLAYER_HPP
 #define FOXTROT_PLAYER_HPP
 
-#include "gatling.hpp"
-#include "pistol.hpp"
+#include "weapons/gatling.hpp"
+#include "weapons/pistol.hpp"
 #include "inventory.hpp"
 #include "account.hpp"
 

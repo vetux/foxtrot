@@ -48,7 +48,7 @@ public:
         Visuals ret;
         ret.size = {40, 20};
         ret.center = {10, 16};
-        ret.offset = {-35, 25};
+        ret.offset = {-45, 35};
         ret.sprite = sprite;
 
         ret.muzzleFlash = ResourceHandle<SpriteAnimation>(Uri("animations/muzzle_a.json"));

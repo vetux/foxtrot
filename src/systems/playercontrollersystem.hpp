@@ -67,12 +67,12 @@ class PlayerControllerSystem : public System {
         for (auto &pair: scene.getPool<PlayerComponent>()) {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
             auto &rt = scene.lookup<RectTransformComponent>(pair.first);
-            auto rb = scene.lookup<RigidBodyComponent>(pair.first);
-            auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
-            auto sprite = scene.lookup<SpriteComponent>(pair.first);
-            auto health = scene.lookup<HealthComponent>(pair.first);
+            auto &rb = scene.lookup<RigidBodyComponent>(pair.first);
+            auto &anim = scene.lookup<SpriteAnimationComponent>(pair.first);
+            auto &sprite = scene.lookup<SpriteComponent>(pair.first);
+            auto &health = scene.lookup<HealthComponent>(pair.first);
             auto character = scene.lookup<CharacterControllerComponent>(pair.first);
-            auto input = scene.lookup<InputComponent>(pair.first);
+            auto &input = scene.lookup<InputComponent>(pair.first);
             auto player = pair.second;
 
             auto &canvas = scene.lookup<CanvasComponent>(scene.getEntityByName(rt.parent));
@@ -198,13 +198,23 @@ class PlayerControllerSystem : public System {
                                     "MainCanvas");
             }
 
+            switch (player.player.getEquippedWeapon()){
+                case Weapon::PISTOL:
+                    character.idleAnimation = player.idleAnimation;
+                    character.walkAnimation = player.walkAnimation;
+                    break;
+                case Weapon::NONE:
+                case Weapon::GATLING:
+                    character.idleAnimation = player.idleAnimationLow;
+                    character.walkAnimation = player.walkAnimationLow;
+                    break;
+            }
+
             weaponEnt.updateComponent(weaponSprite);
             weaponEnt.updateComponent(weaponTransform);
             weaponEnt.updateComponent(weaponRect);
 
-            scene.updateComponent(pair.first, rb);
-            scene.updateComponent(pair.first, anim);
-            scene.updateComponent(pair.first, sprite);
+            scene.updateComponent(pair.first, character);
 
             playerUpdates[pair.first] = player;
 
