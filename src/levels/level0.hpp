@@ -103,8 +103,8 @@ public:
         if (event.getEventType() == typeid(InputEvent)) {
             auto &ev = event.as<InputEvent>();
             if (ev.deviceType == xng::InputEvent::DEVICE_KEYBOARD) {
-                auto &kbev = std::get<KeyboardEvent>(ev.event);
-                if (kbev.type == xng::KeyboardEvent::KEYBOARD_KEY_DOWN
+                auto &kbev = std::get<KeyboardEventData>(ev.data);
+                if (kbev.type == xng::KeyboardEventData::KEYBOARD_KEY_DOWN
                     && kbev.key == xng::KEY_F1) {
                     drawDebug = !drawDebug;
                     canvasRenderSystem.setDrawDebug(drawDebug);

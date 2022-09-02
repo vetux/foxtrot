@@ -77,6 +77,14 @@ public:
         if (event.getEventType() == typeid(LoadLevelEvent)) {
             auto &ev = event.as<LoadLevelEvent>();
             targetLevel = ev.name;
+        } else if (event.getEventType() == typeid(InputEvent)) {
+            auto &ev = event.as<InputEvent>();
+            if (ev.deviceType == xng::InputEvent::DEVICE_KEYBOARD){
+                if (std::get<KeyboardEventData>(ev.data).type == xng::KeyboardEventData::KEYBOARD_KEY_DOWN
+                    && std::get<KeyboardEventData>(ev.data).key == KEY_F5) {
+                    ResourceRegistry::getDefaultRegistry().reloadAllResources();
+                }
+            }
         }
     }
 

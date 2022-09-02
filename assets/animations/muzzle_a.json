@@ -12,7 +12,7 @@
           "sprite": {
             "uri": "sprites/muzzle_a_1.json"
           },
-          "duration": 2
+          "duration": 1
         },
         {
           "sprite": {
@@ -24,10 +24,10 @@
           "sprite": {
             "uri": "sprites/muzzle_a_3.json"
           },
-          "duration": 2
+          "duration": 1
         }
       ],
-      "animationFps": 12,
+      "animationDuration": 0.2,
       "loop": false
     }
   ]
