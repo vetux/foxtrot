@@ -6,8 +6,8 @@
       "components": {
         "canvas": {
           "projectionSize": {
-            "x": 840,
-            "y": 480
+            "x": 1920,
+            "y": 1080
           },
           "lockAspectRatio": true,
           "stretchProjection": true,
