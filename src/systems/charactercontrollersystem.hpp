@@ -93,7 +93,7 @@ public:
         std::map<EntityHandle, CharacterControllerComponent> characterUpdates;
         for (auto &pair: scene.getPool<CharacterControllerComponent>()) {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
-            auto &rt = scene.lookup<RectTransformComponent>(pair.first);
+            auto &rt = scene.lookup<CanvasTransformComponent>(pair.first);
             auto rb = scene.lookup<RigidBodyComponent>(pair.first);
             auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
             auto sprite = scene.lookup<SpriteComponent>(pair.first);
@@ -101,7 +101,7 @@ public:
             auto input = scene.lookup<InputComponent>(pair.first);
             auto character = pair.second;
 
-            auto &canvas = scene.lookup<CanvasComponent>(scene.getEntityByName(rt.parent));
+            auto &canvas = scene.lookup<CanvasComponent>(scene.getEntityByName(rt.canvas));
 
             character.isOnFloor = false;
             for (auto &ent: character.collidingEntities) {

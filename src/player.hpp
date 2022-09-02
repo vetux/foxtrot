@@ -22,6 +22,8 @@
 
 #include "weapons/gatling.hpp"
 #include "weapons/pistol.hpp"
+#include "weapons/katana.hpp"
+
 #include "inventory.hpp"
 #include "account.hpp"
 
@@ -104,6 +106,7 @@ private:
     Weapon noWeapon;
     Pistol pistol;
     Gatling gatling;
+    Katana katana;
 };
 
 #endif //FOXTROT_PLAYER_HPP

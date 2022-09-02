@@ -104,7 +104,7 @@ protected:
             targetLevel = currentLevel;
         }
         ren2d.renderClear(window->getRenderTarget(),
-                          ColorRGBA::black(),
+                          ColorRGBA::yellow(),
                           {},
                           window->getRenderTarget().getDescription().size);
         ecs.update(deltaTime);

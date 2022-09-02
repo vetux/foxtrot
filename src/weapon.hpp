@@ -26,8 +26,13 @@ class Weapon {
 public:
     enum Type {
         NONE,
+
+        // Ranged
         PISTOL,
-        GATLING
+        GATLING,
+
+        // Melee
+        KATANA,
     };
 
     struct Visuals {

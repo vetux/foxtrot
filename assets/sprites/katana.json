@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "0",
+      "image": {
+        "uri": "images/katana.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 64,
+          "y": 64
+        }
+      }
+    }
+  ]
+}

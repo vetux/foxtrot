@@ -32,16 +32,16 @@ namespace SmallBullet {
     Entity create(EntityScene &scene,
                   const Transform &transform,
                   const Vec3f &velocity,
-                  const std::string &parent,
+                  const std::string &canvas,
                   float damage = 10) {
         auto ent = scene.createEntity();
         auto t = TransformComponent();
         t.transform = transform;
         ent.createComponent(t);
-        auto rt = RectTransformComponent();
+        auto rt = CanvasTransformComponent();
         rt.rect.dimensions = Vec2f(16, 16);
         rt.center = Vec2f(8, 8);
-        rt.parent = parent;
+        rt.canvas = canvas;
         ent.createComponent(rt);
         auto rb = RigidBodyComponent();
         auto col = ColliderDesc();

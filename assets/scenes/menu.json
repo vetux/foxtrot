@@ -4,13 +4,21 @@
     {
       "name": "MainCanvas",
       "components": {
-        "canvas": {}
+        "canvas": {
+          "projectionSize": {
+            "x": 840,
+            "y": 480
+          },
+          "lockAspectRatio": true,
+          "stretchProjection": true,
+          "clear": true
+        }
       }
     },
     {
       "name": "Gatling",
       "components": {
-        "rect_transform": {
+        "canvas_transform": {
           "rect": {
             "position": {
               "x": -450,
@@ -27,7 +35,7 @@
             "y": 50
           },
           "rotation": 0,
-          "parent": "MainCanvas"
+          "canvas": "MainCanvas"
         },
         "sprite": {
           "sprite": {
@@ -45,7 +53,7 @@
     {
       "name": "Player",
       "components": {
-        "rect_transform": {
+        "canvas_transform": {
           "rect": {
             "position": {
               "x": -500,
@@ -62,7 +70,7 @@
             "y": 50
           },
           "rotation": 0,
-          "parent": "MainCanvas"
+          "canvas": "MainCanvas"
         },
         "sprite": {
           "sprite": {
@@ -74,7 +82,7 @@
     {
       "name": "Slime",
       "components": {
-        "rect_transform": {
+        "canvas_transform": {
           "rect": {
             "position": {
               "x": 500,
@@ -91,7 +99,7 @@
             "y": 50
           },
           "rotation": 0,
-          "parent": "MainCanvas"
+          "canvas": "MainCanvas"
         },
         "sprite": {
           "sprite": {
@@ -109,7 +117,7 @@
     {
       "name": "TitleText",
       "components": {
-        "rect_transform": {
+        "canvas_transform": {
           "rect": {
             "position": {
               "x": 0,
@@ -122,7 +130,7 @@
           },
           "anchor": "center",
           "rotation": 0,
-          "parent": "MainCanvas"
+          "canvas": "MainCanvas"
         },
         "text": {
           "text": "Foxtrot",
@@ -144,7 +152,7 @@
     {
       "name": "Button",
       "components": {
-        "rect_transform": {
+        "canvas_transform": {
           "rect": {
             "position": {
               "x": 0,
@@ -161,7 +169,7 @@
             "y": 50
           },
           "rotation": 0,
-          "parent": "MainCanvas"
+          "canvas": "MainCanvas"
         },
         "button": {
           "id": "button_start",

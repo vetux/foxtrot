@@ -32,10 +32,10 @@ using namespace xng;
 class PlayerControllerSystem : public System {
     void start(EntityScene &scene) override {
         Entity ent = scene.createEntity();
-        auto rt = RectTransformComponent();
+        auto rt = CanvasTransformComponent();
         rt.center = Vec2f(32, 32);
         rt.rect.dimensions = Vec2f(64, 64);
-        rt.parent = "GuiCanvas";
+        rt.canvas = "OverlayCanvas";
         ent.createComponent(rt);
         auto sprite = SpriteComponent();
         sprite.sprite = ResourceHandle<Sprite>(Uri("file://sprites/crosshair_duplex.json"));
@@ -66,7 +66,7 @@ class PlayerControllerSystem : public System {
         std::map<EntityHandle, PlayerComponent> playerUpdates;
         for (auto &pair: scene.getPool<PlayerComponent>()) {
             auto &tcomp = scene.lookup<TransformComponent>(pair.first);
-            auto &rt = scene.lookup<RectTransformComponent>(pair.first);
+            auto &rt = scene.lookup<CanvasTransformComponent>(pair.first);
             auto &rb = scene.lookup<RigidBodyComponent>(pair.first);
             auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
             auto &sprite = scene.lookup<SpriteComponent>(pair.first);
@@ -75,7 +75,7 @@ class PlayerControllerSystem : public System {
             auto &input = scene.lookup<InputComponent>(pair.first);
             auto player = pair.second;
 
-            auto &canvas = scene.lookup<CanvasComponent>(scene.getEntityByName(rt.parent));
+            auto &canvas = scene.lookup<CanvasComponent>(scene.getEntityByName(rt.canvas));
 
             if (weaponEntities.find(pair.first) == weaponEntities.end()) {
                 createWeaponEntity(pair.first, scene);
@@ -97,7 +97,7 @@ class PlayerControllerSystem : public System {
             auto weaponEnt = weaponEntities.at(pair.first);
             auto weaponSprite = weaponEnt.getComponent<SpriteComponent>();
             auto weaponTransform = weaponEnt.getComponent<TransformComponent>();
-            auto weaponRect = weaponEnt.getComponent<RectTransformComponent>();
+            auto weaponRect = weaponEnt.getComponent<CanvasTransformComponent>();
 
             auto visuals = player.player.getWeapon().getVisuals();
 
@@ -105,11 +105,11 @@ class PlayerControllerSystem : public System {
             weaponSprite.sprite = visuals.sprite;
             weaponTransform.transform.setPosition(
                     {character.facingLeft
-                     ? tcomp.transform.getPosition().x - visuals.offset.x
-                     : tcomp.transform.getPosition().x + visuals.offset.x,
-                     tcomp.transform.getPosition().y + visuals.offset.y,
+                     ? -visuals.offset.x
+                     : +visuals.offset.x,
+                     visuals.offset.y,
                      0});
-            weaponRect.parent = "MainCanvas";
+            weaponRect.canvas = "MainCanvas";
             weaponRect.rect.dimensions = visuals.size;
             weaponRect.center = visuals.center;
             if (character.facingLeft) {
@@ -117,9 +117,10 @@ class PlayerControllerSystem : public System {
             }
             weaponSprite.flipSprite.x = character.facingLeft;
 
+            auto weaponWorld = TransformComponent::walkHierarchy(weaponTransform, scene);
             auto dir = input.aimPosition.convert<float>() -
-                       Vec2f(-weaponTransform.transform.getPosition().x - canvas.cameraPosition.x,
-                             -weaponTransform.transform.getPosition().y - canvas.cameraPosition.y);
+                       Vec2f(-weaponWorld.getPosition().x - canvas.cameraPosition.x,
+                             -weaponWorld.getPosition().y - canvas.cameraPosition.y);
 
             auto angle = numeric_cast<float>(getAngle(dir));
 
@@ -145,7 +146,7 @@ class PlayerControllerSystem : public System {
 
                 auto muzzleSprite = muzzleEnt.getComponent<SpriteComponent>();
                 auto muzzleTransform = muzzleEnt.getComponent<TransformComponent>();
-                auto muzzleRect = muzzleEnt.getComponent<RectTransformComponent>();
+                auto muzzleRect = muzzleEnt.getComponent<CanvasTransformComponent>();
                 auto muzzleAnim = muzzleEnt.getComponent<SpriteAnimationComponent>();
 
                 muzzleAnim.animation = visuals.muzzleFlash;
@@ -157,23 +158,7 @@ class PlayerControllerSystem : public System {
                 muzzleSprite.sprite = flash.getFrame();
                 muzzleSprite.layer = -1;
 
-                if (input.aim) {
-                    if (character.facingLeft) {
-                        visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
-                    }
-                    auto shootDir = rotateVectorAroundPoint(visuals.muzzleOffset, {}, angle);
-                    muzzleTransform.transform.setPosition(
-                            weaponTransform.transform.getPosition() + Vec3f(shootDir.x, shootDir.y, 0));
-                } else {
-                    if (character.facingLeft) {
-                        visuals.muzzleOffset.x = -visuals.muzzleOffset.x;
-                    }
-                    muzzleTransform.transform.setPosition(weaponTransform.transform.getPosition() +
-                                                          Vec3f(visuals.muzzleOffset.x,
-                                                                visuals.muzzleOffset.y, 0));
-                }
-
-                muzzleRect.parent = "MainCanvas";
+                muzzleRect.canvas = "MainCanvas";
                 muzzleRect.rect.dimensions = visuals.muzzleSize;
                 muzzleRect.center = visuals.muzzleCenter;
                 if (input.aim) {
@@ -182,19 +167,36 @@ class PlayerControllerSystem : public System {
                     muzzleRect.rotation = character.facingLeft ? 180 : 0;
                 }
 
+                if (input.aim) {
+                    if (character.facingLeft) {
+                        visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
+                    }
+                } else {
+                    if (character.facingLeft) {
+                        visuals.muzzleOffset.x = -visuals.muzzleOffset.x;
+                    }
+                }
+
+                auto vec = rotateVectorAroundPoint(Vec2f(weaponWorld.getPosition().x, weaponWorld.getPosition().y) +
+                                                   visuals.muzzleOffset,
+                                                   Vec2f(weaponWorld.getPosition().x, weaponWorld.getPosition().y),
+                                                   muzzleRect.rotation);
+                muzzleTransform.transform.setPosition({vec.x, vec.y, 0});
+
                 muzzleEnt.updateComponent(muzzleSprite);
                 muzzleEnt.updateComponent(muzzleTransform);
                 muzzleEnt.updateComponent(muzzleRect);
                 muzzleEnt.updateComponent(muzzleAnim);
 
-
-                auto shootDir = normalize(rotateVectorAroundPoint(Vec2f(-1, 0), {}, muzzleRect.rotation));
+                auto aimDir = normalize(rotateVectorAroundPoint(Vec2f(-1, 0), {}, muzzleRect.rotation));
 
                 auto rotation = Vec3f(0, 0, muzzleRect.rotation);
+                auto muzzleWorld = TransformComponent::walkHierarchy(muzzleTransform, scene);
                 SmallBullet::create(scene,
-                                    Transform(muzzleTransform.transform.getPosition(),
-                                              rotation, Vec3f(1)),
-                                    Vec3f(shootDir.x, shootDir.y, 0) * 100,
+                                    Transform( muzzleWorld.getPosition(),
+                                              rotation + muzzleWorld.getRotation().getEulerAngles(),
+                                              Vec3f(1) + muzzleWorld.getScale()),
+                                    Vec3f(aimDir.x, aimDir.y, 0) * 100,
                                     "MainCanvas");
             }
 
@@ -243,7 +245,7 @@ class PlayerControllerSystem : public System {
             scene.updateComponent(pair.first, pair.second);
         }
 
-        auto rt = scene.lookup<RectTransformComponent>(crossHairEntity);
+        auto rt = scene.lookup<CanvasTransformComponent>(crossHairEntity);
         rt.enabled = isAiming;
         rt.rect.position = aimPosition;
         scene.updateComponent(crossHairEntity, rt);
@@ -257,8 +259,10 @@ private:
 
         auto ent = scene.createEntity();
         TransformComponent transform;
-        RectTransformComponent rect;
+        CanvasTransformComponent rect;
         SpriteComponent sprite;
+
+        transform.parent = scene.getEntityName(targetPlayer);
 
         ent.createComponent(transform);
         ent.createComponent(rect);
@@ -272,7 +276,7 @@ private:
         auto ent = scene.createEntity();
 
         TransformComponent transform;
-        RectTransformComponent rect;
+        CanvasTransformComponent rect;
         SpriteComponent sprite;
         MuzzleFlashComponent muzzleFlashComponent;
         SpriteAnimationComponent animationComponent;
