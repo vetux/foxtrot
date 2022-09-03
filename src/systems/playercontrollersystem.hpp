@@ -38,7 +38,7 @@ class PlayerControllerSystem : public System {
         rt.canvas = "OverlayCanvas";
         ent.createComponent(rt);
         auto sprite = SpriteComponent();
-        sprite.sprite = ResourceHandle<Sprite>(Uri("file://sprites/crosshair_duplex.json"));
+        sprite.sprite = ResourceHandle<Sprite>(Uri("file://sprites/crosshair.json$target"));
         sprite.layer = 10;
         ent.createComponent(sprite);
         crossHairEntity = ent.getHandle();
@@ -181,7 +181,7 @@ class PlayerControllerSystem : public System {
                 } else {
                     muzzleRect.rotation = character.facingLeft ? 180 : 0;
                 }
-                
+
                 if (character.facingLeft) {
                     visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
                 }

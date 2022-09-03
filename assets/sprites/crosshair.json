@@ -1,0 +1,64 @@
+{
+  "sprites": [
+    {
+      "name": "fine",
+      "image": {
+        "uri": "images/crosshair.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 64,
+          "y": 64
+        }
+      }
+    },
+    {
+      "name": "duplex",
+      "image": {
+        "uri": "images/crosshair.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 64,
+          "y": 64
+        }
+      }
+    },
+    {
+      "name": "german",
+      "image": {
+        "uri": "images/crosshair.png"
+      },
+      "offset": {
+        "position": {
+          "x": 128
+        },
+        "dimensions": {
+          "x": 64,
+          "y": 64
+        }
+      }
+    },
+    {
+      "name": "target",
+      "image": {
+        "uri": "images/crosshair.png"
+      },
+      "offset": {
+        "position": {
+          "x": 192
+        },
+        "dimensions": {
+          "x": 64,
+          "y": 64
+        }
+      }
+    }
+  ]
+}
