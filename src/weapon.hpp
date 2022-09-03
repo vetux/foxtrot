@@ -49,21 +49,65 @@ public:
 
     virtual ~Weapon() = default;
 
-    virtual void update(DeltaTime deltaTime) {}
+    virtual void update(DeltaTime deltaTime) {
+        if (reloadTimer > 0) {
+            reloadTimer -= deltaTime;
+        }
+    }
 
-    virtual Type getType() { return NONE; }
+    virtual Type getType() const { return NONE; }
 
-    virtual Visuals getVisuals() { return {}; }
+    virtual Visuals getVisuals() const { return {}; }
 
-    virtual void setAmmo(int ammo) {}
+    virtual void setAmmo(int value) { ammo = value; }
 
-    virtual int getAmmo() { return 0; }
+    virtual int getAmmo() const { return ammo; }
 
-    virtual bool shoot(DeltaTime deltaTime) { return false; }
+    virtual int getClip() const { return clip; }
 
-    virtual float weight() { return 0; }
+    virtual int getClipSize() const { return clipSize; }
 
-    virtual Vec2f getAngleBounds() { return {}; }
+    virtual int reload(DeltaTime deltaTime) {
+        if (reloadTimer > 0)
+            return false;
+        int diff = 0;
+        if (ammo > 0
+            && clip < clipSize) {
+            diff = clipSize - clip;
+            if (ammo < diff) {
+                diff = ammo;
+            }
+            clip += diff;
+            ammo -= diff;
+            reloadTimer = reloadDuration;
+        }
+        return diff;
+    }
+
+    virtual bool shoot(DeltaTime deltaTime) {
+        if (clip > 0 && reloadTimer <= 0) {
+            clip--;
+            return true;
+        }
+        return false;
+    }
+
+    virtual void pullTrigger(DeltaTime deltaTime) {}
+
+    virtual void releaseTrigger(DeltaTime deltaTime) {}
+
+    virtual float weight() const { return 0; }
+
+    virtual Vec2f getAngleBounds() const { return {}; }
+
+    virtual float getReloadTimer() const { return reloadTimer; }
+
+protected:
+    int ammo = 0;
+    int clip = 0;
+    int clipSize = 0;
+    float reloadTimer = 0;
+    float reloadDuration = 0;
 };
 
 #endif //FOXTROT_WEAPON_HPP

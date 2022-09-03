@@ -30,24 +30,6 @@
 using namespace xng;
 
 class PlayerControllerSystem : public System {
-    void start(EntityScene &scene) override {
-        Entity ent = scene.createEntity();
-        auto rt = CanvasTransformComponent();
-        rt.center = Vec2f(32, 32);
-        rt.rect.dimensions = Vec2f(64, 64);
-        rt.canvas = "OverlayCanvas";
-        ent.createComponent(rt);
-        auto sprite = SpriteComponent();
-        sprite.sprite = ResourceHandle<Sprite>(Uri("file://sprites/crosshair.json$target"));
-        sprite.layer = 10;
-        ent.createComponent(sprite);
-        crossHairEntity = ent.getHandle();
-    }
-
-    void stop(EntityScene &scene) override {
-        scene.destroy(crossHairEntity);
-    }
-
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         std::set<EntityHandle> delHandles;
         for (auto &pair: scene.getPool<MuzzleFlashComponent>()) {
@@ -59,9 +41,6 @@ class PlayerControllerSystem : public System {
         for (auto &ent: delHandles) {
             scene.destroy(ent);
         }
-
-        bool isAiming = false;
-        Vec2f aimPosition = {};
 
         std::map<EntityHandle, PlayerComponent> playerUpdates;
         for (auto &pair: scene.getPool<PlayerComponent>()) {
@@ -99,12 +78,19 @@ class PlayerControllerSystem : public System {
 
             bool shoot = false;
 
-            if (input.fire && !isDead) {
+            if (input.fire) {
+                player.player.getWeapon().pullTrigger(deltaTime);
+            } else {
+                player.player.getWeapon().releaseTrigger(deltaTime);
+            }
+
+            if (input.fireHold && !isDead) {
                 shoot = player.player.getWeapon().shoot(deltaTime);
             }
 
             if (input.reload && !isDead) {
                 player.player.getWeapon().setAmmo(player.player.getWeapon().getAmmo() + 10);
+                player.player.getWeapon().reload(deltaTime);
             }
 
             auto weaponEnt = weaponEntities.at(pair.first);
@@ -237,19 +223,11 @@ class PlayerControllerSystem : public System {
             scene.updateComponent(pair.first, anim);
 
             playerUpdates[pair.first] = player;
-
-            isAiming = input.aim && !isDead;
-            aimPosition = input.aimPosition;
         }
 
         for (auto &pair: playerUpdates) {
             scene.updateComponent(pair.first, pair.second);
         }
-
-        auto rt = scene.lookup<CanvasTransformComponent>(crossHairEntity);
-        rt.enabled = isAiming;
-        rt.rect.position = aimPosition;
-        scene.updateComponent(crossHairEntity, rt);
     }
 
 private:
@@ -300,8 +278,6 @@ private:
 
     std::map<EntityHandle, Entity> weaponEntities;
     std::map<EntityHandle, std::vector<Entity>> muzzleFlashEntities;
-
-    EntityHandle crossHairEntity;
 };
 
 #endif //FOXTROT_PLAYERCONTROLLERSYSTEM_HPP

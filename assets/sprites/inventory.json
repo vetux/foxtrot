@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "gunshop_railing",
+      "image": {
+        "uri": "images/inventory.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 352,
+          "y": 352
+        }
+      }
+    }
+  ]
+}

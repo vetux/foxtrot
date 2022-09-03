@@ -92,8 +92,8 @@ protected:
     void start() override {
         scenes = loadScenes({"scenes/menu.json", "scenes/level_0.json"});
 
-        levels[MAIN_MENU] = std::make_unique<MainMenu>(eventBus, *window, ren2d, *fontDriver, archive, scenes);
-        levels[LEVEL_0] = std::make_unique<Level0>(eventBus, *window, ren2d, *fontDriver, archive, scenes);
+        levels[MAIN_MENU] = std::make_unique<MainMenu>(eventBus, *window, ren2d, *fontDriver, scenes);
+        levels[LEVEL_0] = std::make_unique<Level0>(eventBus, *window, ren2d, *fontDriver, scenes);
 
         levels.at(currentLevel)->onCreate(ecs);
 

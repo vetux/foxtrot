@@ -81,6 +81,8 @@ public:
 
     long getBankBalance() const { return bank; }
 
+    long getTotalBalance() const { return wallet + bank; }
+
     Messageable &operator<<(const Message &message) override {
         wallet = message.value("wallet", 0);
         bank = message.value("bank", 0);

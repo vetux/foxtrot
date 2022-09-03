@@ -1,0 +1,19 @@
+{
+  "sprites": [
+    {
+      "name": "bg",
+      "image": {
+        "uri": "images/toolbar.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 352,
+          "y": 64
+        }
+      }
+    }
+  ]
+}

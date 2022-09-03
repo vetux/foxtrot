@@ -32,11 +32,11 @@ public:
         Weapon::update(deltaTime);
     }
 
-    Type getType() override {
+    Type getType() const override {
         return KATANA;
     }
 
-    Visuals getVisuals() override {
+    Visuals getVisuals() const override {
         return visuals;
     }
 
@@ -44,11 +44,11 @@ public:
         return true;
     }
 
-    float weight() override {
+    float weight() const override {
         return 0;
     }
 
-    Vec2f getAngleBounds() override {
+    Vec2f getAngleBounds() const override {
         return Weapon::getAngleBounds();
     }
 

@@ -35,14 +35,12 @@ public:
              Window &window,
              Renderer2D &ren2d,
              FontDriver &fontDriver,
-             Archive &archive,
              std::vector<std::shared_ptr<EntityScene>> scenes)
             : eventBus(eventBus),
               guiEventSystem(window, eventBus),
               canvasRenderSystem(ren2d,
                                  window.getRenderTarget(),
-                                 fontDriver,
-                                 archive),
+                                 fontDriver),
               menuGuiSystem(eventBus),
               scenes(scenes) {}
 

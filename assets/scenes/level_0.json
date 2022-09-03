@@ -18,6 +18,104 @@
       }
     },
     {
+      "name": "GuiCanvas",
+      "components": {
+        "canvas": {
+          "projectionSize": {
+            "x": 1920,
+            "y": 1080
+          },
+          "lockAspectRatio": true,
+          "fitToScreen": true,
+          "layer": 2
+        }
+      }
+    },
+    {
+      "name": "AmmoGUI",
+      "components": {
+        "canvas_transform": {
+          "rect": {
+            "position": {
+              "x": -125,
+              "y": 50
+            },
+            "dimensions": {
+              "x": 250,
+              "y": 100
+            }
+          },
+          "anchor": "top_right",
+          "center": {
+            "x": 125,
+            "y": 50
+          },
+          "rotation": 0,
+          "canvas": "GuiCanvas"
+        },
+        "text": {
+          "text": "AMMO",
+          "font": {
+            "uri": "fonts/Black_Ops_One/BlackOpsOne-Regular.ttf"
+          },
+          "pixelSize": {
+            "x": 0,
+            "y": 50
+          },
+          "textColor": {
+            "r": 0,
+            "g": 153,
+            "b": 0,
+            "a": 255
+          },
+          "lineHeight": 35,
+          "layer": 2
+        }
+      }
+    },
+    {
+      "name": "HealthGUI",
+      "components": {
+        "canvas_transform": {
+          "rect": {
+            "position": {
+              "x": 125,
+              "y": 50
+            },
+            "dimensions": {
+              "x": 250,
+              "y": 100
+            }
+          },
+          "anchor": "top_left",
+          "center": {
+            "x": 125,
+            "y": 50
+          },
+          "rotation": 0,
+          "canvas": "GuiCanvas"
+        },
+        "text": {
+          "text": "AMMO",
+          "font": {
+            "uri": "fonts/Black_Ops_One/BlackOpsOne-Regular.ttf"
+          },
+          "pixelSize": {
+            "x": 0,
+            "y": 50
+          },
+          "textColor": {
+            "r": 0,
+            "g": 153,
+            "b": 0,
+            "a": 255
+          },
+          "lineHeight": 35,
+          "layer": 2
+        }
+      }
+    },
+    {
       "name": "Player",
       "components": {
         "transform": {

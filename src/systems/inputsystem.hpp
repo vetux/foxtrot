@@ -83,8 +83,9 @@ public:
 
             comp.aimPosition = mouse.position.convert<float>();
 
-            comp.fire = mouse.getButton(xng::LEFT) || kb.getKey(xng::KEY_SPACE);
-            comp.reload = kb.getKeyDown(xng::KEY_R);
+            comp.fire = mouse.getButtonDown(xng::LEFT) || kb.getKeyDown(xng::KEY_SPACE);
+            comp.fireHold = mouse.getButton(xng::LEFT) || kb.getKey(xng::KEY_SPACE);
+            comp.reload = kb.getKey(xng::KEY_R);
 
             updates[pair.first] = comp;
         }

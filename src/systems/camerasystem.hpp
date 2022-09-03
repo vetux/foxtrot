@@ -41,28 +41,33 @@ public:
             break;
         }
 
-        auto canvasEnt = scene.getEntityByName("MainCanvas");
-        auto comp = scene.lookup<CanvasComponent>(canvasEnt);
+        std::vector<EntityHandle> ents = {
+                scene.getEntityByName("MainCanvas"),
+        };
 
-        auto halfSize = target.getDescription().size.convert<float>() / 2;
+        for (auto &canvasEnt: ents) {
+            auto comp = scene.lookup<CanvasComponent>(canvasEnt);
 
-        comp.cameraPosition.x = -playerPosition.x;
-        if (comp.cameraPosition.x - halfSize.x < cameraBoundMin.x) {
-            comp.cameraPosition.x = cameraBoundMin.x + halfSize.x;
-        } else if (comp.cameraPosition.x + halfSize.x > cameraBoundMax.x) {
-            comp.cameraPosition.x = cameraBoundMax.x - halfSize.x;
+            auto halfSize = target.getDescription().size.convert<float>() / 2;
+
+            comp.cameraPosition.x = -playerPosition.x;
+            if (comp.cameraPosition.x - halfSize.x < cameraBoundMin.x) {
+                comp.cameraPosition.x = cameraBoundMin.x + halfSize.x;
+            } else if (comp.cameraPosition.x + halfSize.x > cameraBoundMax.x) {
+                comp.cameraPosition.x = cameraBoundMax.x - halfSize.x;
+            }
+            comp.cameraPosition.x -= halfSize.x;
+
+            comp.cameraPosition.y = -playerPosition.y;
+            if (comp.cameraPosition.y - halfSize.y < cameraBoundMin.y) {
+                comp.cameraPosition.y = cameraBoundMin.y + halfSize.y;
+            } else if (comp.cameraPosition.y + halfSize.y > cameraBoundMax.y) {
+                comp.cameraPosition.y = cameraBoundMax.y - halfSize.y;
+            }
+            comp.cameraPosition.y -= halfSize.y;
+
+            scene.updateComponent(canvasEnt, comp);
         }
-        comp.cameraPosition.x -= halfSize.x;
-
-        comp.cameraPosition.y = -playerPosition.y;
-        if (comp.cameraPosition.y - halfSize.y < cameraBoundMin.y) {
-            comp.cameraPosition.y = cameraBoundMin.y + halfSize.y;
-        } else if (comp.cameraPosition.y + halfSize.y > cameraBoundMax.y) {
-            comp.cameraPosition.y = cameraBoundMax.y - halfSize.y;
-        }
-        comp.cameraPosition.y -= halfSize.y;
-
-        scene.updateComponent(canvasEnt, comp);
     }
 
     void setCameraBounds(const Vec2f &boundMin, const Vec2f &boundMax) {

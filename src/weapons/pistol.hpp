@@ -27,24 +27,18 @@ public:
     Pistol() = default;
 
     explicit Pistol(ResourceHandle<Sprite> sprite)
-            : sprite(std::move(sprite)) {}
+            : sprite(std::move(sprite)) {
+        reloadDuration = 2;
+        clipSize = 9;
+    }
 
     ~Pistol() override = default;
 
-    void update(DeltaTime deltaTime) override {
-        if (chamberTimer > 0) {
-            chamberTimer -= deltaTime;
-            if (chamberTimer < 0) {
-                chamberTimer = 0;
-            }
-        }
-    }
-
-    Type getType() override {
+    Type getType() const override {
         return PISTOL;
     }
 
-    Visuals getVisuals() override {
+    Visuals getVisuals() const override {
         Visuals ret;
         ret.size = {40, 20};
         ret.center = {10, 16};
@@ -59,37 +53,28 @@ public:
         return ret;
     }
 
-    void setAmmo(int value) override {
-        ammo = value;
-    }
-
-    int getAmmo() override {
-        return ammo;
-    }
-
-    bool shoot(DeltaTime deltaTime) override {
-        if (ammo <= 0 || chamberTimer > 0)
-            return false;
-        ammo--;
-        chamberTimer += 1.0f / roundsPerSecond;
-        return true;
-    }
-
-    float weight() override {
+    float weight() const override {
         return 0.1f;
     }
 
-    Vec2f getAngleBounds() override {
+    Vec2f getAngleBounds() const override {
         return {-360, 360};
     }
 
+    bool shoot(DeltaTime deltaTime) override {
+        if (hammer) {
+            hammer = !hammer;
+            return Weapon::shoot(deltaTime);
+        }
+        return false;
+    }
+
+    void pullTrigger(DeltaTime deltaTime) override {
+        hammer = true;
+    }
+
 private:
-    int ammo = 0;
-
-    float roundsPerSecond = 1;
-
-    float chamberTimer = 0;
-
+    bool hammer = false;
     ResourceHandle<Sprite> sprite;
 };
 

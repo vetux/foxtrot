@@ -33,6 +33,7 @@ struct InputComponent : public Messageable {
     bool aim = false; // If true the user wants to aim to the aimPosition
     Vec2f aimPosition; // The cursor position relative to the screen
     bool fire = false; // If true the user wants to shoot in this frame
+    bool fireHold = false; // If true the user wants to shoot in this frame
     bool reload = false; // If true the user wants to reload in this frame
     Vec2f movement = Vec2f(0); // The normalized input movement vector
     Weapon::Type weapon = Weapon::NONE; // The requested weapon

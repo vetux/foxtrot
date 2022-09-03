@@ -65,13 +65,16 @@ public:
               gatling_lowammo_5_cycle(std::move(gatling_lowammo_5_cycle)),
               gatling_lowammo_6_cycle(std::move(gatling_lowammo_6_cycle)),
               gatling_unloaded_0_cycle(std::move(gatling_unloaded_0_cycle)),
-              gatling_unloaded_1_cycle(std::move(gatling_unloaded_1_cycle)) {}
+              gatling_unloaded_1_cycle(std::move(gatling_unloaded_1_cycle)) {
+        clipSize = 300;
+        reloadDuration = 1;
+    }
 
     ~Gatling() override = default;
 
     void update(DeltaTime deltaTime) override {
-        if (trigger) {
-            trigger = false;
+        if (engagedRotor) {
+            engagedRotor = false;
         } else {
             if (rpm > 0)
                 rpm -= deltaTime * spinDeceleration;
@@ -86,19 +89,20 @@ public:
         } else {
             chamberTimer = 0;
         }
+        Weapon::update(deltaTime);
     }
 
-    Type getType() override {
+    Type getType() const override {
         return GATLING;
     }
 
-    Visuals getVisuals() override {
+    Visuals getVisuals() const override {
         Visuals ret;
         ret.size = {100, 100};
         ret.center = {20, 50};
         ret.offset = {};
 
-        switch (ammo) {
+        switch (clip) {
             case 0:
                 if (!cycle)
                     ret.sprite = gatling_unloaded_0;
@@ -143,9 +147,9 @@ public:
                 break;
             default:
                 if (!cycle)
-                    ret.sprite = ammo % 2 == 0 ? gatling_fire_0 : gatling_fire_1;
+                    ret.sprite = clip % 2 == 0 ? gatling_fire_0 : gatling_fire_1;
                 else
-                    ret.sprite = ammo % 2 == 0 ? gatling_fire_0_cycle : gatling_fire_1_cycle;
+                    ret.sprite = clip % 2 == 0 ? gatling_fire_0_cycle : gatling_fire_1_cycle;
                 break;
         }
 
@@ -156,55 +160,50 @@ public:
         return ret;
     }
 
-    void setAmmo(int value) override {
-        ammo = value;
-    }
-
-    int getAmmo() override {
-        return ammo;
-    }
-
     bool shoot(DeltaTime deltaTime) override {
-        trigger = true;
+        accelerateRotor(deltaTime);
 
+        if (chamber && reloadTimer <= 0) {
+            if (Weapon::shoot(deltaTime)) {
+                chamber = false;
+                cycle = !cycle;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    float weight() const override {
+        return 0.8f;
+    }
+
+    Vec2f getAngleBounds() const override {
+        return {-45, 45};
+    }
+
+    int reload(DeltaTime deltaTime) override {
+        accelerateRotor(deltaTime);
+        return Weapon::reload(deltaTime);
+    }
+
+    void accelerateRotor(DeltaTime deltaTime) {
+        engagedRotor = true;
         rpm += deltaTime * spinAcceleration;
         if (rpm >= maxRpm) {
             rpm = maxRpm;
         }
-
-        if (chamber) {
-            if (ammo > 0) {
-                chamber = false;
-                cycle = !cycle;
-                ammo--;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    float weight() override {
-        return 0.8f;
-    }
-
-    Vec2f getAngleBounds() override {
-        return {-45, 45};
     }
 
 private:
-    int ammo = 0;
+    bool cycle = false;
+    bool chamber = false;
+    bool engagedRotor = false;
 
+    float lastRotation = 0;
     float chamberTimer = 0;
 
     float rpm = 0;
-
-    float lastRotation = 0;
-
-    bool trigger = false;
-
-    bool cycle = false;
-
-    bool chamber = false;
 
     float maxRpm = 1750;
     float spinAcceleration = 50;

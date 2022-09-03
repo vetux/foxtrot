@@ -1,0 +1,94 @@
+{
+  "sprites": [
+    {
+      "name": "idle",
+      "image": {
+        "uri": "images/celltile.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "hover",
+      "image": {
+        "uri": "images/celltile.png"
+      },
+      "offset": {
+        "position": {
+          "x": 32
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "press",
+      "image": {
+        "uri": "images/celltile.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "idle_selected",
+      "image": {
+        "uri": "images/celltile.png"
+      },
+      "offset": {
+        "position": {
+          "x": 96
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "hover_selected",
+      "image": {
+        "uri": "images/celltile.png"
+      },
+      "offset": {
+        "position": {
+          "x": 128
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "press_selected",
+      "image": {
+        "uri": "images/celltile.png"
+      },
+      "offset": {
+        "position": {
+          "x": 162
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}

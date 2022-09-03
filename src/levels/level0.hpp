@@ -32,6 +32,7 @@
 #include "systems/charactercontrollersystem.hpp"
 #include "systems/playercontrollersystem.hpp"
 #include "systems/gameguisystem.hpp"
+#include "systems/cursorsystem.hpp"
 
 class Level0 : public Level, public EventListener {
 public:
@@ -39,7 +40,6 @@ public:
            Window &window,
            Renderer2D &ren2d,
            FontDriver &fontDriver,
-           Archive &archive,
            std::vector<std::shared_ptr<EntityScene>> scenes)
             : eventBus(eventBus),
               target(window.getRenderTarget()),
@@ -50,14 +50,14 @@ public:
               playerControllerSystem(),
               canvasRenderSystem(ren2d,
                                  window.getRenderTarget(),
-                                 fontDriver,
-                                 archive),
+                                 fontDriver),
               bulletSystem(eventBus),
               gameGuiSystem(window.getInput(), eventBus),
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
               physicsSystem(*world, eventBus, 30),
-              cameraSystem(window.getRenderTarget(), Vec2f(-10000, -10000), Vec2f(10000, 0)),
+              cameraSystem(window.getRenderTarget(), Vec2f(-10100, -10100), Vec2f(10100, 100)),
+              cursorSystem(window.getInput()),
               scenes(std::move(scenes)),
               ren2d(ren2d) {
         world->setGravity(Vec3f(0, -20, 0));
@@ -87,6 +87,7 @@ public:
                  cameraSystem,
 
                  gameGuiSystem,
+                 cursorSystem,
 
                  spriteAnimationSystem,
                  canvasRenderSystem});
@@ -133,6 +134,7 @@ private:
     CharacterControllerSystem characterControllerSystem;
     PlayerControllerSystem playerControllerSystem;
     GameGuiSystem gameGuiSystem;
+    CursorSystem cursorSystem;
 
     PhysicsSystem physicsSystem;
     CameraSystem cameraSystem;

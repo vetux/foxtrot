@@ -77,6 +77,18 @@ public:
         }
     }
 
+    const Weapon &getWeapon() const {
+        switch (equippedWeapon) {
+            default:
+            case Weapon::NONE:
+                return noWeapon;
+            case Weapon::PISTOL:
+                return pistol;
+            case Weapon::GATLING:
+                return gatling;
+        }
+    }
+
     void setEquippedWeapon(Weapon::Type type) {
         equippedWeapon = type;
     }
