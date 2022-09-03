@@ -59,7 +59,7 @@ public:
 
     virtual int getAmmo() { return 0; }
 
-    virtual bool shoot() { return false; }
+    virtual bool shoot(DeltaTime deltaTime) { return false; }
 
     virtual float weight() { return 0; }
 

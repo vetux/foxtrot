@@ -67,7 +67,7 @@ public:
         return ammo;
     }
 
-    bool shoot() override {
+    bool shoot(DeltaTime deltaTime) override {
         if (ammo <= 0 || chamberTimer > 0)
             return false;
         ammo--;

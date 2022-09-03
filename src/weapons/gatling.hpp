@@ -35,7 +35,17 @@ public:
             ResourceHandle<Sprite> gatling_lowammo_5,
             ResourceHandle<Sprite> gatling_lowammo_6,
             ResourceHandle<Sprite> gatling_unloaded_0,
-            ResourceHandle<Sprite> gatling_unloaded_1)
+            ResourceHandle<Sprite> gatling_unloaded_1,
+            ResourceHandle<Sprite> gatling_fire_0_cycle,
+            ResourceHandle<Sprite> gatling_fire_1_cycle,
+            ResourceHandle<Sprite> gatling_lowammo_1_cycle,
+            ResourceHandle<Sprite> gatling_lowammo_2_cycle,
+            ResourceHandle<Sprite> gatling_lowammo_3_cycle,
+            ResourceHandle<Sprite> gatling_lowammo_4_cycle,
+            ResourceHandle<Sprite> gatling_lowammo_5_cycle,
+            ResourceHandle<Sprite> gatling_lowammo_6_cycle,
+            ResourceHandle<Sprite> gatling_unloaded_0_cycle,
+            ResourceHandle<Sprite> gatling_unloaded_1_cycle)
             : gatling_fire_0(std::move(gatling_fire_0)),
               gatling_fire_1(std::move(gatling_fire_1)),
               gatling_lowammo_1(std::move(gatling_lowammo_1)),
@@ -45,16 +55,36 @@ public:
               gatling_lowammo_5(std::move(gatling_lowammo_5)),
               gatling_lowammo_6(std::move(gatling_lowammo_6)),
               gatling_unloaded_0(std::move(gatling_unloaded_0)),
-              gatling_unloaded_1(std::move(gatling_unloaded_1)) {}
+              gatling_unloaded_1(std::move(gatling_unloaded_1)),
+              gatling_fire_0_cycle(std::move(gatling_fire_0_cycle)),
+              gatling_fire_1_cycle(std::move(gatling_fire_1_cycle)),
+              gatling_lowammo_1_cycle(std::move(gatling_lowammo_1_cycle)),
+              gatling_lowammo_2_cycle(std::move(gatling_lowammo_2_cycle)),
+              gatling_lowammo_3_cycle(std::move(gatling_lowammo_3_cycle)),
+              gatling_lowammo_4_cycle(std::move(gatling_lowammo_4_cycle)),
+              gatling_lowammo_5_cycle(std::move(gatling_lowammo_5_cycle)),
+              gatling_lowammo_6_cycle(std::move(gatling_lowammo_6_cycle)),
+              gatling_unloaded_0_cycle(std::move(gatling_unloaded_0_cycle)),
+              gatling_unloaded_1_cycle(std::move(gatling_unloaded_1_cycle)) {}
 
     ~Gatling() override = default;
 
     void update(DeltaTime deltaTime) override {
-        if (chamberTimer > 0) {
-            chamberTimer -= deltaTime;
-            if (chamberTimer < 0) {
+        if (trigger) {
+            trigger = false;
+        } else {
+            if (rpm > 0)
+                rpm -= deltaTime * spinDeceleration;
+        }
+        if (rpm > 0) {
+            chamberTimer += deltaTime;
+            if (chamberTimer >= 60 / rpm) {
                 chamberTimer = 0;
+                cycle = !cycle;
+                chamber = true;
             }
+        } else {
+            chamberTimer = 0;
         }
     }
 
@@ -70,28 +100,52 @@ public:
 
         switch (ammo) {
             case 0:
-                ret.sprite = gatling_unloaded_0;
-                break;
-            case 1:
-                ret.sprite = gatling_lowammo_1;
-                break;
-            case 2:
-                ret.sprite = gatling_lowammo_2;
-                break;
-            case 3:
-                ret.sprite = gatling_lowammo_3;
-                break;
-            case 4:
-                ret.sprite = gatling_lowammo_4;
-                break;
-            case 5:
-                ret.sprite = gatling_lowammo_5;
+                if (!cycle)
+                    ret.sprite = gatling_unloaded_0;
+                else
+                    ret.sprite = gatling_unloaded_0_cycle;
                 break;
             case 6:
-                ret.sprite = gatling_lowammo_6;
+                if (!cycle)
+                    ret.sprite = gatling_lowammo_1;
+                else
+                    ret.sprite = gatling_lowammo_1_cycle;
+                break;
+            case 5:
+                if (!cycle)
+                    ret.sprite = gatling_lowammo_2;
+                else
+                    ret.sprite = gatling_lowammo_2_cycle;
+                break;
+            case 4:
+                if (!cycle)
+                    ret.sprite = gatling_lowammo_3;
+                else
+                    ret.sprite = gatling_lowammo_3_cycle;
+                break;
+            case 3:
+                if (!cycle)
+                    ret.sprite = gatling_lowammo_4;
+                else
+                    ret.sprite = gatling_lowammo_4_cycle;
+                break;
+            case 2:
+                if (!cycle)
+                    ret.sprite = gatling_lowammo_5;
+                else
+                    ret.sprite = gatling_lowammo_5_cycle;
+                break;
+            case 1:
+                if (!cycle)
+                    ret.sprite = gatling_lowammo_6;
+                else
+                    ret.sprite = gatling_lowammo_6_cycle;
                 break;
             default:
-                ret.sprite = ammo % 2 == 0 ? gatling_fire_0 : gatling_fire_1;
+                if (!cycle)
+                    ret.sprite = ammo % 2 == 0 ? gatling_fire_0 : gatling_fire_1;
+                else
+                    ret.sprite = ammo % 2 == 0 ? gatling_fire_0_cycle : gatling_fire_1_cycle;
                 break;
         }
 
@@ -110,12 +164,23 @@ public:
         return ammo;
     }
 
-    bool shoot() override {
-        if (ammo <= 0 || chamberTimer > 0)
-            return false;
-        ammo--;
-        chamberTimer += 1.0f / roundsPerSecond;
-        return true;
+    bool shoot(DeltaTime deltaTime) override {
+        trigger = true;
+
+        rpm += deltaTime * spinAcceleration;
+        if (rpm >= maxRpm) {
+            rpm = maxRpm;
+        }
+
+        if (chamber) {
+            if (ammo > 0) {
+                chamber = false;
+                cycle = !cycle;
+                ammo--;
+                return true;
+            }
+        }
+        return false;
     }
 
     float weight() override {
@@ -129,9 +194,21 @@ public:
 private:
     int ammo = 0;
 
-    float roundsPerSecond = 10;
-
     float chamberTimer = 0;
+
+    float rpm = 0;
+
+    float lastRotation = 0;
+
+    bool trigger = false;
+
+    bool cycle = false;
+
+    bool chamber = false;
+
+    float maxRpm = 1750;
+    float spinAcceleration = 50;
+    float spinDeceleration = 50;
 
     ResourceHandle<Sprite> gatling_fire_0;
     ResourceHandle<Sprite> gatling_fire_1;
@@ -143,6 +220,16 @@ private:
     ResourceHandle<Sprite> gatling_lowammo_6;
     ResourceHandle<Sprite> gatling_unloaded_0;
     ResourceHandle<Sprite> gatling_unloaded_1;
+    ResourceHandle<Sprite> gatling_fire_0_cycle;
+    ResourceHandle<Sprite> gatling_fire_1_cycle;
+    ResourceHandle<Sprite> gatling_lowammo_1_cycle;
+    ResourceHandle<Sprite> gatling_lowammo_2_cycle;
+    ResourceHandle<Sprite> gatling_lowammo_3_cycle;
+    ResourceHandle<Sprite> gatling_lowammo_4_cycle;
+    ResourceHandle<Sprite> gatling_lowammo_5_cycle;
+    ResourceHandle<Sprite> gatling_lowammo_6_cycle;
+    ResourceHandle<Sprite> gatling_unloaded_0_cycle;
+    ResourceHandle<Sprite> gatling_unloaded_1_cycle;
 };
 
 #endif //FOXTROT_GATLING_HPP

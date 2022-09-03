@@ -100,7 +100,7 @@ class PlayerControllerSystem : public System {
             bool shoot = false;
 
             if (input.fire && !isDead) {
-                shoot = player.player.getWeapon().shoot();
+                shoot = player.player.getWeapon().shoot(deltaTime);
             }
 
             if (input.reload && !isDead) {
@@ -181,15 +181,9 @@ class PlayerControllerSystem : public System {
                 } else {
                     muzzleRect.rotation = character.facingLeft ? 180 : 0;
                 }
-
-                if (input.aim) {
-                    if (character.facingLeft) {
-                        visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
-                    }
-                } else {
-                    if (character.facingLeft) {
-                        visuals.muzzleOffset.x = -visuals.muzzleOffset.x;
-                    }
+                
+                if (character.facingLeft) {
+                    visuals.muzzleOffset.y = -visuals.muzzleOffset.y;
                 }
 
                 auto vec = rotateVectorAroundPoint(Vec2f(weaponWorld.getPosition().x, weaponWorld.getPosition().y) +

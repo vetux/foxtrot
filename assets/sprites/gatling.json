@@ -1,0 +1,274 @@
+{
+  "sprites": [
+    {
+      "name": "0",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "1",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 32
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "2",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "3",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 96
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "4",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 128
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "5",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 160
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "6",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 192
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "7",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 224
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "8",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 256
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "9",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 288
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "10",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 320
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "11",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 352
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "12",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 384
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "13",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 416
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "14",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 448
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "15",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 480
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "16",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 512
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    },
+    {
+      "name": "17",
+      "image": {
+        "uri": "images/gatling.png"
+      },
+      "offset": {
+        "position": {
+          "x": 544
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 32
+        }
+      }
+    }
+  ]
+}

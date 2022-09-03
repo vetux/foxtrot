@@ -40,7 +40,7 @@ public:
         return visuals;
     }
 
-    bool shoot() override {
+    bool shoot(DeltaTime deltaTime) override {
         return true;
     }
 
