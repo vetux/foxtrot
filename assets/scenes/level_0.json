@@ -10,14 +10,6 @@
       }
     },
     {
-      "name": "OverlayCanvas",
-      "components": {
-        "canvas": {
-          "layer": 1
-        }
-      }
-    },
-    {
       "name": "GuiCanvas",
       "components": {
         "canvas": {
@@ -27,6 +19,14 @@
           },
           "lockAspectRatio": true,
           "fitToScreen": true,
+          "layer": 1
+        }
+      }
+    },
+    {
+      "name": "OverlayCanvas",
+      "components": {
+        "canvas": {
           "layer": 2
         }
       }
