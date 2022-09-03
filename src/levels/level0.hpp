@@ -53,7 +53,7 @@ public:
                                  fontDriver,
                                  archive),
               bulletSystem(eventBus),
-              gameGuiSystem(eventBus),
+              gameGuiSystem(window.getInput(), eventBus),
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
               physicsSystem(*world, eventBus, 30),
@@ -85,6 +85,8 @@ public:
                  bulletSystem,
 
                  cameraSystem,
+
+                 gameGuiSystem,
 
                  spriteAnimationSystem,
                  canvasRenderSystem});

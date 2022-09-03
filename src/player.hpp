@@ -29,8 +29,21 @@
 
 class Player : public Messageable {
 public:
+    enum Pose {
+        GUN_AIM,
+        GUN_HIP,
+    };
+
     Player()
-            : pistol(ResourceHandle<Sprite>(Uri("sprites/pistol.json"))),
+            : idleAnimationAim(Uri("animations/dante_idle.json")),
+              walkAnimationAim(Uri("animations/dante_run.json")),
+              runAnimationAim(Uri("animations/dante_run.json")),
+              idleAnimationHip(Uri("animations/dante_idle_low.json")),
+              runAnimationHip(Uri("animations/dante_run_low.json")),
+              walkAnimationHip(Uri("animations/dante_run_low.json")),
+              fallAnimation(Uri("animations/dante_fall.json")),
+              deathAnimation(Uri("animations/dante_death.json")),
+              pistol(ResourceHandle<Sprite>(Uri("sprites/pistol.json"))),
               gatling(ResourceHandle<Sprite>(Uri("sprites/gatling_fire_0.json")),
                       ResourceHandle<Sprite>(Uri("sprites/gatling_fire_1.json")),
                       ResourceHandle<Sprite>(Uri("sprites/gatling_lowammo_1.json")),
@@ -62,6 +75,28 @@ public:
         return equippedWeapon;
     }
 
+    void setPose(Pose value) {
+        pose = value;
+    }
+
+    Pose getPose() const {
+        return pose;
+    }
+
+    Vec2f getWeaponOffset() {
+        if (falling){
+            return Vec2f(-30, 50);
+        } else {
+            switch (pose) {
+                default:
+                case GUN_AIM:
+                    return Vec2f(-45, 35);
+                case GUN_HIP:
+                    return Vec2f(-25, 5);
+            }
+        }
+    }
+
     void setInventory(const Inventory &inv) {
         inventory = inv;
     }
@@ -76,6 +111,55 @@ public:
 
     const Account &getAccount() const {
         return account;
+    }
+
+    void setIsFalling(bool value){
+        falling = value ;
+    }
+
+    float getMaxVelocity() {
+        return 20;
+    }
+
+    ResourceHandle<SpriteAnimation> getIdleAnimation() const {
+        switch (pose) {
+            default:
+            case GUN_HIP:
+                return idleAnimationHip;
+            case GUN_AIM:
+                return idleAnimationAim;
+
+        }
+    }
+
+    ResourceHandle<SpriteAnimation> getWalkAnimation() const {
+        switch (pose) {
+            default:
+            case GUN_HIP:
+                return walkAnimationHip;
+            case GUN_AIM:
+                return walkAnimationAim;
+
+        }
+    }
+
+    ResourceHandle<SpriteAnimation> getRunAnimation() const {
+        switch (pose) {
+            default:
+            case GUN_HIP:
+                return runAnimationHip;
+            case GUN_AIM:
+                return runAnimationAim;
+
+        }
+    }
+
+    ResourceHandle<SpriteAnimation> getFallAnimation() const {
+        return fallAnimation;
+    }
+
+    ResourceHandle<SpriteAnimation> getDeathAnimation() const {
+        return deathAnimation;
     }
 
     void update(DeltaTime deltaTime) {
@@ -102,11 +186,28 @@ private:
     Account account;
     Inventory inventory;
     Weapon::Type equippedWeapon = Weapon::NONE;
+    Pose pose;
+
+    Vec2f velocity;
+
+    ResourceHandle<SpriteAnimation> idleAnimationAim;
+    ResourceHandle<SpriteAnimation> walkAnimationAim;
+    ResourceHandle<SpriteAnimation> runAnimationAim;
+
+    ResourceHandle<SpriteAnimation> idleAnimationHip;
+    ResourceHandle<SpriteAnimation> walkAnimationHip;
+    ResourceHandle<SpriteAnimation> runAnimationHip;
+
+    ResourceHandle<SpriteAnimation> fallAnimation;
+
+    ResourceHandle<SpriteAnimation> deathAnimation;
 
     Weapon noWeapon;
     Pistol pistol;
     Gatling gatling;
     Katana katana;
+
+    bool falling = false;
 };
 
 #endif //FOXTROT_PLAYER_HPP

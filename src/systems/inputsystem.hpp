@@ -23,6 +23,7 @@
 #include "xengine.hpp"
 
 #include "components/inputcomponent.hpp"
+#include "components/healthcomponent.hpp"
 
 using namespace xng;
 
@@ -32,8 +33,6 @@ public:
             : input(input) {}
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
-        bool aiming = false;
-
         std::map<EntityHandle, InputComponent> updates;
         for (auto &pair: scene.getPool<InputComponent>()) {
             if (pair.second.slot < 0)
@@ -63,6 +62,17 @@ public:
                 comp.aim = !comp.aim;
             }
 
+            if (kb.getKeyDown(xng::KEY_LCTRL)){
+                switch(comp.pose){
+                    case Player::GUN_HIP:
+                        comp.pose = Player::GUN_AIM;
+                        break;
+                    default:
+                        comp.pose = Player::GUN_HIP;
+                        break;
+                }
+            }
+
             if (kb.getKeyDown(xng::KEY_1)){
                 comp.weapon = Weapon::NONE;
             } else if (kb.getKeyDown(xng::KEY_2)){
@@ -76,16 +86,12 @@ public:
             comp.fire = mouse.getButton(xng::LEFT) || kb.getKey(xng::KEY_SPACE);
             comp.reload = kb.getKeyDown(xng::KEY_R);
 
-            aiming = comp.aim;
-
             updates[pair.first] = comp;
         }
 
         for (auto &pair: updates) {
             scene.updateComponent(pair.first, pair.second);
         }
-
-        input.setMouseCursorHidden(aiming);
     }
 
 private:

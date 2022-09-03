@@ -22,12 +22,14 @@
 
 #include "xengine.hpp"
 
+#include "components/playercomponent.hpp"
+
 using namespace xng;
 
 class GameGuiSystem : public System, public EventListener {
 public:
-    explicit GameGuiSystem(EventBus &bus)
-            : eventBus(bus) {}
+    explicit GameGuiSystem(Input &input, EventBus &bus)
+            : input(input), eventBus(bus) {}
 
     void start(EntityScene &scene) override {
         eventBus.addListener(*this);
@@ -37,11 +39,24 @@ public:
         eventBus.removeListener(*this);
     }
 
+    void update(DeltaTime deltaTime, EntityScene &scene) override {
+        for (auto &pair: scene.getPool<InputComponent>()) {
+            auto &health = scene.lookup<HealthComponent>(pair.first);
+            if (health.health > 0 && pair.second.aim) {
+                input.setMouseCursorHidden(true);
+            } else {
+                input.setMouseCursorHidden(false);
+            }
+            break;
+        }
+    }
+
     void onEvent(const Event &event) override {
 
     }
 
 private:
+    Input &input;
     EventBus &eventBus;
 };
 

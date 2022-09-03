@@ -23,6 +23,7 @@
 #include "xengine.hpp"
 
 #include "weapon.hpp"
+#include "player.hpp"
 
 using namespace xng;
 
@@ -35,6 +36,7 @@ struct InputComponent : public Messageable {
     bool reload = false; // If true the user wants to reload in this frame
     Vec2f movement = Vec2f(0); // The normalized input movement vector
     Weapon::Type weapon = Weapon::NONE; // The requested weapon
+    Player::Pose pose = Player::GUN_HIP;
 
     Messageable &operator<<(const Message &message) override {
         slot = message.value("slot", 0);

@@ -112,36 +112,43 @@ public:
             }
 
             // Apply movement
-            if (input.movement.x != 0) {
-                auto maxVel = character.maxVelocity;
-                if ((input.movement.x < 0 && rb.velocity.x > -maxVel)
-                    || (input.movement.x > 0 && rb.velocity.x < maxVel)) {
-                    rb.velocity.x += input.movement.x * character.acceleration;
-                    if (rb.velocity.x < -maxVel)
-                        rb.velocity.x = -maxVel;
-                    else if (rb.velocity.x > maxVel)
-                        rb.velocity.x = maxVel;
+            if (character.isOnFloor
+                && health.health > 0) {
+                if (input.movement.x != 0) {
+                    auto maxVel = character.maxVelocity;
+                    if ((input.movement.x < 0 && rb.velocity.x > -maxVel)
+                        || (input.movement.x > 0 && rb.velocity.x < maxVel)) {
+                        rb.velocity.x += input.movement.x * character.acceleration;
+                        if (rb.velocity.x < -maxVel)
+                            rb.velocity.x = -maxVel;
+                        else if (rb.velocity.x > maxVel)
+                            rb.velocity.x = maxVel;
+                    }
+                } else {
+                    if (rb.velocity.x < -character.drag) {
+                        rb.velocity.x += character.drag;
+                    } else if (rb.velocity.x > character.drag) {
+                        rb.velocity.x -= character.drag;
+                    }
                 }
-            } else {
-                if (rb.velocity.x < -character.drag) {
-                    rb.velocity.x += character.drag;
-                } else if (rb.velocity.x > character.drag) {
-                    rb.velocity.x -= character.drag;
-                }
-            }
 
-            // Apply jumping
-            if (input.movement.y > 0) {
-                if (character.isOnFloor) {
+                // Apply jumping
+                if (input.movement.y > 0) {
                     rb.impulse = Vec3f(0, rb.mass, 0);
                     rb.impulsePoint = tcomp.transform.getPosition();
                 }
             }
 
+            bool isFalling = (rb.velocity.y > character.fallVelocity || rb.velocity.y < -character.fallVelocity)
+                             && !character.isOnFloor;
+
             // Apply animation
             if (health.health <= 0
                 && character.deathAnimation.assigned()) {
                 anim.animation = character.deathAnimation;
+            } else if (isFalling
+                       && character.fallAnimation.assigned()) {
+                anim.animation = character.fallAnimation;
             } else if (character.runAnimation.assigned() &&
                        (rb.velocity.x > character.runVelocity || rb.velocity.x < -character.runVelocity)) {
                 anim.animation = character.runAnimation;

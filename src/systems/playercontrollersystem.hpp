@@ -81,16 +81,29 @@ class PlayerControllerSystem : public System {
                 createWeaponEntity(pair.first, scene);
             }
 
+            bool isFalling = (rb.velocity.y > character.fallVelocity || rb.velocity.y < -character.fallVelocity)
+                             && !character.isOnFloor;
+
+            bool isDead = health.health <= 0;
+
+            player.player.setIsFalling(isFalling);
             player.player.setEquippedWeapon(input.weapon);
+            player.player.setPose(input.pose);
             player.player.update(deltaTime);
+
+            character.idleAnimation = player.player.getIdleAnimation();
+            character.walkAnimation = player.player.getWalkAnimation();
+            character.runAnimation = player.player.getRunAnimation();
+            character.fallAnimation = player.player.getFallAnimation();
+            character.deathAnimation = player.player.getDeathAnimation();
 
             bool shoot = false;
 
-            if (input.fire) {
+            if (input.fire && !isDead) {
                 shoot = player.player.getWeapon().shoot();
             }
 
-            if (input.reload) {
+            if (input.reload && !isDead) {
                 player.player.getWeapon().setAmmo(player.player.getWeapon().getAmmo() + 10);
             }
 
@@ -101,13 +114,15 @@ class PlayerControllerSystem : public System {
 
             auto visuals = player.player.getWeapon().getVisuals();
 
+            auto offset = visuals.offset + player.player.getWeaponOffset();
+            if (character.facingLeft)
+                offset.x *= -1;
+
             weaponSprite.layer = -1;
             weaponSprite.sprite = visuals.sprite;
             weaponTransform.transform.setPosition(
-                    {character.facingLeft
-                     ? -visuals.offset.x
-                     : +visuals.offset.x,
-                     visuals.offset.y,
+                    {offset.x,
+                     offset.y,
                      0});
             weaponRect.canvas = "MainCanvas";
             weaponRect.rect.dimensions = visuals.size;
@@ -193,40 +208,32 @@ class PlayerControllerSystem : public System {
                 auto rotation = Vec3f(0, 0, muzzleRect.rotation);
                 auto muzzleWorld = TransformComponent::walkHierarchy(muzzleTransform, scene);
                 SmallBullet::create(scene,
-                                    Transform( muzzleWorld.getPosition(),
+                                    Transform(muzzleWorld.getPosition(),
                                               rotation + muzzleWorld.getRotation().getEulerAngles(),
                                               Vec3f(1) + muzzleWorld.getScale()),
                                     Vec3f(aimDir.x, aimDir.y, 0) * 100,
                                     "MainCanvas");
             }
 
-            switch (player.player.getEquippedWeapon()) {
-                case Weapon::PISTOL:
-                    character.idleAnimation = player.idleAnimation;
-                    character.walkAnimation = player.walkAnimation;
-                    break;
-                case Weapon::NONE:
-                case Weapon::GATLING:
-                    character.idleAnimation = player.idleAnimationLow;
-                    character.walkAnimation = player.walkAnimationLow;
-                    break;
-            }
+            weaponRect.enabled = !isDead;
 
             weaponEnt.updateComponent(weaponSprite);
             weaponEnt.updateComponent(weaponTransform);
             weaponEnt.updateComponent(weaponRect);
 
-            character.maxVelocity = 20 * (1 - player.player.getWeapon().weight());
+            character.maxVelocity = player.player.getMaxVelocity() * (1 - player.player.getWeapon().weight());
 
             if (anim.animation.assigned()) {
                 if (rb.velocity.x >= 0) {
                     anim.animationDurationOverride = anim.animation.get().getDuration() +
                                                      (anim.animation.get().getDuration() -
-                                                      (anim.animation.get().getDuration() * (rb.velocity.x / 20)));
+                                                      (anim.animation.get().getDuration() *
+                                                       (rb.velocity.x / player.player.getMaxVelocity())));
                 } else {
                     anim.animationDurationOverride = anim.animation.get().getDuration() +
                                                      (anim.animation.get().getDuration() -
-                                                      (anim.animation.get().getDuration() * (-rb.velocity.x / 20)));
+                                                      (anim.animation.get().getDuration() *
+                                                       (-rb.velocity.x / player.player.getMaxVelocity())));
                 }
             } else {
                 anim.animationDurationOverride = 0;
@@ -237,7 +244,7 @@ class PlayerControllerSystem : public System {
 
             playerUpdates[pair.first] = player;
 
-            isAiming = input.aim;
+            isAiming = input.aim && !isDead;
             aimPosition = input.aimPosition;
         }
 

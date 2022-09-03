@@ -30,6 +30,7 @@ struct CharacterControllerComponent : public Messageable {
     ResourceHandle<SpriteAnimation> idleAnimation;
     ResourceHandle<SpriteAnimation> walkAnimation;
     ResourceHandle<SpriteAnimation> runAnimation;
+    ResourceHandle<SpriteAnimation> fallAnimation;
     ResourceHandle<SpriteAnimation> deathAnimation;
 
     float damageTimer = 0;
@@ -39,8 +40,9 @@ struct CharacterControllerComponent : public Messageable {
     float maxVelocity = 10;
     float acceleration = 5;
     float drag = 0.2f;
-    float walkVelocity = 0.1f;
+    float walkVelocity = 1;
     float runVelocity = 5;
+    float fallVelocity = 1;
 
     bool facingLeft = false;
 
