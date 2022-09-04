@@ -72,12 +72,9 @@ public:
             auto handle = ResourceHandle<EntityScene>(Uri("scenes/level_0.json"));
             auto s = handle.get();
             scene = std::make_shared<EntityScene>(s);
-            listener.onLoadProgress(getID(), 0.1);
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            listener.onLoadProgress(getID(), 0.3);
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            listener.onLoadProgress(getID(), 0.9);
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            listener.onLoadProgress(getID(), 0.5);
+            ResourceRegistry::getDefaultRegistry().awaitImports();
+            listener.onLoadProgress(getID(), 1);
             listener.onLoadFinish(getID());
         });
     }
