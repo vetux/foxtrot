@@ -21,7 +21,7 @@
 #define FOXTROT_PLAYER_HPP
 
 #include "weapons/gatling.hpp"
-#include "weapons/pistol.hpp"
+#include "weapons/revolver.hpp"
 #include "weapons/katana.hpp"
 
 #include "inventory.hpp"
@@ -43,7 +43,7 @@ public:
               walkAnimationHip(Uri("animations/dante_run_low.json")),
               fallAnimation(Uri("animations/dante_fall.json")),
               deathAnimation(Uri("animations/dante_death.json")),
-              pistol(ResourceHandle<Sprite>(Uri("sprites/pistol.json"))),
+              pistol(),
               gatling(ResourceHandle<Sprite>(Uri("sprites/gatling.json$0")),
                       ResourceHandle<Sprite>(Uri("sprites/gatling.json$2")),
                       ResourceHandle<Sprite>(Uri("sprites/gatling.json$4")),
@@ -70,7 +70,7 @@ public:
             default:
             case Weapon::NONE:
                 return noWeapon;
-            case Weapon::PISTOL:
+            case Weapon::REVOLVER:
                 return pistol;
             case Weapon::GATLING:
                 return gatling;
@@ -82,7 +82,7 @@ public:
             default:
             case Weapon::NONE:
                 return noWeapon;
-            case Weapon::PISTOL:
+            case Weapon::REVOLVER:
                 return pistol;
             case Weapon::GATLING:
                 return gatling;
@@ -225,7 +225,7 @@ private:
     ResourceHandle<SpriteAnimation> deathAnimation;
 
     Weapon noWeapon;
-    Pistol pistol;
+    Revolver pistol;
     Gatling gatling;
     Katana katana;
 

@@ -28,7 +28,7 @@ public:
         NONE,
 
         // Ranged
-        PISTOL,
+        REVOLVER,
         GATLING,
 
         // Melee

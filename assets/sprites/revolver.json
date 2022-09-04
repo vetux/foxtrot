@@ -1,0 +1,49 @@
+{
+  "sprites": [
+    {
+      "name": "0",
+      "image": {
+        "uri": "images/revolver.png"
+      },
+      "offset": {
+        "position": {
+          "x": 0
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 16
+        }
+      }
+    },
+    {
+      "name": "1",
+      "image": {
+        "uri": "images/revolver.png"
+      },
+      "offset": {
+        "position": {
+          "x": 32
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 16
+        }
+      }
+    },
+    {
+      "name": "2",
+      "image": {
+        "uri": "images/revolver.png"
+      },
+      "offset": {
+        "position": {
+          "x": 64
+        },
+        "dimensions": {
+          "x": 32,
+          "y": 16
+        }
+      }
+    }
+  ]
+}

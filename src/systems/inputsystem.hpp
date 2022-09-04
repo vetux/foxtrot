@@ -76,7 +76,7 @@ public:
             if (kb.getKeyDown(xng::KEY_1)){
                 comp.weapon = Weapon::NONE;
             } else if (kb.getKeyDown(xng::KEY_2)){
-                comp.weapon = Weapon::PISTOL;
+                comp.weapon = Weapon::REVOLVER;
             } else if (kb.getKeyDown(xng::KEY_3)){
                 comp.weapon = Weapon::GATLING;
             }

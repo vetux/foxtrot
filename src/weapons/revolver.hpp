@@ -17,38 +17,43 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FOXTROT_PISTOL_HPP
-#define FOXTROT_PISTOL_HPP
+#ifndef FOXTROT_REVOLVER_HPP
+#define FOXTROT_REVOLVER_HPP
 
 #include "weapon.hpp"
 
-class Pistol : public Weapon {
+class Revolver : public Weapon {
 public:
-    Pistol() = default;
-
-    explicit Pistol(ResourceHandle<Sprite> sprite)
-            : sprite(std::move(sprite)) {
+    explicit Revolver()
+            : sprite(Uri("sprites/revolver.json$0")),
+              spriteRotation(Uri("sprites/revolver.json$1")),
+              spriteReload(Uri("sprites/revolver.json$2")) {
         reloadDuration = 2;
         clipSize = 9;
     }
 
-    ~Pistol() override = default;
+    ~Revolver() override = default;
 
     Type getType() const override {
-        return PISTOL;
+        return REVOLVER;
     }
 
     Visuals getVisuals() const override {
         Visuals ret;
-        ret.size = {40, 20};
-        ret.center = {10, 16};
+        ret.size = {70, 30};
+        ret.center = {20, 20};
         ret.offset = {0, 0};
-        ret.sprite = sprite;
+
+        if (reloadTimer > 0) {
+            ret.sprite = spriteReload;
+        } else {
+            ret.sprite = rotation ? sprite : spriteRotation;
+        }
 
         ret.muzzleFlash = ResourceHandle<SpriteAnimation>(Uri("animations/muzzle_a.json"));
         ret.muzzleSize = {50, 50};
         ret.muzzleCenter = {5, 25};
-        ret.muzzleOffset = {-30, 10};
+        ret.muzzleOffset = {-45, 15};
 
         return ret;
     }
@@ -64,6 +69,7 @@ public:
     bool shoot(DeltaTime deltaTime) override {
         if (hammer) {
             hammer = !hammer;
+            rotation = !rotation;
             return Weapon::shoot(deltaTime);
         }
         return false;
@@ -75,7 +81,10 @@ public:
 
 private:
     bool hammer = false;
+    bool rotation = false;
     ResourceHandle<Sprite> sprite;
+    ResourceHandle<Sprite> spriteRotation;
+    ResourceHandle<Sprite> spriteReload;
 };
 
-#endif //FOXTROT_PISTOL_HPP
+#endif //FOXTROT_REVOLVER_HPP
