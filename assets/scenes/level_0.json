@@ -1,610 +1,610 @@
 {
-  "name": "level_0",
-  "entities": [
+  "scenes": [
     {
-      "name": "MainCanvas",
-      "components": {
-        "canvas": {
-          "clear": true
-        }
-      }
-    },
-    {
-      "name": "GuiCanvas",
-      "components": {
-        "canvas": {
-          "projectionSize": {
-            "x": 1920,
-            "y": 1080
-          },
-          "lockAspectRatio": true,
-          "fitToScreen": true,
-          "layer": 1
-        }
-      }
-    },
-    {
-      "name": "OverlayCanvas",
-      "components": {
-        "canvas": {
-          "layer": 2
-        }
-      }
-    },
-    {
-      "name": "AmmoGUI",
-      "components": {
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": -125,
-              "y": 50
-            },
-            "dimensions": {
-              "x": 250,
-              "y": 100
-            }
-          },
-          "anchor": "top_right",
-          "center": {
-            "x": 125,
-            "y": 50
-          },
-          "rotation": 0,
-          "canvas": "GuiCanvas"
-        },
-        "text": {
-          "text": "AMMO",
-          "font": {
-            "uri": "fonts/Black_Ops_One/BlackOpsOne-Regular.ttf"
-          },
-          "pixelSize": {
-            "x": 0,
-            "y": 50
-          },
-          "textColor": {
-            "r": 0,
-            "g": 153,
-            "b": 0,
-            "a": 255
-          },
-          "lineHeight": 35,
-          "layer": 2
-        }
-      }
-    },
-    {
-      "name": "HealthGUI",
-      "components": {
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 125,
-              "y": 50
-            },
-            "dimensions": {
-              "x": 250,
-              "y": 100
-            }
-          },
-          "anchor": "top_left",
-          "center": {
-            "x": 125,
-            "y": 50
-          },
-          "rotation": 0,
-          "canvas": "GuiCanvas"
-        },
-        "text": {
-          "text": "AMMO",
-          "font": {
-            "uri": "fonts/Black_Ops_One/BlackOpsOne-Regular.ttf"
-          },
-          "pixelSize": {
-            "x": 0,
-            "y": 50
-          },
-          "textColor": {
-            "r": 0,
-            "g": 153,
-            "b": 0,
-            "a": 255
-          },
-          "lineHeight": 35,
-          "layer": 2
-        }
-      }
-    },
-    {
-      "name": "Player",
-      "components": {
-        "transform": {
-          "transform": {
-            "position": {
-              "y": 100
+      "name": "level_0",
+      "entities": [
+        {
+          "name": "MainCanvas",
+          "components": {
+            "canvas": {
+              "clear": true
             }
           }
         },
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 0
-            },
-            "dimensions": {
-              "x": 128,
-              "y": 128
+        {
+          "name": "GuiCanvas",
+          "components": {
+            "canvas": {
+              "layer": 1
             }
-          },
-          "center": {
-            "x": 64,
-            "y": 64
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/john_idle_0.json"
-          },
-          "layer": 0
-        },
-        "sprite_animation": {
-          "animation": {
-            "uri": "animations/john_idle.json"
           }
         },
-        "player": {
-          "idleAnimation": {
-            "uri": "animations/dante_idle.json"
-          },
-          "walkAnimation": {
-            "uri": "animations/dante_run.json"
-          },
-          "idleAnimationLow": {
-            "uri": "animations/dante_idle_low.json"
-          },
-          "walkAnimationLow": {
-            "uri": "animations/dante_run_low.json"
+        {
+          "name": "OverlayCanvas",
+          "components": {
+            "canvas": {
+              "layer": 2
+            }
           }
         },
-        "health": {},
-        "input": {},
-        "character": {
+        {
+          "name": "AmmoGUI",
+          "components": {
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": -150,
+                  "y": 75
+                },
+                "dimensions": {
+                  "x": 300,
+                  "y": 100
+                }
+              },
+              "anchor": "top_right",
+              "center": {
+                "x": 125,
+                "y": 50
+              },
+              "rotation": 0,
+              "canvas": "GuiCanvas"
+            },
+            "text": {
+              "text": "AMMO",
+              "font": {
+                "uri": "fonts/Black_Ops_One/BlackOpsOne-Regular.ttf"
+              },
+              "pixelSize": {
+                "x": 0,
+                "y": 50
+              },
+              "textColor": {
+                "r": 0,
+                "g": 153,
+                "b": 0,
+                "a": 255
+              },
+              "lineHeight": 35,
+              "textAnchor": "top_right",
+              "layer": 2
+            }
+          }
         },
-        "rigidbody": {
-          "type": "dynamic",
-          "is2D": true,
-          "lockedAxes": {
-            "z": true
-          },
-          "colliders": [
-            {
-              "density": 100,
-              "friction": 0.1,
-              "shape": {
-                "vertices": [
-                  {
-                    "x": -10,
-                    "y": -60
-                  },
-                  {
-                    "x": 10,
-                    "y": -60
-                  },
-                  {
-                    "x": 10,
-                    "y": 60
-                  },
-                  {
-                    "x": -10,
-                    "y": 60
-                  }
-                ]
+        {
+          "name": "HealthGUI",
+          "components": {
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 150,
+                  "y": 75
+                },
+                "dimensions": {
+                  "x": 250,
+                  "y": 100
+                }
+              },
+              "anchor": "top_left",
+              "center": {
+                "x": 125,
+                "y": 50
+              },
+              "rotation": 0,
+              "canvas": "GuiCanvas"
+            },
+            "text": {
+              "text": "AMMO",
+              "font": {
+                "uri": "fonts/Black_Ops_One/BlackOpsOne-Regular.ttf"
+              },
+              "pixelSize": {
+                "x": 0,
+                "y": 50
+              },
+              "textColor": {
+                "r": 0,
+                "g": 153,
+                "b": 0,
+                "a": 255
+              },
+              "lineHeight": 35,
+              "textAnchor": "top_left",
+              "layer": 2
+            }
+          }
+        },
+        {
+          "name": "Player",
+          "components": {
+            "transform": {
+              "transform": {
+                "position": {
+                  "y": 100
+                }
               }
             },
-            {
-              "density": 5,
-              "friction": 0,
-              "isSensor": true,
-              "shape": {
-                "vertices": [
-                  {
-                    "x": -10,
-                    "y": -60
-                  },
-                  {
-                    "x": 10,
-                    "y": -60
-                  },
-                  {
-                    "x": 10,
-                    "y": -62
-                  },
-                  {
-                    "x": -10,
-                    "y": -62
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Gunshop",
-      "components": {
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 0
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 128,
+                  "y": 128
+                }
+              },
+              "center": {
+                "x": 64,
+                "y": 64
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
             },
-            "dimensions": {
-              "x": 400,
-              "y": 400
-            }
-          },
-          "center": {
-            "x": 200,
-            "y": 400
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/gunshop_closed.json"
-          },
-          "layer": -10
-        }
-      }
-    },
-    {
-      "name": "Gunshop Railing",
-      "components": {
-        "transform": {},
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 0
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/john_idle_0.json"
+              },
+              "layer": 0
             },
-            "dimensions": {
-              "x": 400,
-              "y": 400
-            }
-          },
-          "center": {
-            "x": 200,
-            "y": 400
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/gunshop_railing.json"
-          },
-          "layer": 1
-        },
-        "floor": {},
-        "rigidbody": {
-          "is2D": true,
-          "colliders": [
-            {
-              "friction": 0.5,
-              "shape": {
-                "vertices": [
-                  {
-                    "x": 200,
-                    "y": 0
-                  },
-                  {
-                    "x": 150,
-                    "y": 55
-                  },
-                  {
-                    "x": -150,
-                    "y": 55
-                  },
-                  {
-                    "x": -200,
-                    "y": 0
-                  }
-                ]
+            "sprite_animation": {
+              "animation": {
+                "uri": "animations/john_idle.json"
               }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Backdrop",
-      "components": {
-        "transform": {
-          "transform": {
-            "position": {
-              "x": 10000,
-              "y": 10000
+            },
+            "player": {
+              "idleAnimation": {
+                "uri": "animations/dante_idle.json"
+              },
+              "walkAnimation": {
+                "uri": "animations/dante_run.json"
+              },
+              "idleAnimationLow": {
+                "uri": "animations/dante_idle_low.json"
+              },
+              "walkAnimationLow": {
+                "uri": "animations/dante_run_low.json"
+              }
+            },
+            "health": {},
+            "input": {},
+            "character": {
+            },
+            "rigidbody": {
+              "type": "dynamic",
+              "is2D": true,
+              "lockedAxes": {
+                "z": true
+              },
+              "colliders": [
+                {
+                  "density": 100,
+                  "friction": 0.1,
+                  "shape": {
+                    "vertices": [
+                      {
+                        "x": -10,
+                        "y": -60
+                      },
+                      {
+                        "x": 10,
+                        "y": -60
+                      },
+                      {
+                        "x": 10,
+                        "y": 60
+                      },
+                      {
+                        "x": -10,
+                        "y": 60
+                      }
+                    ]
+                  }
+                },
+                {
+                  "density": 5,
+                  "friction": 0,
+                  "isSensor": true,
+                  "shape": {
+                    "vertices": [
+                      {
+                        "x": -10,
+                        "y": -60
+                      },
+                      {
+                        "x": 10,
+                        "y": -60
+                      },
+                      {
+                        "x": 10,
+                        "y": -62
+                      },
+                      {
+                        "x": -10,
+                        "y": -62
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           }
         },
-        "backdrop": {
-          "daySprite": {
-            "uri": "sprites/backdrop.json"
-          },
-          "nightSprite": {
-            "uri": "sprites/backdrop_night.json"
-          }
-        },
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 0
+        {
+          "name": "Gunshop",
+          "components": {
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 400,
+                  "y": 400
+                }
+              },
+              "center": {
+                "x": 200,
+                "y": 400
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
             },
-            "dimensions": {
-              "x": 20000,
-              "y": 10000
-            }
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/backdrop.json"
-          },
-          "layer": -100
-        }
-      }
-    },
-    {
-      "name": "Bounds left",
-      "components": {
-        "transform": {
-          "transform": {
-            "position": {
-              "x": 10000,
-              "y": 5000
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/gunshop_closed.json"
+              },
+              "layer": -10
             }
           }
         },
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 0
+        {
+          "name": "Gunshop Railing",
+          "components": {
+            "transform": {},
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 400,
+                  "y": 400
+                }
+              },
+              "center": {
+                "x": 200,
+                "y": 400
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
             },
-            "dimensions": {
-              "x": 1,
-              "y": 1
-            }
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/gatling_unloaded_0.json"
-          },
-          "layer": 1
-        },
-        "rigidbody": {
-          "is2D": true,
-          "colliders": [
-            {
-              "shape": {
-                "primitive": "quad",
-                "vertices": [
-                  {
-                    "x": 1,
-                    "y": -5000
-                  },
-                  {
-                    "x": 1,
-                    "y": 5000
-                  },
-                  {
-                    "x": -1,
-                    "y": 5000
-                  },
-                  {
-                    "x": -1,
-                    "y": -5000
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/gunshop_railing.json"
+              },
+              "layer": 1
+            },
+            "floor": {},
+            "rigidbody": {
+              "is2D": true,
+              "colliders": [
+                {
+                  "friction": 0.5,
+                  "shape": {
+                    "vertices": [
+                      {
+                        "x": 200,
+                        "y": 0
+                      },
+                      {
+                        "x": 150,
+                        "y": 55
+                      },
+                      {
+                        "x": -150,
+                        "y": 55
+                      },
+                      {
+                        "x": -200,
+                        "y": 0
+                      }
+                    ]
                   }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Bounds right",
-      "components": {
-        "transform": {
-          "transform": {
-            "position": {
-              "x": -10000,
-              "y": 5000
+                }
+              ]
             }
           }
         },
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 0
-            },
-            "dimensions": {
-              "x": 1,
-              "y": 1
-            }
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/gatling_unloaded_0.json"
-          },
-          "layer": 1
-        },
-        "rigidbody": {
-          "is2D": true,
-          "colliders": [
-            {
-              "shape": {
-                "primitive": "quad",
-                "vertices": [
-                  {
-                    "x": 1,
-                    "y": -5000
-                  },
-                  {
-                    "x": 1,
-                    "y": 5000
-                  },
-                  {
-                    "x": -1,
-                    "y": 5000
-                  },
-                  {
-                    "x": -1,
-                    "y": -5000
-                  }
-                ]
+        {
+          "name": "Backdrop",
+          "components": {
+            "transform": {
+              "transform": {
+                "position": {
+                  "x": 10000,
+                  "y": 10000
+                }
               }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Bounds top",
-      "components": {
-        "transform": {
-          "transform": {
-            "position": {
-              "x": 0,
-              "y": 10000
+            },
+            "backdrop": {
+              "daySprite": {
+                "uri": "sprites/backdrop.json"
+              },
+              "nightSprite": {
+                "uri": "sprites/backdrop_night.json"
+              }
+            },
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 20000,
+                  "y": 10000
+                }
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
+            },
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/backdrop.json"
+              },
+              "layer": -100
             }
           }
         },
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 0
-            },
-            "dimensions": {
-              "x": 1,
-              "y": 1
-            }
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/gatling_unloaded_0.json"
-          },
-          "layer": 1
-        },
-        "rigidbody": {
-          "is2D": true,
-          "colliders": [
-            {
-              "shape": {
-                "primitive": "quad",
-                "vertices": [
-                  {
-                    "x": -10000,
-                    "y": 1
-                  },
-                  {
-                    "x": 10000,
-                    "y": 1
-                  },
-                  {
-                    "x": 10000,
-                    "y": -1
-                  },
-                  {
-                    "x": -10000,
-                    "y": -1
-                  }
-                ]
+        {
+          "name": "Bounds left",
+          "components": {
+            "transform": {
+              "transform": {
+                "position": {
+                  "x": 10000,
+                  "y": 5000
+                }
               }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Bounds bottom",
-      "components": {
-        "transform": {
-          "transform": {
-            "position": {
-              "x": 0,
-              "y": 0
+            },
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
+            },
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/gatling_unloaded_0.json"
+              },
+              "layer": 1
+            },
+            "rigidbody": {
+              "is2D": true,
+              "colliders": [
+                {
+                  "shape": {
+                    "primitive": "quad",
+                    "vertices": [
+                      {
+                        "x": 1,
+                        "y": -5000
+                      },
+                      {
+                        "x": 1,
+                        "y": 5000
+                      },
+                      {
+                        "x": -1,
+                        "y": 5000
+                      },
+                      {
+                        "x": -1,
+                        "y": -5000
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           }
         },
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 0
-            },
-            "dimensions": {
-              "x": 1,
-              "y": 1
-            }
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "floor": {},
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/gatling_unloaded_0.json"
-          },
-          "layer": 1
-        },
-        "rigidbody": {
-          "is2D": true,
-          "colliders": [
-            {
-              "shape": {
-                "primitive": "quad",
-                "vertices": [
-                  {
-                    "x": -10000,
-                    "y": 1
-                  },
-                  {
-                    "x": 10000,
-                    "y": 1
-                  },
-                  {
-                    "x": 10000,
-                    "y": -1
-                  },
-                  {
-                    "x": -10000,
-                    "y": -1
-                  }
-                ]
+        {
+          "name": "Bounds right",
+          "components": {
+            "transform": {
+              "transform": {
+                "position": {
+                  "x": -10000,
+                  "y": 5000
+                }
               }
+            },
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
+            },
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/gatling_unloaded_0.json"
+              },
+              "layer": 1
+            },
+            "rigidbody": {
+              "is2D": true,
+              "colliders": [
+                {
+                  "shape": {
+                    "primitive": "quad",
+                    "vertices": [
+                      {
+                        "x": 1,
+                        "y": -5000
+                      },
+                      {
+                        "x": 1,
+                        "y": 5000
+                      },
+                      {
+                        "x": -1,
+                        "y": 5000
+                      },
+                      {
+                        "x": -1,
+                        "y": -5000
+                      }
+                    ]
+                  }
+                }
+              ]
             }
-          ]
+          }
+        },
+        {
+          "name": "Bounds top",
+          "components": {
+            "transform": {
+              "transform": {
+                "position": {
+                  "x": 0,
+                  "y": 10000
+                }
+              }
+            },
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
+            },
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/gatling_unloaded_0.json"
+              },
+              "layer": 1
+            },
+            "rigidbody": {
+              "is2D": true,
+              "colliders": [
+                {
+                  "shape": {
+                    "primitive": "quad",
+                    "vertices": [
+                      {
+                        "x": -10000,
+                        "y": 1
+                      },
+                      {
+                        "x": 10000,
+                        "y": 1
+                      },
+                      {
+                        "x": 10000,
+                        "y": -1
+                      },
+                      {
+                        "x": -10000,
+                        "y": -1
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Bounds bottom",
+          "components": {
+            "transform": {
+              "transform": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                }
+              }
+            },
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 1,
+                  "y": 1
+                }
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
+            },
+            "floor": {},
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/gatling_unloaded_0.json"
+              },
+              "layer": 1
+            },
+            "rigidbody": {
+              "is2D": true,
+              "colliders": [
+                {
+                  "shape": {
+                    "primitive": "quad",
+                    "vertices": [
+                      {
+                        "x": -10000,
+                        "y": 1
+                      },
+                      {
+                        "x": 10000,
+                        "y": 1
+                      },
+                      {
+                        "x": 10000,
+                        "y": -1
+                      },
+                      {
+                        "x": -10000,
+                        "y": -1
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
         }
-      }
+      ]
     }
   ]
 }

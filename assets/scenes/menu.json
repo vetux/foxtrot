@@ -1,356 +1,366 @@
 {
-  "name": "menu",
-  "entities": [
+  "scenes": [
     {
-      "name": "MainCanvas",
-      "components": {
-        "canvas": {
-          "projectionSize": {
-            "x": 1920,
-            "y": 1080
-          },
-          "lockAspectRatio": true,
-          "fitToScreen": true,
-          "clear": true
-        }
-      }
-    },
-    {
-      "name": "TitleText",
-      "components": {
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": -250
-            },
-            "dimensions": {
-              "x": 1920,
-              "y": 500
+      "name": "menu",
+      "entities": [
+        {
+          "name": "MainCanvas",
+          "components": {
+            "canvas": {
+              "projectionSize": {
+                "x": 1920,
+                "y": 1080
+              },
+              "lockAspectRatio": true,
+              "fitToScreen": true,
+              "clear": true
             }
-          },
-          "anchor": "center",
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "text": {
-          "text": "Foxtrot",
-          "font": {
-            "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
-          },
-          "pixelSize": {
-            "x": 0,
-            "y": 175
-          },
-          "textColor": {
-            "r": 255,
-            "g": 255,
-            "b": 255,
-            "a": 255
-          },
-          "lineHeight": 150
-        }
-      }
-    },
-    {
-      "name": "ButtonStart",
-      "components": {
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 0
-            },
-            "dimensions": {
-              "x": 200,
-              "y": 100
-            }
-          },
-          "anchor": "center",
-          "center": {
-            "x": 100,
-            "y": 50
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "button": {
-          "id": "button_start",
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "spriteHover": {
-            "uri": "sprites/button_b_hover.json"
-          },
-          "spritePressed": {
-            "uri": "sprites/button_b_pressed.json"
           }
         },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "layer": 1
-        },
-        "text": {
-          "text": "Start",
-          "font": {
-            "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
-          },
-          "pixelSize": {
-            "x": 0,
-            "y": 30
-          },
-          "textColor": {
-            "r": 255,
-            "g": 255,
-            "b": 255,
-            "a": 255
-          },
-          "lineHeight": 25,
-          "layer": 2
-        }
-      }
-    },
-    {
-      "name": "ButtonNewGame",
-      "components": {
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 100
+        {
+          "name": "TitleText",
+          "components": {
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": -250
+                },
+                "dimensions": {
+                  "x": 1000,
+                  "y": 300
+                }
+              },
+              "anchor": "center",
+              "rotation": 0,
+              "canvas": "MainCanvas"
             },
-            "dimensions": {
-              "x": 200,
-              "y": 100
+            "text": {
+              "text": "Foxtrot",
+              "font": {
+                "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
+              },
+              "pixelSize": {
+                "x": 0,
+                "y": 150
+              },
+              "textColor": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 255
+              },
+              "lineHeight": 125,
+              "textAnchor": "center"
             }
-          },
-          "anchor": "center",
-          "center": {
-            "x": 100,
-            "y": 50
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "button": {
-          "id": "button_new_game",
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "spriteHover": {
-            "uri": "sprites/button_b_hover.json"
-          },
-          "spritePressed": {
-            "uri": "sprites/button_b_pressed.json"
           }
         },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "layer": 1
-        },
-        "text": {
-          "text": "New",
-          "font": {
-            "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
-          },
-          "pixelSize": {
-            "x": 0,
-            "y": 30
-          },
-          "textColor": {
-            "r": 255,
-            "g": 255,
-            "b": 255,
-            "a": 255
-          },
-          "lineHeight": 25,
-          "layer": 2
-        }
-      }
-    },
-    {
-      "name": "ButtonLoad",
-      "components": {
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 200
+        {
+          "name": "ButtonStart",
+          "components": {
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 200,
+                  "y": 100
+                }
+              },
+              "anchor": "center",
+              "center": {
+                "x": 100,
+                "y": 50
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
             },
-            "dimensions": {
-              "x": 200,
-              "y": 100
+            "button": {
+              "id": "button_start",
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "spriteHover": {
+                "uri": "sprites/button_b_hover.json"
+              },
+              "spritePressed": {
+                "uri": "sprites/button_b_pressed.json"
+              }
+            },
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "layer": 1
+            },
+            "text": {
+              "text": "Start",
+              "font": {
+                "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
+              },
+              "pixelSize": {
+                "x": 0,
+                "y": 30
+              },
+              "textColor": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 255
+              },
+              "lineHeight": 25,
+              "textAnchor": "center",
+              "layer": 2
             }
-          },
-          "anchor": "center",
-          "center": {
-            "x": 100,
-            "y": 50
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "button": {
-          "id": "button_load",
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "spriteHover": {
-            "uri": "sprites/button_b_hover.json"
-          },
-          "spritePressed": {
-            "uri": "sprites/button_b_pressed.json"
           }
         },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "layer": 1
-        },
-        "text": {
-          "text": "Load",
-          "font": {
-            "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
-          },
-          "pixelSize": {
-            "x": 0,
-            "y": 30
-          },
-          "textColor": {
-            "r": 255,
-            "g": 255,
-            "b": 255,
-            "a": 255
-          },
-          "lineHeight": 25,
-          "layer": 2
-        }
-      }
-    },
-    {
-      "name": "ButtonSettings",
-      "components": {
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 300
+        {
+          "name": "ButtonNewGame",
+          "components": {
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 100
+                },
+                "dimensions": {
+                  "x": 200,
+                  "y": 100
+                }
+              },
+              "anchor": "center",
+              "center": {
+                "x": 100,
+                "y": 50
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
             },
-            "dimensions": {
-              "x": 200,
-              "y": 100
+            "button": {
+              "id": "button_new_game",
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "spriteHover": {
+                "uri": "sprites/button_b_hover.json"
+              },
+              "spritePressed": {
+                "uri": "sprites/button_b_pressed.json"
+              }
+            },
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "layer": 1
+            },
+            "text": {
+              "text": "New",
+              "font": {
+                "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
+              },
+              "pixelSize": {
+                "x": 0,
+                "y": 30
+              },
+              "textColor": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 255
+              },
+              "lineHeight": 25,
+              "textAnchor": "center",
+              "layer": 2
             }
-          },
-          "anchor": "center",
-          "center": {
-            "x": 100,
-            "y": 50
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "button": {
-          "id": "button_settings",
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "spriteHover": {
-            "uri": "sprites/button_b_hover.json"
-          },
-          "spritePressed": {
-            "uri": "sprites/button_b_pressed.json"
           }
         },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "layer": 1
-        },
-        "text": {
-          "text": "Settings",
-          "font": {
-            "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
-          },
-          "pixelSize": {
-            "x": 0,
-            "y": 30
-          },
-          "textColor": {
-            "r": 255,
-            "g": 255,
-            "b": 255,
-            "a": 255
-          },
-          "lineHeight": 25,
-          "layer": 2
-        }
-      }
-    },
-    {
-      "name": "ButtonQuit",
-      "components": {
-        "canvas_transform": {
-          "rect": {
-            "position": {
-              "x": 0,
-              "y": 425
+        {
+          "name": "ButtonLoad",
+          "components": {
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 200
+                },
+                "dimensions": {
+                  "x": 200,
+                  "y": 100
+                }
+              },
+              "anchor": "center",
+              "center": {
+                "x": 100,
+                "y": 50
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
             },
-            "dimensions": {
-              "x": 200,
-              "y": 100
+            "button": {
+              "id": "button_load",
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "spriteHover": {
+                "uri": "sprites/button_b_hover.json"
+              },
+              "spritePressed": {
+                "uri": "sprites/button_b_pressed.json"
+              }
+            },
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "layer": 1
+            },
+            "text": {
+              "text": "Load",
+              "font": {
+                "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
+              },
+              "pixelSize": {
+                "x": 0,
+                "y": 30
+              },
+              "textColor": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 255
+              },
+              "lineHeight": 25,
+              "textAnchor": "center",
+              "layer": 2
             }
-          },
-          "anchor": "center",
-          "center": {
-            "x": 100,
-            "y": 50
-          },
-          "rotation": 0,
-          "canvas": "MainCanvas"
-        },
-        "button": {
-          "id": "button_quit",
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "spriteHover": {
-            "uri": "sprites/button_b_hover.json"
-          },
-          "spritePressed": {
-            "uri": "sprites/button_b_pressed.json"
           }
         },
-        "sprite": {
-          "sprite": {
-            "uri": "sprites/button_b.json"
-          },
-          "layer": 1
+        {
+          "name": "ButtonSettings",
+          "components": {
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 300
+                },
+                "dimensions": {
+                  "x": 200,
+                  "y": 100
+                }
+              },
+              "anchor": "center",
+              "center": {
+                "x": 100,
+                "y": 50
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
+            },
+            "button": {
+              "id": "button_settings",
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "spriteHover": {
+                "uri": "sprites/button_b_hover.json"
+              },
+              "spritePressed": {
+                "uri": "sprites/button_b_pressed.json"
+              }
+            },
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "layer": 1
+            },
+            "text": {
+              "text": "Settings",
+              "font": {
+                "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
+              },
+              "pixelSize": {
+                "x": 0,
+                "y": 30
+              },
+              "textColor": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 255
+              },
+              "lineHeight": 25,
+              "textAnchor": "center",
+              "layer": 2
+            }
+          }
         },
-        "text": {
-          "text": "Quit",
-          "font": {
-            "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
-          },
-          "pixelSize": {
-            "x": 0,
-            "y": 30
-          },
-          "textColor": {
-            "r": 255,
-            "g": 255,
-            "b": 255,
-            "a": 255
-          },
-          "lineHeight": 25,
-          "layer": 2
+        {
+          "name": "ButtonQuit",
+          "components": {
+            "canvas_transform": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 425
+                },
+                "dimensions": {
+                  "x": 200,
+                  "y": 100
+                }
+              },
+              "anchor": "center",
+              "center": {
+                "x": 100,
+                "y": 50
+              },
+              "rotation": 0,
+              "canvas": "MainCanvas"
+            },
+            "button": {
+              "id": "button_quit",
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "spriteHover": {
+                "uri": "sprites/button_b_hover.json"
+              },
+              "spritePressed": {
+                "uri": "sprites/button_b_pressed.json"
+              }
+            },
+            "sprite": {
+              "sprite": {
+                "uri": "sprites/button_b.json"
+              },
+              "layer": 1
+            },
+            "text": {
+              "text": "Quit",
+              "font": {
+                "uri": "fonts/Holtwood_One_SC/HoltwoodOneSC-Regular.ttf"
+              },
+              "pixelSize": {
+                "x": 0,
+                "y": 30
+              },
+              "textColor": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 255
+              },
+              "lineHeight": 25,
+              "textAnchor": "center",
+              "layer": 2
+            }
+          }
         }
-      }
+      ]
     }
   ]
 }

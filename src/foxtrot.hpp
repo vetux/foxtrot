@@ -26,7 +26,9 @@
 #include "levels/mainmenu.hpp"
 #include "levels/level0.hpp"
 
-#include "foxtrotscene.hpp"
+#include "console.hpp"
+
+#include "levelloader.hpp"
 
 #include "events/loadlevelevent.hpp"
 
@@ -34,7 +36,7 @@ using namespace xng;
 
 class Foxtrot : public Application, public EventListener {
 public:
-    Foxtrot(int argc, char *argv[]) : Application(argc, argv),
+    Foxtrot(int argc, char *argv[]) : Application(argc, argv, "Foxtrot", {640, 480}),
                                       fontDriver(DriverRegistry::load<FontDriver>("freetype")),
                                       archive(std::filesystem::current_path().append("assets")),
                                       shaderCompiler(DriverRegistry::load<SPIRVCompiler>("shaderc")),
@@ -42,7 +44,20 @@ public:
                                       ren2d(*renderDevice,
                                             *shaderCompiler,
                                             *shaderDecompiler),
-                                      ecs() {
+                                      ecs(),
+                                      levelLoader(window->getRenderTarget(),
+                                                  ren2d,
+                                                  ecs,
+                                                  eventBus,
+                                                  *window,
+                                                  *fontDriver) {
+        EntityScene::addComponentDeserializer<PlayerComponent>("player");
+        EntityScene::addComponentDeserializer<FloorComponent>("floor");
+        EntityScene::addComponentDeserializer<BackdropComponent>("backdrop");
+        EntityScene::addComponentDeserializer<HealthComponent>("health");
+        EntityScene::addComponentDeserializer<InputComponent>("input");
+        EntityScene::addComponentDeserializer<CharacterControllerComponent>("character");
+
         ResourceRegistry::getDefaultRegistry().addArchive("file", std::make_shared<DirectoryArchive>(archive));
         ResourceRegistry::getDefaultRegistry().setDefaultScheme("file");
         auto parsers = std::vector<std::unique_ptr<ResourceParser>>();
@@ -50,15 +65,11 @@ public:
         parsers.emplace_back(std::make_unique<StbiParser>());
         ResourceRegistry::getDefaultRegistry().setImporter(ResourceImporter(std::move(parsers)));
 
-        currentLevel = MAIN_MENU;
-        targetLevel = MAIN_MENU;
-
         eventBus.addListener(*this);
 
         ren2d.renderClear(window->getRenderTarget(), ColorRGBA::black(), {},
                           window->getRenderTarget().getDescription().size);
 
-        window->setTitle("Foxtrot");
         window->swapBuffers();
         window->update();
     }
@@ -67,19 +78,13 @@ public:
         eventBus.removeListener(*this);
     }
 
-    void loadLevel(LevelName level) {
-        levels.at(currentLevel)->onDestroy(ecs);
-        currentLevel = level;
-        levels.at(currentLevel)->onCreate(ecs);
-    }
-
     void onEvent(const Event &event) override {
         if (event.getEventType() == typeid(LoadLevelEvent)) {
             auto &ev = event.as<LoadLevelEvent>();
-            targetLevel = ev.name;
+            levelLoader.loadLevel(ev.name);
         } else if (event.getEventType() == typeid(InputEvent)) {
             auto &ev = event.as<InputEvent>();
-            if (ev.deviceType == xng::InputEvent::DEVICE_KEYBOARD){
+            if (ev.deviceType == xng::InputEvent::DEVICE_KEYBOARD) {
                 if (std::get<KeyboardEventData>(ev.data).type == xng::KeyboardEventData::KEYBOARD_KEY_DOWN
                     && std::get<KeyboardEventData>(ev.data).key == KEY_F5) {
                     ResourceRegistry::getDefaultRegistry().reloadAllResources();
@@ -90,48 +95,21 @@ public:
 
 protected:
     void start() override {
-        scenes = loadScenes({"scenes/menu.json", "scenes/level_0.json"});
-
-        levels[MAIN_MENU] = std::make_unique<MainMenu>(eventBus, *window, ren2d, *fontDriver, scenes);
-        levels[LEVEL_0] = std::make_unique<Level0>(eventBus, *window, ren2d, *fontDriver, scenes);
-
-        levels.at(currentLevel)->onCreate(ecs);
-
-        ecs.start();
+        levelLoader.loadLevel(LEVEL_MAIN_MENU);
     }
 
-    void stop() override {
-        levels.at(currentLevel)->onDestroy(ecs);
-
-        ecs.stop();
-    }
+    void stop() override {}
 
     void update(DeltaTime deltaTime) override {
-        if (currentLevel != targetLevel) {
-            loadLevel(targetLevel);
-            targetLevel = currentLevel;
-        }
         ren2d.renderClear(window->getRenderTarget(),
                           ColorRGBA::yellow(),
                           {},
                           window->getRenderTarget().getDescription().size);
-        ecs.update(deltaTime);
-        levels.at(currentLevel)->onUpdate(ecs, deltaTime);
+        levelLoader.update(deltaTime);
         Application::update(deltaTime);
     }
 
 private:
-    std::vector<std::shared_ptr<EntityScene>> loadScenes(const std::vector<std::string> &paths) {
-        std::vector<std::shared_ptr<EntityScene>> ret;
-        for (auto &path: paths) {
-            auto scene = std::make_shared<FoxtrotScene>();
-            auto stream = archive.open(path);
-            *scene << JsonProtocol().deserialize(*stream);
-            ret.emplace_back(scene);
-        }
-        return ret;
-    }
-
     std::unique_ptr<FontDriver> fontDriver;
     std::unique_ptr<SPIRVCompiler> shaderCompiler;
     std::unique_ptr<SPIRVDecompiler> shaderDecompiler;
@@ -141,12 +119,7 @@ private:
     EventBus eventBus;
     ECS ecs;
 
-    std::vector<std::shared_ptr<EntityScene>> scenes;
-
-    LevelName currentLevel;
-    LevelName targetLevel;
-
-    std::map<LevelName, std::unique_ptr<Level>> levels;
+    LevelLoader levelLoader;
 };
 
 #endif //FOXTROT_FOXTROT_HPP

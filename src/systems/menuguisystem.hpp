@@ -26,8 +26,8 @@ using namespace xng;
 
 class MenuGuiSystem : public System, public EventListener {
 public:
-    explicit MenuGuiSystem(EventBus &bus)
-            : eventBus(bus) {}
+    explicit MenuGuiSystem(EventBus &bus, Input &input)
+            : eventBus(bus), input(input) {}
 
     void start(EntityScene &scene) override {
         eventBus.addListener(*this);
@@ -37,12 +37,33 @@ public:
         eventBus.removeListener(*this);
     }
 
+    void update(DeltaTime deltaTime, EntityScene &scene) override {
+        Vec2f inp;
+        if (input.getKey(xng::KEY_LEFT)) {
+            inp.x = 55;
+        } else if (input.getKey(xng::KEY_RIGHT)) {
+            inp.x = -55;
+        }
+
+        if (input.getKey(xng::KEY_UP)){
+            inp.y = 55;
+        } else if (input.getKey(xng::KEY_DOWN)){
+            inp.y = -55;
+        }
+
+        std::vector<TextComponent> comps;
+        for (auto pair: scene.getPool<TextComponent>()) {
+            pair.second.textScroll += inp * deltaTime;
+            scene.updateComponent(pair.first, pair.second);
+        }
+    }
+
     void onEvent(const Event &event) override {
         if (event.getEventType() == typeid(GuiEvent)) {
             auto &ev = event.as<GuiEvent>();
             if (ev.id == "button_start") {
                 if (ev.type == GuiEvent::BUTTON_CLICK) {
-                    eventBus.invoke(LoadLevelEvent(LEVEL_0));
+                    eventBus.invoke(LoadLevelEvent(LEVEL_ZERO));
                 }
             }
         }
@@ -50,6 +71,7 @@ public:
 
 private:
     EventBus &eventBus;
+    Input &input;
 };
 
 #endif //FOXTROT_MENUGUISYSTEM_HPP

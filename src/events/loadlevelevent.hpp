@@ -31,9 +31,9 @@ struct LoadLevelEvent : public Event {
         return typeid(LoadLevelEvent);
     }
 
-    LevelName name;
+    LevelID name;
 
-    LoadLevelEvent(LevelName name) : name(name) {}
+    LoadLevelEvent(LevelID name) : name(name) {}
 };
 
 #endif //FOXTROT_LOADLEVELEVENT_HPP

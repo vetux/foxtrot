@@ -17,13 +17,19 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FOXTROT_LEVELNAME_HPP
-#define FOXTROT_LEVELNAME_HPP
+#ifndef FOXTROT_CONSOLEPARSER_HPP
+#define FOXTROT_CONSOLEPARSER_HPP
 
-enum LevelID {
-    LEVEL_NULL = 0,
-    LEVEL_MAIN_MENU = 1,
-    LEVEL_ZERO = 2
+#include "consolecommand.hpp"
+#include "consoleprinter.hpp"
+
+class ConsoleParser {
+public:
+    /**
+     * @param command The command to parse
+     * @return True if the parser has handled the command
+     */
+    virtual bool parseCommand(const ConsoleCommand &command, ConsolePrinter &printer) = 0;
 };
 
-#endif //FOXTROT_LEVELNAME_HPP
+#endif //FOXTROT_CONSOLEPARSER_HPP

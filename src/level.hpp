@@ -24,15 +24,32 @@
 
 class Level {
 public:
+    class LoadListener {
+    public:
+        virtual void onLoadProgress(LevelID level, float progress) {}
+
+        virtual void onLoadFinish(LevelID level) {}
+
+        virtual void onLoadError(LevelID level, std::exception_ptr exception) {}
+    };
+
     virtual ~Level() = default;
 
-    virtual LevelName getName() = 0;
+    virtual LevelID getID() = 0;
 
-    virtual void onCreate(ECS &ecs) {};
+    // Loading interface
+    virtual void startLoad(LoadListener &listener) { listener.onLoadFinish(getID()); };
+
+    virtual void awaitLoad() {};
+
+    virtual void unload() {};
+
+    // Lifecycle interface
+    virtual void onStart(ECS &ecs) {};
 
     virtual void onUpdate(ECS &ecs, DeltaTime deltaTime) {};
 
-    virtual void onDestroy(ECS &ecs) {};
+    virtual void onStop(ECS &ecs) {};
 };
 
 #endif //FOXTROT_LEVEL_HPP

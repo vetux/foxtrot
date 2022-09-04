@@ -17,13 +17,28 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FOXTROT_LEVELNAME_HPP
-#define FOXTROT_LEVELNAME_HPP
+#ifndef FOXTROT_STRINGSPLIT_HPP
+#define FOXTROT_STRINGSPLIT_HPP
 
-enum LevelID {
-    LEVEL_NULL = 0,
-    LEVEL_MAIN_MENU = 1,
-    LEVEL_ZERO = 2
-};
+#include <string>
+#include <vector>
 
-#endif //FOXTROT_LEVELNAME_HPP
+namespace StringSplit {
+    inline std::vector<std::string> split(const std::string &src, char delim) {
+        if (src.empty())
+            return {};
+
+        std::vector<std::string> ret{""};
+        for (auto &c: src) {
+            auto &str = *(ret.end() - 1);
+            if (c == delim) {
+                ret.emplace_back("");
+            } else {
+                str += c;
+            }
+        }
+        return ret;
+    }
+}
+
+#endif //FOXTROT_STRINGSPLIT_HPP

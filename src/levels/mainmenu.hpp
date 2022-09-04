@@ -29,40 +29,70 @@
 
 using namespace xng;
 
-class MainMenu : public Level {
+class MainMenu : public Level, public EventListener {
 public:
     MainMenu(EventBus &eventBus,
              Window &window,
              Renderer2D &ren2d,
-             FontDriver &fontDriver,
-             std::vector<std::shared_ptr<EntityScene>> scenes)
+             FontDriver &fontDriver)
             : eventBus(eventBus),
               guiEventSystem(window, eventBus),
               canvasRenderSystem(ren2d,
                                  window.getRenderTarget(),
                                  fontDriver),
-              menuGuiSystem(eventBus),
-              scenes(scenes) {}
-
-    LevelName getName() override {
-        return MAIN_MENU;
+              menuGuiSystem(eventBus, window.getInput()) {
     }
 
-    void onCreate(ECS &ecs) override {
+    LevelID getID() override {
+        return LEVEL_MAIN_MENU;
+    }
+
+    void onStart(ECS &ecs) override {
+        auto handle = ResourceHandle<EntityScene>(Uri("scenes/menu.json"));
+        eventBus.addListener(*this);
+        scene = std::make_shared<EntityScene>(handle.get());
         ecs.setSystems({guiEventSystem, menuGuiSystem, spriteAnimationSystem, canvasRenderSystem});
-        ecs.setScene(scenes.at(0));
+        ecs.setScene(scene);
         ecs.start();
     }
 
-    void onDestroy(ECS &ecs) override {}
+    void onStop(ECS &ecs) override {
+        eventBus.removeListener(*this);
+        ecs.stop();
+        ecs.setScene({});
+        ecs.setSystems({});
+        scene = {};
+    }
+
+    void onUpdate(ECS &ecs, DeltaTime deltaTime) override {
+        ecs.update(deltaTime);
+    }
+
+    void onEvent(const Event &event) override {
+        if (event.getEventType() == typeid(InputEvent)) {
+            auto &ev = event.as<InputEvent>();
+            if (ev.deviceType == xng::InputEvent::DEVICE_KEYBOARD) {
+                auto &kbev = std::get<KeyboardEventData>(ev.data);
+                if (kbev.type == xng::KeyboardEventData::KEYBOARD_KEY_DOWN
+                    && kbev.key == xng::KEY_F1) {
+                    drawDebug = !drawDebug;
+                    canvasRenderSystem.setDrawDebug(drawDebug);
+                }
+            }
+        }
+    }
 
 private:
+    EventBus &eventBus;
+
     GuiEventSystem guiEventSystem;
     CanvasRenderSystem canvasRenderSystem;
     SpriteAnimationSystem spriteAnimationSystem;
     MenuGuiSystem menuGuiSystem;
-    std::vector<std::shared_ptr<EntityScene>> scenes;
-    EventBus &eventBus;
+
+    std::shared_ptr<EntityScene> scene;
+
+    bool drawDebug = false;
 };
 
 #endif //FOXTROT_MAINMENU_HPP

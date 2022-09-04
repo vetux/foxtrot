@@ -39,8 +39,7 @@ public:
     Level0(EventBus &eventBus,
            Window &window,
            Renderer2D &ren2d,
-           FontDriver &fontDriver,
-           std::vector<std::shared_ptr<EntityScene>> scenes)
+           FontDriver &fontDriver)
             : eventBus(eventBus),
               target(window.getRenderTarget()),
               eventSystem(window, eventBus),
@@ -58,19 +57,40 @@ public:
               physicsSystem(*world, eventBus, 30),
               cameraSystem(window.getRenderTarget(), Vec2f(-10100, -10100), Vec2f(10100, 100)),
               cursorSystem(window.getInput()),
-              scenes(std::move(scenes)),
               ren2d(ren2d) {
         world->setGravity(Vec3f(0, -20, 0));
     }
 
-    ~Level0() {
+    ~Level0() {}
+
+    LevelID getID() override {
+        return LEVEL_ZERO;
     }
 
-    LevelName getName() override {
-        return LEVEL_0;
+    void startLoad(LoadListener &listener) override {
+        loadTask = ThreadPool::getPool().addTask([this, &listener]() {
+            auto handle = ResourceHandle<EntityScene>(Uri("scenes/level_0.json"));
+            auto s = handle.get();
+            scene = std::make_shared<EntityScene>(s);
+            listener.onLoadProgress(getID(), 0.1);
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            listener.onLoadProgress(getID(), 0.3);
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            listener.onLoadProgress(getID(), 0.9);
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            listener.onLoadFinish(getID());
+        });
     }
 
-    void onCreate(ECS &ecs) override {
+    void awaitLoad() override {
+        loadTask->join();
+    }
+
+    void unload() override {
+        Level::unload();
+    }
+
+    void onStart(ECS &ecs) override {
         eventBus.addListener(*this);
         ecs.setSystems(
                 {eventSystem,
@@ -91,14 +111,19 @@ public:
 
                  spriteAnimationSystem,
                  canvasRenderSystem});
-        ecs.setScene(scenes.at(1));
+        ecs.setScene(scene);
         ecs.start();
     }
 
     void onUpdate(ECS &ecs, DeltaTime deltaTime) override {
+        ecs.update(deltaTime);
     }
 
-    void onDestroy(ECS &ecs) override {
+    void onStop(ECS &ecs) override {
+        ecs.stop();
+        ecs.setScene({});
+        ecs.setSystems({});
+        scene = {};
         eventBus.removeListener(*this);
     }
 
@@ -119,11 +144,12 @@ public:
 private:
     RenderTarget &target;
     Renderer2D &ren2d;
+    EventBus &eventBus;
+
+    std::shared_ptr<EntityScene> scene;
 
     std::unique_ptr<PhysicsDriver> physicsDriver;
     std::unique_ptr<World> world;
-    std::vector<std::shared_ptr<EntityScene>> scenes;
-    EventBus &eventBus;
 
     EventSystem eventSystem;
     GuiEventSystem guiEventSystem;
@@ -141,6 +167,8 @@ private:
     BulletSystem bulletSystem;
 
     bool drawDebug = false;
+
+    std::shared_ptr<Task> loadTask;
 };
 
 #endif //FOXTROT_LEVEL0_HPP

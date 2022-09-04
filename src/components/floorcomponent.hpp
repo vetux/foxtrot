@@ -20,6 +20,16 @@
 #ifndef FOXTROT_FLOORCOMPONENT_HPP
 #define FOXTROT_FLOORCOMPONENT_HPP
 
-struct FloorComponent {};
+#include "xengine.hpp"
+
+struct FloorComponent : public Messageable {
+    Messageable &operator<<(const Message &message) override {
+        return *this;
+    }
+
+    Message &operator>>(Message &message) const override {
+        return message;
+    }
+};
 
 #endif //FOXTROT_FLOORCOMPONENT_HPP
