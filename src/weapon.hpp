@@ -57,7 +57,7 @@ public:
 
     virtual Type getType() const { return NONE; }
 
-    virtual Visuals getVisuals() const { return {}; }
+    virtual Visuals getVisuals() { return {}; }
 
     virtual void setAmmo(int value) { ammo = value; }
 

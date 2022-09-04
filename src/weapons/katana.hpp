@@ -36,7 +36,7 @@ public:
         return KATANA;
     }
 
-    Visuals getVisuals() const override {
+    Visuals getVisuals() override {
         return visuals;
     }
 

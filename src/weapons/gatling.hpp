@@ -96,7 +96,7 @@ public:
         return GATLING;
     }
 
-    Visuals getVisuals() const override {
+    Visuals getVisuals() override {
         Visuals ret;
         ret.size = {100, 100};
         ret.center = {20, 50};
