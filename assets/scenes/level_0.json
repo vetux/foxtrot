@@ -33,7 +33,7 @@
             "canvas_transform": {
               "rect": {
                 "position": {
-                  "x": -150,
+                  "x": -175,
                   "y": 75
                 },
                 "dimensions": {
@@ -76,11 +76,11 @@
             "canvas_transform": {
               "rect": {
                 "position": {
-                  "x": 150,
+                  "x": 175,
                   "y": 75
                 },
                 "dimensions": {
-                  "x": 250,
+                  "x": 300,
                   "y": 100
                 }
               },
