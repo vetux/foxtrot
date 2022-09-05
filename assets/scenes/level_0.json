@@ -385,9 +385,6 @@
               "canvas": "MainCanvas"
             },
             "sprite": {
-              "sprite": {
-                "uri": "sprites/gatling_unloaded_0.json"
-              },
               "layer": 1
             },
             "rigidbody": {
@@ -446,9 +443,6 @@
               "canvas": "MainCanvas"
             },
             "sprite": {
-              "sprite": {
-                "uri": "sprites/gatling_unloaded_0.json"
-              },
               "layer": 1
             },
             "rigidbody": {
@@ -507,9 +501,6 @@
               "canvas": "MainCanvas"
             },
             "sprite": {
-              "sprite": {
-                "uri": "sprites/gatling_unloaded_0.json"
-              },
               "layer": 1
             },
             "rigidbody": {
@@ -569,9 +560,6 @@
             },
             "floor": {},
             "sprite": {
-              "sprite": {
-                "uri": "sprites/gatling_unloaded_0.json"
-              },
               "layer": 1
             },
             "rigidbody": {
