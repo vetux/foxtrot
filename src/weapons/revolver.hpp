@@ -37,6 +37,12 @@ public:
         return REVOLVER;
     }
 
+    std::set<Item::ID> getAmmoItems() const override {
+        return {
+                ItemIds::ITEM_AMMO_45
+        };
+    }
+
     Visuals getVisuals() override {
         Visuals ret;
         ret.size = {70, 30};
@@ -45,7 +51,7 @@ public:
 
         if (reloadTimer > 0) {
             ret.sprite = spriteReload;
-        } else {;
+        } else { ;
             ret.sprite = sprite;
         }
 
@@ -76,6 +82,7 @@ public:
     void pullTrigger(DeltaTime deltaTime) override {
         hammer = true;
     }
+
 
 private:
     bool hammer = false;

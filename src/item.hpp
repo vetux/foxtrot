@@ -41,13 +41,18 @@ struct Item {
 enum ItemIds : Item::ID {
     ITEM_NULL = 0,
 
-    // Equipables
+    // Weapons
     ITEM_REVOLVER = 1,
     ITEM_GATLING = 2,
 
+    // Ammunition
+    ITEM_AMMO_5_56 = 50,
+    ITEM_AMMO_45 = 51,
+    ITEM_AMMO_12_GAUGE_BUCKSHOT = 52,
+    ITEM_AMMO_12_GAUGE_SLUG = 53,
+
     // Consumables
-    ITEM_AMMO = 50,
-    ITEM_MEDKIT = 51,
+    ITEM_MEDKIT = 100,
 };
 
 #endif //FOXTROT_ITEM_HPP

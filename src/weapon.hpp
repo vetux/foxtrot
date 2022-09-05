@@ -22,6 +22,8 @@
 
 #include "xengine.hpp"
 
+#include "item.hpp"
+
 class Weapon {
 public:
     enum Type {
@@ -62,6 +64,8 @@ public:
     virtual void setAmmo(int value) { ammo = value; }
 
     virtual int getAmmo() const { return ammo; }
+
+    virtual std::set<Item::ID> getAmmoItems() const { return {ItemIds::ITEM_NULL}; }
 
     virtual int getClip() const { return clip; }
 

@@ -20,6 +20,7 @@
 #ifndef FOXTROT_GATLING_HPP
 #define FOXTROT_GATLING_HPP
 
+#include <set>
 #include "weapon.hpp"
 
 class Gatling : public Weapon {
@@ -94,6 +95,12 @@ public:
 
     Type getType() const override {
         return GATLING;
+    }
+
+    std::set<Item::ID> getAmmoItems() const override {
+        return {
+                ItemIds::ITEM_AMMO_5_56
+        };
     }
 
     Visuals getVisuals() override {

@@ -25,6 +25,10 @@ const std::map<Item::ID, Item> Item::items = {
         {ITEM_REVOLVER, Item("Revolver", "A revolver", ResourceHandle<Sprite>(), false)},
         {ITEM_GATLING, Item("Gatling", "A gatling gun", ResourceHandle<Sprite>(), false)},
 
-        {ITEM_AMMO, Item("Ammo", "Ammunition", ResourceHandle<Sprite>(), true)},
+        {ITEM_AMMO_5_56, Item("5.56x45 Ammo", "5.56x45mm Ammunition", ResourceHandle<Sprite>(), true)},
+        {ITEM_AMMO_45, Item(".45 Ammo", ".45 Ammunition", ResourceHandle<Sprite>(), true)},
+        {ITEM_AMMO_12_GAUGE_BUCKSHOT, Item("12-Gauge Buckshot", "12-Gauge Buckshot Ammunition", ResourceHandle<Sprite>(), true)},
+        {ITEM_AMMO_12_GAUGE_SLUG, Item("12-Gauge Slug", "12-Gauge Slug Ammunition", ResourceHandle<Sprite>(), true)},
+
         {ITEM_MEDKIT, Item("Medkit", "A Medkit for healing", ResourceHandle<Sprite>(), true)}
 };

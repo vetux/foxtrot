@@ -59,6 +59,14 @@ public:
         return cells.find(index) != cells.end();
     }
 
+    void add(Item::ID item, int count) {
+        for (int i = 0; i < cells.size(); i++) {
+            if (!checkCell(i)) {
+                setCell(i, Cell(item, count));
+            }
+        }
+    }
+
     Messageable &operator<<(const Message &message) override {
         cells.clear();
         for (auto &pair: message.asMap()) {
