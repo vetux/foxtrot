@@ -34,7 +34,7 @@
 
 using namespace xng;
 
-class Foxtrot : public Application, public EventListener, public ConsoleOutput {
+class Foxtrot : public Application, public EventListener, public ConsoleOutput, public ConsoleParser {
 public:
     Foxtrot(int argc, char *argv[]) : Application(argc, argv, "Foxtrot", {640, 480}),
                                       fontDriver(DriverRegistry::load<FontDriver>("freetype")),
@@ -76,6 +76,7 @@ public:
         consoleTextRenderer = std::make_unique<TextRenderer>(*consoleFont, ren2d);
 
         console.addOutput(*this);
+        console.addParser(*this);
 
         eventBus.addListener(*this);
         ren2d.renderClear(window->getRenderTarget(), ColorRGBA::black(), {},
@@ -127,6 +128,14 @@ public:
         consoleOutput += str + "\n";
     }
 
+    bool parseCommand(const ConsoleCommand &command, ConsoleOutput &printer) override {
+        if (command.cmd == "loadlevel") {
+            levelLoader.loadLevel(parseLevelID(command.arguments.at(0)));
+            return true;
+        }
+        return false;
+    }
+
 protected:
     void start() override {
         levelLoader.loadLevel(LEVEL_MAIN_MENU);
@@ -147,6 +156,10 @@ protected:
     }
 
 private:
+    LevelID parseLevelID(const std::string &id) {
+        return (LevelID) std::stoi(id);
+    }
+
     void updateConsole(DeltaTime deltaTime) {
         const float inputHeight = 50;
         const float spacingBetweenInputOutput = 15;

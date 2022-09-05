@@ -26,19 +26,9 @@
 #include "util/stringsplit.hpp"
 
 struct ConsoleCommand {
-    struct Argument {
-        std::string key;
-        std::string value;
-
-        std::vector<std::string> commaSeparateValue() {
-            std::vector<std::string> ret;
-            return ret;
-        }
-    };
-
     std::string commandLine;
     std::string cmd;
-    std::vector<Argument> arguments;
+    std::vector<std::string> arguments;
 
     /**
      * Default command parsing with whitespace separated command and argument keys / values
@@ -48,18 +38,11 @@ struct ConsoleCommand {
     ConsoleCommand(const std::string &command)
             : commandLine(command) {
         auto sep = StringSplit::split(command, ' ');
-        Argument arg;
         for (auto &str: sep) {
             if (cmd.empty()) {
                 cmd = str;
             } else {
-                if (arg.key.empty()) {
-                    arg.key = str;
-                } else {
-                    arg.value = str;
-                    arguments.emplace_back(arg);
-                    arg = {};
-                };
+                arguments.emplace_back(str);
             }
         }
     }

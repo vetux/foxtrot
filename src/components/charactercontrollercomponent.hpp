@@ -46,7 +46,7 @@ struct CharacterControllerComponent : public Messageable {
 
     bool facingLeft = false;
 
-    bool isOnFloor = false;
+    bool isOnFloor = true;
 
     std::set<EntityHandle> collidingEntities;
 

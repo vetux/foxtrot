@@ -20,7 +20,7 @@
 #ifndef FOXTROT_LEVELNAME_HPP
 #define FOXTROT_LEVELNAME_HPP
 
-enum LevelID {
+enum LevelID : int {
     LEVEL_NULL = 0,
     LEVEL_MAIN_MENU = 1,
     LEVEL_ZERO = 2

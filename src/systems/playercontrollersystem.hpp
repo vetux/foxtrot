@@ -30,6 +30,25 @@
 using namespace xng;
 
 class PlayerControllerSystem : public System {
+public:
+    void start(EntityScene &scene) override {
+        System::start(scene);
+    }
+
+    void stop(EntityScene &scene) override {
+        for (auto &ent : weaponEntities){
+            scene.destroy(ent.first);
+        }
+        for (auto &muzzle : muzzleFlashEntities){
+            for (auto &muz : muzzle.second){
+                scene.destroyEntity(muz);
+            }
+        }
+        weaponEntities.clear();
+        muzzleFlashEntities.clear();
+    }
+
+private:
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         std::set<EntityHandle> delHandles;
         for (auto &pair: scene.getPool<MuzzleFlashComponent>()) {
