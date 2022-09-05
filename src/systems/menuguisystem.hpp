@@ -37,26 +37,7 @@ public:
         eventBus.removeListener(*this);
     }
 
-    void update(DeltaTime deltaTime, EntityScene &scene) override {
-        Vec2f inp;
-        if (input.getKey(xng::KEY_LEFT)) {
-            inp.x = 55;
-        } else if (input.getKey(xng::KEY_RIGHT)) {
-            inp.x = -55;
-        }
-
-        if (input.getKey(xng::KEY_UP)){
-            inp.y = 55;
-        } else if (input.getKey(xng::KEY_DOWN)){
-            inp.y = -55;
-        }
-
-        std::vector<TextComponent> comps;
-        for (auto pair: scene.getPool<TextComponent>()) {
-            pair.second.textScroll += inp * deltaTime;
-            scene.updateComponent(pair.first, pair.second);
-        }
-    }
+    void update(DeltaTime deltaTime, EntityScene &scene) override {}
 
     void onEvent(const Event &event) override {
         if (event.getEventType() == typeid(GuiEvent)) {

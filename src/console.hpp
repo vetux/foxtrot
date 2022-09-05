@@ -21,11 +21,11 @@
 #define FOXTROT_CONSOLE_HPP
 
 #include "consoleparser.hpp"
-#include "consoleprinter.hpp"
+#include "consoleoutput.hpp"
 
 #include <set>
 
-class Console : public ConsolePrinter {
+class Console : public ConsoleOutput {
 public:
     void addParser(ConsoleParser &parser) {
         parsers.insert(&parser);
@@ -35,11 +35,11 @@ public:
         parsers.erase(&parser);
     }
 
-    void addPrinter(ConsolePrinter &printer) {
+    void addOutput(ConsoleOutput &printer) {
         printers.insert(&printer);
     }
 
-    void removePrinter(ConsolePrinter &printer) {
+    void removePrinter(ConsoleOutput &printer) {
         printers.erase(&printer);
     }
 
@@ -50,25 +50,20 @@ public:
     void invokeCommand(const ConsoleCommand &command) {
         for (auto &parser: parsers) {
             if (parser->parseCommand(command, *this))
-                break;
+                return;
         }
+        print("Command not found " + command.commandLine);
     }
 
-    void printInfo(const std::string &str) override {
+    void print(const std::string &str) override {
         for (auto &printer: printers) {
-            printer->printInfo(str);
-        }
-    }
-
-    void printError(const std::string &str) override {
-        for (auto &printer: printers) {
-            printer->printError(str);
+            printer->print(str);
         }
     }
 
 private:
     std::set<ConsoleParser *> parsers;
-    std::set<ConsolePrinter *> printers;
+    std::set<ConsoleOutput *> printers;
 };
 
 #endif //FOXTROT_CONSOLE_HPP

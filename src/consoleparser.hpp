@@ -21,7 +21,7 @@
 #define FOXTROT_CONSOLEPARSER_HPP
 
 #include "consolecommand.hpp"
-#include "consoleprinter.hpp"
+#include "consoleoutput.hpp"
 
 class ConsoleParser {
 public:
@@ -29,7 +29,7 @@ public:
      * @param command The command to parse
      * @return True if the parser has handled the command
      */
-    virtual bool parseCommand(const ConsoleCommand &command, ConsolePrinter &printer) = 0;
+    virtual bool parseCommand(const ConsoleCommand &command, ConsoleOutput &printer) = 0;
 };
 
 #endif //FOXTROT_CONSOLEPARSER_HPP

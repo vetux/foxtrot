@@ -17,14 +17,12 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FOXTROT_CONSOLEPRINTER_HPP
-#define FOXTROT_CONSOLEPRINTER_HPP
+#ifndef FOXTROT_CONSOLEOUTPUT_HPP
+#define FOXTROT_CONSOLEOUTPUT_HPP
 
-class ConsolePrinter {
+class ConsoleOutput {
 public:
-    virtual void printInfo(const std::string &str) {};
-
-    virtual void printError(const std::string &str) {};
+    virtual void print(const std::string &str) {};
 };
 
-#endif //FOXTROT_CONSOLEPRINTER_HPP
+#endif //FOXTROT_CONSOLEOUTPUT_HPP
