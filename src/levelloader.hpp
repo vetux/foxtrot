@@ -70,12 +70,13 @@ public:
             levels.at(loadedLevel)->awaitLoad();
             levels.at(loadedLevel)->onStart(ecs);
             levels.at(loadedLevel)->onUpdate(ecs, deltaTime);
-        } else if (loadedLevel != requestedLevel) {
+        } else if (requestedLevel != LEVEL_NULL) {
             if (loadedLevel != LEVEL_NULL) {
                 levels.at(loadedLevel)->onStop(ecs);
                 levels.at(loadedLevel)->unload();
             }
             loadedLevel = requestedLevel;
+            requestedLevel = LEVEL_NULL;
             loading = true;
             loadingProgress = 0;
             levels.at(loadedLevel)->startLoad(*this);
