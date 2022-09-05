@@ -26,7 +26,7 @@
 #include "levels/mainmenu.hpp"
 #include "levels/level0.hpp"
 
-#include "console.hpp"
+#include "console/console.hpp"
 
 #include "levelloader.hpp"
 

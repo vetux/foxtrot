@@ -37,12 +37,12 @@ struct CharacterControllerComponent : public Messageable {
     float damageMix = 0.3f;
     ColorRGB damageColor = ColorRGB(255, 26, 26);
 
-    float maxVelocity = 10;
-    float acceleration = 5;
+    float maxVelocity = 20;
+    float acceleration = 0.5;
     float drag = 0.2f;
-    float walkVelocity = 1;
+    float walkVelocity = 0.1;
     float runVelocity = 5;
-    float fallVelocity = 1;
+    float fallVelocity = 10;
 
     bool facingLeft = false;
 

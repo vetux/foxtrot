@@ -35,12 +35,12 @@ public:
         parsers.erase(&parser);
     }
 
-    void addOutput(ConsoleOutput &printer) {
-        printers.insert(&printer);
+    void addOutput(ConsoleOutput &output) {
+        outputs.insert(&output);
     }
 
-    void removePrinter(ConsoleOutput &printer) {
-        printers.erase(&printer);
+    void removeOutput(ConsoleOutput &output) {
+        outputs.erase(&output);
     }
 
     void invokeCommand(const std::string &command) {
@@ -56,14 +56,14 @@ public:
     }
 
     void print(const std::string &str) override {
-        for (auto &printer: printers) {
+        for (auto &printer: outputs) {
             printer->print(str);
         }
     }
 
 private:
     std::set<ConsoleParser *> parsers;
-    std::set<ConsoleOutput *> printers;
+    std::set<ConsoleOutput *> outputs;
 };
 
 #endif //FOXTROT_CONSOLE_HPP

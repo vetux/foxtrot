@@ -140,7 +140,7 @@ public:
     }
 
     float getMaxVelocity() {
-        return 20;
+        return 12;
     }
 
     ResourceHandle<SpriteAnimation> getIdleAnimation() const {
@@ -150,7 +150,6 @@ public:
                 return idleAnimationHip;
             case GUN_AIM:
                 return idleAnimationAim;
-
         }
     }
 

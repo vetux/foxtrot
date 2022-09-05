@@ -134,7 +134,7 @@ public:
 
                 // Apply jumping
                 if (input.movement.y > 0) {
-                    rb.impulse = Vec3f(0, rb.mass, 0);
+                    rb.impulse = Vec3f(0, rb.mass * 2 * input.movement.y, 0);
                     rb.impulsePoint = tcomp.transform.getPosition();
                 }
             }
