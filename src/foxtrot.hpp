@@ -131,14 +131,24 @@ public:
     }
 
     bool parseCommand(const ConsoleCommand &command, ConsoleOutput &printer) override {
-        if (command.cmd == "loadlevel") {
-            levelLoader.loadLevel(parseLevelID(command.arguments.at(0)));
+        static const std::map<std::string, std::function<void()>> commands = {
+                {"loadlevel", [this, command]() {
+                    levelLoader.loadLevel(parseLevelID(command.arguments.at(0)));
+                }},
+                {"reloadlevel", [this, command]() {
+                    levelLoader.loadLevel(levelLoader.getLevel().getID());
+                }},
+                {"fps", [this, &printer]() {
+                    printer.print(std::to_string(fpsAverage));
+                }},
+        };
+        auto it = commands.find(command.cmd);
+        if (it != commands.end()) {
+            it->second();
             return true;
-        } else if (command.cmd == "fps") {
-            printer.print(std::to_string(fpsAverage));
-            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
 protected:

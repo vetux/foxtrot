@@ -48,6 +48,7 @@ public:
     }
 
     void invokeCommand(const ConsoleCommand &command) {
+        print("> " + command.commandLine);
         for (auto &parser: parsers) {
             if (parser->parseCommand(command, *this))
                 return;
