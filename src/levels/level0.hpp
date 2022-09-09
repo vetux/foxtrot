@@ -54,7 +54,7 @@ public:
               gameGuiSystem(window.getInput(), eventBus),
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
-              physicsSystem(*world, eventBus, 30),
+              physicsSystem(*world, eventBus, 30, 1.0f / 300),
               cameraSystem(window.getRenderTarget(), Vec2f(-10100, -10100), Vec2f(10100, 100)),
               cursorSystem(window.getInput()),
               ren2d(ren2d) {
@@ -132,7 +132,7 @@ public:
                 if (kbev.type == xng::KeyboardEventData::KEYBOARD_KEY_DOWN
                     && kbev.key == xng::KEY_F1) {
                     drawDebug = !drawDebug;
-                    canvasRenderSystem.setDrawDebug(drawDebug);
+                    canvasRenderSystem.setDrawDebugGeometry(drawDebug);
                 }
             }
         }

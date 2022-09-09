@@ -76,7 +76,7 @@ public:
                 if (kbev.type == xng::KeyboardEventData::KEYBOARD_KEY_DOWN
                     && kbev.key == xng::KEY_F1) {
                     drawDebug = !drawDebug;
-                    canvasRenderSystem.setDrawDebug(drawDebug);
+                    canvasRenderSystem.setDrawDebugGeometry(drawDebug);
                 }
             }
         }

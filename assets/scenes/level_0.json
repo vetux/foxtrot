@@ -114,6 +114,46 @@
           }
         },
         {
+          "name": "FpsGUI",
+          "components": {
+            "CanvasTransformComponent": {
+              "rect": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "dimensions": {
+                  "x": 300,
+                  "y": 100
+                }
+              },
+              "anchor": "top_left",
+              "rotation": 0,
+              "canvas": "GuiCanvas"
+            },
+            "TextComponent": {
+              "text": "FPS",
+              "font": {
+                "uri": "fonts/Space_Mono/SpaceMono-Regular.ttf"
+              },
+              "pixelSize": {
+                "x": 0,
+                "y": 20
+              },
+              "textColor": {
+                "r": 255,
+                "g": 102,
+                "b": 255,
+                "a": 255
+              },
+              "lineHeight": 15,
+              "textAnchor": "top_left",
+              "layer": 3
+            },
+            "FpsComponent": {}
+          }
+        },
+        {
           "name": "Player",
           "components": {
             "TransformComponent": {
@@ -177,8 +217,8 @@
               },
               "colliders": [
                 {
-                  "density": 100,
-                  "friction": 0.1,
+                  "density": 10,
+                  "friction": 0,
                   "shape": {
                     "vertices": [
                       {

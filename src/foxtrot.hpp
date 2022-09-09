@@ -54,6 +54,7 @@ public:
         REGISTER_COMPONENT(BackdropComponent)
         REGISTER_COMPONENT(CharacterControllerComponent)
         REGISTER_COMPONENT(FloorComponent)
+        REGISTER_COMPONENT(FpsComponent)
         REGISTER_COMPONENT(HealthComponent)
         REGISTER_COMPONENT(InputComponent)
         REGISTER_COMPONENT(PlayerComponent)
@@ -134,7 +135,7 @@ public:
             levelLoader.loadLevel(parseLevelID(command.arguments.at(0)));
             return true;
         } else if (command.cmd == "fps") {
-            printer.print(std::to_string(fps));
+            printer.print(std::to_string(fpsAverage));
             return true;
         }
         return false;
@@ -148,7 +149,8 @@ protected:
     void stop() override {}
 
     void update(DeltaTime deltaTime) override {
-        fps = 1.0f / deltaTime;
+        fps = deltaTime > 0 ? 1.0f / deltaTime : 0;
+        fpsAverage = fpsAlpha * fpsAverage + (1.0f - fpsAlpha) * fps;
         ren2d.renderClear(window->getRenderTarget(),
                           ColorRGBA::yellow(),
                           {},
@@ -290,6 +292,9 @@ private:
     bool consoleOpen = false;
 
     float fps = 0;
+
+    float fpsAverage = 0;
+    float fpsAlpha = 0.9;
 };
 
 #endif //FOXTROT_FOXTROT_HPP

@@ -116,8 +116,7 @@ public:
                 && health.health > 0) {
                 if (input.movement.x != 0) {
                     auto maxVel = character.maxVelocity;
-                    if ((input.movement.x < 0 && rb.velocity.x > -maxVel)
-                        || (input.movement.x > 0 && rb.velocity.x < maxVel)) {
+                    if ((input.movement.x < 0) || (input.movement.x > 0)) {
                         rb.velocity.x += input.movement.x * character.acceleration;
                         if (rb.velocity.x < -maxVel)
                             rb.velocity.x = -maxVel;

@@ -23,6 +23,7 @@
 #include "xengine.hpp"
 
 #include "components/playercomponent.hpp"
+#include "components/fpscomponent.hpp"
 
 using namespace xng;
 
@@ -52,7 +53,7 @@ public:
     void stop(EntityScene &scene) override {
         eventBus.removeListener(*this);
         scene.destroyEntity(toolbarEntity);
-        for (auto &ent : slotEntities){
+        for (auto &ent: slotEntities) {
             scene.destroyEntity(ent);
         }
         slotEntities.clear();
@@ -102,6 +103,13 @@ public:
             healthText.text.erase(healthText.text.find_last_not_of('.') + 1, std::string::npos);
 
             healthGui.updateComponent(healthText);
+        }
+
+        float fps = deltaTime > 0 ? 1.0f / deltaTime : 0;
+        for (auto &pair: scene.getPool<FpsComponent>()) {
+            auto text = scene.getComponent<TextComponent>(pair.first);
+            text.text = std::to_string(fps);
+            scene.updateComponent(pair.first, text);
         }
     }
 
