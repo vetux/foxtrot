@@ -52,7 +52,7 @@ private:
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         std::set<EntityHandle> delHandles;
         for (auto &pair: scene.getPool<MuzzleFlashComponent>()) {
-            auto &anim = scene.lookup<SpriteAnimationComponent>(pair.first);
+            auto &anim = scene.getComponent<SpriteAnimationComponent>(pair.first);
             if (anim.finished) {
                 delHandles.insert(pair.first);
             }
@@ -63,17 +63,17 @@ private:
 
         std::map<EntityHandle, PlayerComponent> playerUpdates;
         for (auto &pair: scene.getPool<PlayerComponent>()) {
-            auto &tcomp = scene.lookup<TransformComponent>(pair.first);
-            auto &rt = scene.lookup<CanvasTransformComponent>(pair.first);
-            auto &rb = scene.lookup<RigidBodyComponent>(pair.first);
-            auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
-            auto &sprite = scene.lookup<SpriteComponent>(pair.first);
-            auto &health = scene.lookup<HealthComponent>(pair.first);
-            auto character = scene.lookup<CharacterControllerComponent>(pair.first);
-            auto &input = scene.lookup<InputComponent>(pair.first);
+            auto &tcomp = scene.getComponent<TransformComponent>(pair.first);
+            auto &rt = scene.getComponent<CanvasTransformComponent>(pair.first);
+            auto &rb = scene.getComponent<RigidBodyComponent>(pair.first);
+            auto anim = scene.getComponent<SpriteAnimationComponent>(pair.first);
+            auto &sprite = scene.getComponent<SpriteComponent>(pair.first);
+            auto &health = scene.getComponent<HealthComponent>(pair.first);
+            auto character = scene.getComponent<CharacterControllerComponent>(pair.first);
+            auto &input = scene.getComponent<InputComponent>(pair.first);
             auto player = pair.second;
 
-            auto &canvas = scene.lookup<CanvasComponent>(scene.getEntityByName(rt.canvas));
+            auto &canvas = scene.getComponent<CanvasComponent>(scene.getEntityByName(rt.canvas));
 
             if (weaponEntities.find(pair.first) == weaponEntities.end()) {
                 createWeaponEntity(pair.first, scene);

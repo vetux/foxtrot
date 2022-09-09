@@ -6,7 +6,7 @@
         {
           "name": "MainCanvas",
           "components": {
-            "canvas": {
+            "CanvasComponent": {
               "clear": true
             }
           }
@@ -14,7 +14,7 @@
         {
           "name": "GuiCanvas",
           "components": {
-            "canvas": {
+            "CanvasComponent": {
               "layer": 1
             }
           }
@@ -22,7 +22,7 @@
         {
           "name": "OverlayCanvas",
           "components": {
-            "canvas": {
+            "CanvasComponent": {
               "layer": 2
             }
           }
@@ -30,7 +30,7 @@
         {
           "name": "AmmoGUI",
           "components": {
-            "canvas_transform": {
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": -175,
@@ -49,7 +49,7 @@
               "rotation": 0,
               "canvas": "GuiCanvas"
             },
-            "text": {
+            "TextComponent": {
               "text": "AMMO",
               "font": {
                 "uri": "fonts/Black_Ops_One/BlackOpsOne-Regular.ttf"
@@ -73,7 +73,7 @@
         {
           "name": "HealthGUI",
           "components": {
-            "canvas_transform": {
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": 175,
@@ -92,7 +92,7 @@
               "rotation": 0,
               "canvas": "GuiCanvas"
             },
-            "text": {
+            "TextComponent": {
               "text": "AMMO",
               "font": {
                 "uri": "fonts/Black_Ops_One/BlackOpsOne-Regular.ttf"
@@ -116,14 +116,14 @@
         {
           "name": "Player",
           "components": {
-            "transform": {
+            "TransformComponent": {
               "transform": {
                 "position": {
                   "y": 100
                 }
               }
             },
-            "canvas_transform": {
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": 0,
@@ -141,18 +141,18 @@
               "rotation": 0,
               "canvas": "MainCanvas"
             },
-            "sprite": {
+            "SpriteComponent": {
               "sprite": {
                 "uri": "sprites/john_idle_0.json"
               },
               "layer": 0
             },
-            "sprite_animation": {
+            "SpriteAnimationComponent": {
               "animation": {
                 "uri": "animations/john_idle.json"
               }
             },
-            "player": {
+            "PlayerComponent": {
               "idleAnimation": {
                 "uri": "animations/dante_idle.json"
               },
@@ -166,11 +166,10 @@
                 "uri": "animations/dante_run_low.json"
               }
             },
-            "health": {},
-            "input": {},
-            "character": {
-            },
-            "rigidbody": {
+            "HealthComponent": {},
+            "InputComponent": {},
+            "CharacterControllerComponent": {},
+            "RigidBodyComponent": {
               "type": "dynamic",
               "is2D": true,
               "lockedAxes": {
@@ -233,7 +232,7 @@
         {
           "name": "Gunshop",
           "components": {
-            "canvas_transform": {
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": 0,
@@ -251,7 +250,7 @@
               "rotation": 0,
               "canvas": "MainCanvas"
             },
-            "sprite": {
+            "SpriteComponent": {
               "sprite": {
                 "uri": "sprites/gunshop_closed.json"
               },
@@ -262,8 +261,8 @@
         {
           "name": "Gunshop Railing",
           "components": {
-            "transform": {},
-            "canvas_transform": {
+            "TransformComponent": {},
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": 0,
@@ -281,14 +280,14 @@
               "rotation": 0,
               "canvas": "MainCanvas"
             },
-            "sprite": {
+            "SpriteComponent": {
               "sprite": {
                 "uri": "sprites/gunshop_railing.json"
               },
               "layer": 1
             },
-            "floor": {},
-            "rigidbody": {
+            "FloorComponent": {},
+            "RigidBodyComponent": {
               "is2D": true,
               "colliders": [
                 {
@@ -321,7 +320,7 @@
         {
           "name": "Backdrop",
           "components": {
-            "transform": {
+            "TransformComponent": {
               "transform": {
                 "position": {
                   "x": 10000,
@@ -329,7 +328,7 @@
                 }
               }
             },
-            "backdrop": {
+            "BackdropComponent": {
               "daySprite": {
                 "uri": "sprites/backdrop.json"
               },
@@ -337,7 +336,7 @@
                 "uri": "sprites/backdrop_night.json"
               }
             },
-            "canvas_transform": {
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": 0,
@@ -351,7 +350,7 @@
               "rotation": 0,
               "canvas": "MainCanvas"
             },
-            "sprite": {
+            "SpriteComponent": {
               "sprite": {
                 "uri": "sprites/backdrop.json"
               },
@@ -362,7 +361,7 @@
         {
           "name": "Bounds left",
           "components": {
-            "transform": {
+            "TransformComponent": {
               "transform": {
                 "position": {
                   "x": 10000,
@@ -370,7 +369,7 @@
                 }
               }
             },
-            "canvas_transform": {
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": 0,
@@ -384,10 +383,10 @@
               "rotation": 0,
               "canvas": "MainCanvas"
             },
-            "sprite": {
+            "SpriteComponent": {
               "layer": 1
             },
-            "rigidbody": {
+            "RigidBodyComponent": {
               "is2D": true,
               "colliders": [
                 {
@@ -420,7 +419,7 @@
         {
           "name": "Bounds right",
           "components": {
-            "transform": {
+            "TransformComponent": {
               "transform": {
                 "position": {
                   "x": -10000,
@@ -428,7 +427,7 @@
                 }
               }
             },
-            "canvas_transform": {
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": 0,
@@ -442,10 +441,10 @@
               "rotation": 0,
               "canvas": "MainCanvas"
             },
-            "sprite": {
+            "SpriteComponent": {
               "layer": 1
             },
-            "rigidbody": {
+            "RigidBodyComponent": {
               "is2D": true,
               "colliders": [
                 {
@@ -478,7 +477,7 @@
         {
           "name": "Bounds top",
           "components": {
-            "transform": {
+            "TransformComponent": {
               "transform": {
                 "position": {
                   "x": 0,
@@ -486,7 +485,7 @@
                 }
               }
             },
-            "canvas_transform": {
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": 0,
@@ -500,10 +499,10 @@
               "rotation": 0,
               "canvas": "MainCanvas"
             },
-            "sprite": {
+            "SpriteComponent": {
               "layer": 1
             },
-            "rigidbody": {
+            "RigidBodyComponent": {
               "is2D": true,
               "colliders": [
                 {
@@ -536,7 +535,7 @@
         {
           "name": "Bounds bottom",
           "components": {
-            "transform": {
+            "TransformComponent": {
               "transform": {
                 "position": {
                   "x": 0,
@@ -544,7 +543,7 @@
                 }
               }
             },
-            "canvas_transform": {
+            "CanvasTransformComponent": {
               "rect": {
                 "position": {
                   "x": 0,
@@ -558,11 +557,11 @@
               "rotation": 0,
               "canvas": "MainCanvas"
             },
-            "floor": {},
-            "sprite": {
+            "FloorComponent": {},
+            "SpriteComponent": {
               "layer": 1
             },
-            "rigidbody": {
+            "RigidBodyComponent": {
               "is2D": true,
               "colliders": [
                 {

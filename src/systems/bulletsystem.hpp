@@ -43,9 +43,9 @@ public:
             if (ev.type == xng::ContactEvent::BEGIN_CONTACT) {
                 EntityHandle bullet;
                 EntityHandle health;
-                if (scene.check<BulletComponent>(ev.entityA))
+                if (scene.checkComponent<BulletComponent>(ev.entityA))
                     bullet = ev.entityA;
-                else if (scene.check<BulletComponent>(ev.entityB))
+                else if (scene.checkComponent<BulletComponent>(ev.entityB))
                     bullet = ev.entityB;
                 else
                     continue;
@@ -56,20 +56,20 @@ public:
                     other = ev.entityA;
                 }
                 if (other) {
-                    if (scene.check<HealthComponent>(other))
+                    if (scene.checkComponent<HealthComponent>(other))
                         health = other;
-                    else if (scene.check<BulletComponent>(other))
+                    else if (scene.checkComponent<BulletComponent>(other))
                         continue;
                 }
                 if (bullet && health) {
-                    auto bulletComp = scene.lookup<BulletComponent>(bullet);
-                    auto healthComp = scene.lookup<HealthComponent>(health);
+                    auto bulletComp = scene.getComponent<BulletComponent>(bullet);
+                    auto healthComp = scene.getComponent<HealthComponent>(health);
                     healthComp.health -= bulletComp.damage;
                     bulletComp.destroy = true;
                     scene.updateComponent(health, healthComp);
                     scene.updateComponent(bullet, bulletComp);
                 } else if (bullet) {
-                    auto bulletComp = scene.lookup<BulletComponent>(bullet);
+                    auto bulletComp = scene.getComponent<BulletComponent>(bullet);
                     bulletComp.destroy = true;
                     scene.updateComponent(bullet, bulletComp);
                 }
@@ -82,7 +82,7 @@ public:
         for (auto &pair: scene.getPool<BulletComponent>()) {
             if (pair.second.destroy) {
                 if (pair.second.destroyAnimation.assigned()) {
-                    auto sprite = scene.lookup<SpriteAnimationComponent>(pair.first);
+                    auto sprite = scene.getComponent<SpriteAnimationComponent>(pair.first);
                     if (sprite.animation != pair.second.destroyAnimation) {
                         sprite.animation = pair.second.destroyAnimation;
                         scene.updateComponent(pair.first, sprite);

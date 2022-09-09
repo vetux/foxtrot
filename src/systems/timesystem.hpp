@@ -47,7 +47,7 @@ public:
         bool isDay = timeOfDay < dayDuration;
 
         for (auto &pair: scene.getPool<BackdropComponent>()) {
-            auto sprite = scene.lookup<SpriteComponent>(pair.first);
+            auto sprite = scene.getComponent<SpriteComponent>(pair.first);
             sprite.sprite = pair.second.daySprite;
             sprite.spriteB = pair.second.nightSprite;
             if (isDay) {

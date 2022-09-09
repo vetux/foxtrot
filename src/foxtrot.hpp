@@ -51,19 +51,20 @@ public:
                                                   eventBus,
                                                   *window,
                                                   *fontDriver) {
-        EntityScene::addComponentDeserializer<PlayerComponent>("player");
-        EntityScene::addComponentDeserializer<FloorComponent>("floor");
-        EntityScene::addComponentDeserializer<BackdropComponent>("backdrop");
-        EntityScene::addComponentDeserializer<HealthComponent>("health");
-        EntityScene::addComponentDeserializer<InputComponent>("input");
-        EntityScene::addComponentDeserializer<CharacterControllerComponent>("character");
+        REGISTER_COMPONENT(BackdropComponent)
+        REGISTER_COMPONENT(CharacterControllerComponent)
+        REGISTER_COMPONENT(FloorComponent)
+        REGISTER_COMPONENT(HealthComponent)
+        REGISTER_COMPONENT(InputComponent)
+        REGISTER_COMPONENT(PlayerComponent)
 
-        ResourceRegistry::getDefaultRegistry().addArchive("file", std::make_shared<DirectoryArchive>(archive));
-        ResourceRegistry::getDefaultRegistry().setDefaultScheme("file");
         auto parsers = std::vector<std::unique_ptr<ResourceParser>>();
         parsers.emplace_back(std::make_unique<JsonParser>());
         parsers.emplace_back(std::make_unique<StbiParser>());
+
         ResourceRegistry::getDefaultRegistry().setImporter(ResourceImporter(std::move(parsers)));
+        ResourceRegistry::getDefaultRegistry().addArchive("file", std::make_shared<DirectoryArchive>(archive));
+        ResourceRegistry::getDefaultRegistry().setDefaultScheme("file");
 
         ResourceHandle<RawAsset> fontAsset(Uri("fonts/Space_Mono/SpaceMono-Regular.ttf"));
 
@@ -132,6 +133,9 @@ public:
         if (command.cmd == "loadlevel") {
             levelLoader.loadLevel(parseLevelID(command.arguments.at(0)));
             return true;
+        } else if (command.cmd == "fps") {
+            printer.print(std::to_string(fps));
+            return true;
         }
         return false;
     }
@@ -144,6 +148,7 @@ protected:
     void stop() override {}
 
     void update(DeltaTime deltaTime) override {
+        fps = 1.0f / deltaTime;
         ren2d.renderClear(window->getRenderTarget(),
                           ColorRGBA::yellow(),
                           {},
@@ -283,6 +288,8 @@ private:
     float consoleOutputScroll = 0;
 
     bool consoleOpen = false;
+
+    float fps = 0;
 };
 
 #endif //FOXTROT_FOXTROT_HPP

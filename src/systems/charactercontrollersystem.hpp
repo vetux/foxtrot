@@ -52,8 +52,8 @@ public:
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         for (auto &ent: damageEnts) {
-            if (scene.check<CharacterControllerComponent>(ent)) {
-                auto comp = scene.lookup<CharacterControllerComponent>(ent);
+            if (scene.checkComponent<CharacterControllerComponent>(ent)) {
+                auto comp = scene.getComponent<CharacterControllerComponent>(ent);
                 comp.damageTimer = 0.2f;
                 scene.updateComponent(ent, comp);
             }
@@ -65,12 +65,12 @@ public:
             EntityHandle playerEnt;
             EntityHandle otherEnt;
 
-            if (scene.check<CharacterControllerComponent>(ev.entityA)) {
+            if (scene.checkComponent<CharacterControllerComponent>(ev.entityA)) {
                 if (ev.colliderIndexA == 1) {
                     playerEnt = ev.entityA;
                     otherEnt = ev.entityB;
                 }
-            } else if (scene.check<CharacterControllerComponent>(ev.entityB)) {
+            } else if (scene.checkComponent<CharacterControllerComponent>(ev.entityB)) {
                 if (ev.colliderIndexB == 1) {
                     playerEnt = ev.entityB;
                     otherEnt = ev.entityA;
@@ -78,7 +78,7 @@ public:
             }
 
             if (playerEnt && otherEnt) {
-                auto pl = scene.lookup<CharacterControllerComponent>(playerEnt);
+                auto pl = scene.getComponent<CharacterControllerComponent>(playerEnt);
                 if (ev.type == xng::ContactEvent::BEGIN_CONTACT) {
                     pl.collidingEntities.insert(otherEnt);
                 } else {
@@ -92,20 +92,20 @@ public:
 
         std::map<EntityHandle, CharacterControllerComponent> characterUpdates;
         for (auto &pair: scene.getPool<CharacterControllerComponent>()) {
-            auto &tcomp = scene.lookup<TransformComponent>(pair.first);
-            auto &rt = scene.lookup<CanvasTransformComponent>(pair.first);
-            auto rb = scene.lookup<RigidBodyComponent>(pair.first);
-            auto anim = scene.lookup<SpriteAnimationComponent>(pair.first);
-            auto sprite = scene.lookup<SpriteComponent>(pair.first);
-            auto health = scene.lookup<HealthComponent>(pair.first);
-            auto input = scene.lookup<InputComponent>(pair.first);
+            auto &tcomp = scene.getComponent<TransformComponent>(pair.first);
+            auto &rt = scene.getComponent<CanvasTransformComponent>(pair.first);
+            auto rb = scene.getComponent<RigidBodyComponent>(pair.first);
+            auto anim = scene.getComponent<SpriteAnimationComponent>(pair.first);
+            auto sprite = scene.getComponent<SpriteComponent>(pair.first);
+            auto health = scene.getComponent<HealthComponent>(pair.first);
+            auto input = scene.getComponent<InputComponent>(pair.first);
             auto character = pair.second;
 
-            auto &canvas = scene.lookup<CanvasComponent>(scene.getEntityByName(rt.canvas));
+            auto &canvas = scene.getComponent<CanvasComponent>(scene.getEntityByName(rt.canvas));
 
             character.isOnFloor = false;
             for (auto &ent: character.collidingEntities) {
-                if (scene.check<FloorComponent>(ent)) {
+                if (scene.checkComponent<FloorComponent>(ent)) {
                     character.isOnFloor = true;
                     break;
                 }

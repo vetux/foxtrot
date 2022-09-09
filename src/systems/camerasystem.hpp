@@ -36,7 +36,7 @@ public:
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         Vec3f playerPosition;
         for (auto &pair: scene.getPool<CharacterControllerComponent>()) {
-            auto &tcomp = scene.lookup<TransformComponent>(pair.first);
+            auto &tcomp = scene.getComponent<TransformComponent>(pair.first);
             playerPosition = tcomp.transform.getPosition();
             break;
         }
@@ -46,7 +46,7 @@ public:
         };
 
         for (auto &canvasEnt: ents) {
-            auto comp = scene.lookup<CanvasComponent>(canvasEnt);
+            auto comp = scene.getComponent<CanvasComponent>(canvasEnt);
 
             auto halfSize = target.getDescription().size.convert<float>() / 2;
 

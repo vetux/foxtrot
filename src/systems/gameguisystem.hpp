@@ -60,7 +60,7 @@ public:
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         for (auto &pair: scene.getPool<InputComponent>()) {
-            auto &health = scene.lookup<HealthComponent>(pair.first);
+            auto &health = scene.getComponent<HealthComponent>(pair.first);
             if (health.health > 0 && pair.second.aim) {
                 input.setMouseCursorHidden(true);
             } else {

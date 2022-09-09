@@ -48,7 +48,7 @@ public:
 
     void update(DeltaTime deltaTime, EntityScene &scene) override {
         for (auto &player: scene.getPool<PlayerComponent>()) {
-            auto &ic = scene.lookup<InputComponent>(player.first);
+            auto &ic = scene.getComponent<InputComponent>(player.first);
             input.setMouseCursorHidden(ic.aim);
 
             auto rt = crossHairEntity.getComponent<CanvasTransformComponent>();
