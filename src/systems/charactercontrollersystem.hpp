@@ -61,35 +61,6 @@ public:
 
         damageEnts.clear();
 
-        for (auto &ev: contactEvents) {
-            EntityHandle playerEnt;
-            EntityHandle otherEnt;
-
-            if (scene.checkComponent<CharacterControllerComponent>(ev.entityA)) {
-                if (ev.colliderIndexA == 1) {
-                    playerEnt = ev.entityA;
-                    otherEnt = ev.entityB;
-                }
-            } else if (scene.checkComponent<CharacterControllerComponent>(ev.entityB)) {
-                if (ev.colliderIndexB == 1) {
-                    playerEnt = ev.entityB;
-                    otherEnt = ev.entityA;
-                }
-            }
-
-            if (playerEnt && otherEnt) {
-                auto pl = scene.getComponent<CharacterControllerComponent>(playerEnt);
-                if (ev.type == xng::ContactEvent::BEGIN_CONTACT) {
-                    pl.collidingEntities.insert(otherEnt);
-                } else {
-                    pl.collidingEntities.erase(otherEnt);
-                }
-                scene.updateComponent(playerEnt, pl);
-            }
-        }
-
-        contactEvents.clear();
-
         std::map<EntityHandle, CharacterControllerComponent> characterUpdates;
         for (auto &pair: scene.getPool<CharacterControllerComponent>()) {
             auto &tcomp = scene.getComponent<TransformComponent>(pair.first);
@@ -104,8 +75,8 @@ public:
             auto &canvas = scene.getComponent<CanvasComponent>(scene.getEntityByName(rt.canvas));
 
             character.isOnFloor = false;
-            for (auto &ent: character.collidingEntities) {
-                if (scene.checkComponent<FloorComponent>(ent)) {
+            for (auto &tcPair: rb.touchingColliders) {
+                if (scene.checkComponent<FloorComponent>(tcPair.first)) {
                     character.isOnFloor = true;
                     break;
                 }
@@ -190,9 +161,7 @@ public:
     }
 
     void onEvent(const Event &event) override {
-        if (event.getEventType() == typeid(ContactEvent)) {
-            contactEvents.emplace_back(event.as<ContactEvent>());
-        }
+
     }
 
     void onComponentUpdate(const EntityHandle &entity,
@@ -209,8 +178,6 @@ public:
 
 private:
     EventBus &eventBus;
-
-    std::vector<ContactEvent> contactEvents;
 
     std::set<EntityHandle> damageEnts;
 };

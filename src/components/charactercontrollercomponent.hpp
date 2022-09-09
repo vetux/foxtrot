@@ -48,8 +48,6 @@ struct CharacterControllerComponent : public Messageable {
 
     bool isOnFloor = true;
 
-    std::set<EntityHandle> collidingEntities;
-
     Messageable &operator<<(const Message &message) override {
         enabled = message.value("enabled", true);
         idleAnimation << message.value("idleAnimation");
