@@ -43,7 +43,7 @@
               },
               "anchor": "top_right",
               "center": {
-                "x": 125,
+                "x": 150,
                 "y": 50
               },
               "rotation": 0,
@@ -86,7 +86,7 @@
               },
               "anchor": "top_left",
               "center": {
-                "x": 125,
+                "x": 150,
                 "y": 50
               },
               "rotation": 0,
