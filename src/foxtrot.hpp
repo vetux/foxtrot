@@ -119,7 +119,9 @@ public:
                     }
                 } else if (kbev.type == xng::KeyboardEventData::KEYBOARD_CHAR_INPUT) {
                     if (consoleOpen) {
-                        consoleInput += kbev.character;
+                        if (kbev.character < 128) {
+                            consoleInput += static_cast<char>(kbev.character);
+                        }
                     }
                 }
             }
@@ -132,13 +134,13 @@ public:
 
     bool parseCommand(const ConsoleCommand &command, ConsoleOutput &printer) override {
         const std::map<std::string, std::function<void()>> commands = {
-                {"loadlevel", [this, &command]() {
+                {"loadlevel",   [this, &command]() {
                     levelLoader.loadLevel(parseLevelID(command.arguments.at(0)));
                 }},
                 {"reloadlevel", [this]() {
                     levelLoader.loadLevel(levelLoader.getLevel().getID());
                 }},
-                {"fps", [this, &printer]() {
+                {"fps",         [this, &printer]() {
                     printer.print(std::to_string(fpsAverage));
                 }},
         };
@@ -225,10 +227,13 @@ private:
         if (!consoleOutput.empty()) {
             const auto padding = 15;
 
-            auto outputText = consoleTextRenderer->render(consoleOutput,
-                                                          TextRenderProperties{.lineHeight = 20,
-                                                                  .lineWidth = (int) outputSize.x - padding * 2,
-                                                                  .alignment = xng::ALIGN_LEFT});
+            if (consoleOutput != outputText.getText()) {
+                outputText = consoleTextRenderer->render(consoleOutput,
+                                                         TextRenderProperties{.lineHeight = 20,
+                                                                 .lineWidth = (int) outputSize.x - padding * 2,
+                                                                 .alignment = xng::ALIGN_LEFT});
+            }
+
             textSize = outputText.getTexture().getDescription().size.convert<float>();
             auto displaySize = outputSize;
 
@@ -306,6 +311,8 @@ private:
 
     float fpsAverage = 0;
     float fpsAlpha = 0.9;
+
+    Text outputText;
 };
 
 #endif //FOXTROT_FOXTROT_HPP
