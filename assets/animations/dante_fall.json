@@ -3,13 +3,13 @@
     "keyframes": [
       {
         "sprite": {
-          "uri": "sprites/dante_fall.json$0"
+          "uri": "sprites/dante_fall.json/0"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_fall.json$1"
+          "uri": "sprites/dante_fall.json/1"
         },
         "duration": 1
       }

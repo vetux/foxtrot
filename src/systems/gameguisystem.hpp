@@ -131,9 +131,9 @@ private:
             ent.createComponent(rt);
             ent.createComponent(SpriteComponent());
             auto btn = ButtonComponent();
-            btn.sprite = ResourceHandle<Sprite>(Uri("sprites/celltile.json$idle"));
-            btn.spriteHover = ResourceHandle<Sprite>(Uri("sprites/celltile.json$hover"));
-            btn.spritePressed = ResourceHandle<Sprite>(Uri("sprites/celltile.json$press"));
+            btn.sprite = ResourceHandle<Sprite>(Uri("sprites/celltile.json/idle"));
+            btn.spriteHover = ResourceHandle<Sprite>(Uri("sprites/celltile.json/hover"));
+            btn.spritePressed = ResourceHandle<Sprite>(Uri("sprites/celltile.json/press"));
             btn.id = TOOLBAR_BUTTON + std::to_string(i);
             ent.createComponent(btn);
         }

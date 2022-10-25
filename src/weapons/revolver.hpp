@@ -25,8 +25,8 @@
 class Revolver : public Weapon {
 public:
     explicit Revolver()
-            : sprite(Uri("sprites/revolver.json$0")),
-              spriteReload(Uri("sprites/revolver.json$2")) {
+            : sprite(Uri("sprites/revolver.json/0")),
+              spriteReload(Uri("sprites/revolver.json/2")) {
         reloadDuration = 2;
         clipSize = 9;
     }
