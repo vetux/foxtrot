@@ -219,7 +219,7 @@
               "colliders": [
                 {
                   "density": 10,
-                  "friction": 0,
+                  "friction": 1,
                   "shape": {
                     "vertices": [
                       {
@@ -243,7 +243,7 @@
                 },
                 {
                   "density": 5,
-                  "friction": 0,
+                  "friction": 1,
                   "isSensor": true,
                   "shape": {
                     "vertices": [
