@@ -31,7 +31,8 @@ public:
                 ECS &ecs,
                 EventBus &eventBus,
                 Window &window,
-                FontDriver &fontDriver)
+                FontDriver &fontDriver,
+                AudioDevice &audioDevice)
             : target(target),
               ren2d(ren2d),
               ecs(ecs) {
@@ -42,7 +43,8 @@ public:
         levels[LEVEL_ZERO] = std::make_unique<Level0>(eventBus,
                                                       window,
                                                       ren2d,
-                                                      fontDriver);
+                                                      fontDriver,
+                                                      audioDevice);
     }
 
     ~LevelLoader() {

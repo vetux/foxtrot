@@ -156,6 +156,7 @@
         {
           "name": "Player",
           "components": {
+            "AudioListenerComponent": {},
             "TransformComponent": {
               "transform": {
                 "position": {

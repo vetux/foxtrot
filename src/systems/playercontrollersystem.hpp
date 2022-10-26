@@ -36,11 +36,11 @@ public:
     }
 
     void stop(EntityScene &scene) override {
-        for (auto &ent : weaponEntities){
+        for (auto &ent: weaponEntities) {
             scene.destroy(ent.first);
         }
-        for (auto &muzzle : muzzleFlashEntities){
-            for (auto &muz : muzzle.second){
+        for (auto &muzzle: muzzleFlashEntities) {
+            for (auto &muz: muzzle.second) {
                 scene.destroyEntity(muz);
             }
         }
@@ -162,6 +162,7 @@ private:
             }
 
             if (shoot) {
+                createSoundEffectEntity(scene.getEntityName(pair.first), scene, Uri("/sound/effects/gunshot_0.wav"));
                 auto muzzleEnt = createMuzzleEntity(pair.first, scene);
 
                 auto muzzleSprite = muzzleEnt.getComponent<SpriteComponent>();
@@ -247,6 +248,20 @@ private:
         for (auto &pair: playerUpdates) {
             scene.updateComponent(pair.first, pair.second);
         }
+
+        delHandles.clear();
+        for (auto &pair: sfxStarts) {
+            if (std::chrono::duration_cast<std::chrono::seconds>(
+                    std::chrono::high_resolution_clock::now() - pair.second)
+                > std::chrono::seconds(2)) {
+                delHandles.insert(pair.first);
+            }
+        }
+        for (auto &handle : delHandles){
+            scene.destroyEntity(sfxEntities.at(handle));
+            sfxEntities.erase(handle);
+            sfxStarts.erase(handle);
+        }
     }
 
 private:
@@ -295,8 +310,24 @@ private:
         return ent;
     }
 
+    Entity createSoundEffectEntity(const std::string &transformParent, EntityScene &scene, const Uri &uri) {
+        auto ret = scene.createEntity();
+        auto tr = TransformComponent();
+        tr.parent = transformParent;
+        ret.createComponent(tr);
+        auto snd = AudioSourceComponent();
+        snd.play = true;
+        snd.audio = ResourceHandle<Audio>(uri);
+        ret.createComponent(snd);
+        sfxEntities[ret.getHandle()] = ret;
+        sfxStarts[ret.getHandle()] = std::chrono::high_resolution_clock::now();
+        return ret;
+    }
+
     std::map<EntityHandle, Entity> weaponEntities;
     std::map<EntityHandle, std::vector<Entity>> muzzleFlashEntities;
+    std::map<EntityHandle, Entity> sfxEntities;
+    std::map<EntityHandle, std::chrono::high_resolution_clock::time_point> sfxStarts;
 };
 
 #endif //FOXTROT_PLAYERCONTROLLERSYSTEM_HPP

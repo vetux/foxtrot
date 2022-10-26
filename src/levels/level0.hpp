@@ -39,7 +39,8 @@ public:
     Level0(EventBus &eventBus,
            Window &window,
            Renderer2D &ren2d,
-           FontDriver &fontDriver)
+           FontDriver &fontDriver,
+           AudioDevice &audioDevice)
             : eventBus(eventBus),
               target(window.getRenderTarget()),
               eventSystem(window, eventBus),
@@ -57,6 +58,7 @@ public:
               physicsSystem(*world, eventBus, 30, 1.0f / 300),
               cameraSystem(window.getRenderTarget(), Vec2f(-10100, -10100), Vec2f(10100, 100)),
               cursorSystem(window.getInput()),
+              audioSystem(audioDevice, ResourceRegistry::getDefaultRegistry()),
               ren2d(ren2d) {
         world->setGravity(Vec3f(0, -20, 0));
     }
@@ -107,7 +109,9 @@ public:
                  cursorSystem,
 
                  spriteAnimationSystem,
-                 canvasRenderSystem});
+                 canvasRenderSystem,
+
+                 audioSystem});
         ecs.setScene(scene);
         ecs.start();
     }
@@ -149,11 +153,13 @@ private:
     std::unique_ptr<World> world;
 
     EventSystem eventSystem;
-    GuiEventSystem guiEventSystem;
-    TimeSystem daytimeSystem;
     CanvasRenderSystem canvasRenderSystem;
     SpriteAnimationSystem spriteAnimationSystem;
+    AudioSystem audioSystem;
     InputSystem inputSystem;
+
+    GuiEventSystem guiEventSystem;
+    TimeSystem daytimeSystem;
     CharacterControllerSystem characterControllerSystem;
     PlayerControllerSystem playerControllerSystem;
     GameGuiSystem gameGuiSystem;

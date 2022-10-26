@@ -50,7 +50,8 @@ public:
                                                   ecs,
                                                   eventBus,
                                                   *window,
-                                                  *fontDriver) {
+                                                  *fontDriver,
+                                                  *audioDevice) {
         REGISTER_COMPONENT(BackdropComponent)
         REGISTER_COMPONENT(CharacterControllerComponent)
         REGISTER_COMPONENT(FloorComponent)
@@ -62,6 +63,7 @@ public:
         auto parsers = std::vector<std::unique_ptr<ResourceParser>>();
         parsers.emplace_back(std::make_unique<JsonParser>());
         parsers.emplace_back(std::make_unique<StbiParser>());
+        parsers.emplace_back(DriverRegistry::load<ResourceParser>("sndfile"));
 
         ResourceRegistry::getDefaultRegistry().setImporter(ResourceImporter(std::move(parsers)));
         ResourceRegistry::getDefaultRegistry().addArchive("file", std::make_shared<DirectoryArchive>(archive));
