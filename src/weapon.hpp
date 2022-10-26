@@ -106,12 +106,18 @@ public:
 
     virtual float getReloadTimer() const { return reloadTimer; }
 
+    virtual float getBulletSpread() const { return bulletSpread; }
+
+    virtual float getBulletSpeed() const  { return bulletSpeed; }
+
 protected:
     int ammo = 0;
     int clip = 0;
     int clipSize = 0;
     float reloadTimer = 0;
     float reloadDuration = 0;
+    float bulletSpread = 0;
+    float bulletSpeed = 100;
 };
 
 #endif //FOXTROT_WEAPON_HPP

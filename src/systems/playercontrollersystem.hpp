@@ -20,6 +20,8 @@
 #ifndef FOXTROT_PLAYERCONTROLLERSYSTEM_HPP
 #define FOXTROT_PLAYERCONTROLLERSYSTEM_HPP
 
+#include <random>
+
 #include "xengine.hpp"
 
 #include "components/muzzleflashcomponent.hpp"
@@ -31,6 +33,9 @@ using namespace xng;
 
 class PlayerControllerSystem : public System {
 public:
+    PlayerControllerSystem()
+            : rng(dev()) {}
+
     void start(EntityScene &scene) override {
         System::start(scene);
     }
@@ -205,13 +210,19 @@ private:
 
                 auto aimDir = normalize(rotateVectorAroundPoint(Vec2f(-1, 0), {}, muzzleRect.rotation));
 
+                std::uniform_int_distribution<std::mt19937::result_type> distribution(0, 1000);
+
+                float v = 1.0f * (((float)distribution(rng) / 1000.0f)-0.5f);
+
                 auto rotation = Vec3f(0, 0, muzzleRect.rotation);
                 auto muzzleWorld = TransformComponent::walkHierarchy(muzzleTransform, scene);
+                float spreadAngle = player.player.getWeapon().getBulletSpread() * v;
+                auto velocity = rotateVectorAroundPoint(aimDir, {}, spreadAngle);
                 SmallBullet::create(scene,
                                     Transform(muzzleWorld.getPosition(),
                                               rotation + muzzleWorld.getRotation().getEulerAngles(),
                                               Vec3f(1) + muzzleWorld.getScale()),
-                                    Vec3f(aimDir.x, aimDir.y, 0) * 100,
+                                    Vec3f(velocity.x, velocity.y, 0) * player.player.getWeapon().getBulletSpeed(),
                                     "MainCanvas");
             }
 
@@ -257,7 +268,7 @@ private:
                 delHandles.insert(pair.first);
             }
         }
-        for (auto &handle : delHandles){
+        for (auto &handle: delHandles) {
             scene.destroyEntity(sfxEntities.at(handle));
             sfxEntities.erase(handle);
             sfxStarts.erase(handle);
@@ -328,6 +339,10 @@ private:
     std::map<EntityHandle, std::vector<Entity>> muzzleFlashEntities;
     std::map<EntityHandle, Entity> sfxEntities;
     std::map<EntityHandle, std::chrono::high_resolution_clock::time_point> sfxStarts;
+
+    std::random_device dev;
+    std::mt19937 rng;
+
 };
 
 #endif //FOXTROT_PLAYERCONTROLLERSYSTEM_HPP

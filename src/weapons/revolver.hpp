@@ -29,6 +29,7 @@ public:
               spriteReload(Uri("sprites/revolver.json/2")) {
         reloadDuration = 2;
         clipSize = 9;
+        bulletSpread = 5;
     }
 
     ~Revolver() override = default;

@@ -69,6 +69,7 @@ public:
               gatling_unloaded_1_cycle(std::move(gatling_unloaded_1_cycle)) {
         clipSize = 300;
         reloadDuration = 1;
+        bulletSpread = 10;
     }
 
     ~Gatling() override = default;
