@@ -106,9 +106,9 @@ public:
     }
 
     Vec2f getWeaponOffset() {
-        if (falling){
+       /* if (falling){
             return Vec2f(-30, 50);
-        } else {
+        } else {*/
             switch (pose) {
                 default:
                 case GUN_AIM:
@@ -116,7 +116,7 @@ public:
                 case GUN_HIP:
                     return Vec2f(-25, 5);
             }
-        }
+       // }
     }
 
     void setInventory(const Inventory &inv) {

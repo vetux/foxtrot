@@ -208,14 +208,13 @@ private:
     bool chamber = false;
     bool engagedRotor = false;
 
-    float lastRotation = 0;
     float chamberTimer = 0;
 
     float rpm = 0;
 
-    float maxRpm = 1750;
-    float spinAcceleration = 50;
-    float spinDeceleration = 50;
+    float maxRpm = 5000;
+    float spinAcceleration = 500;
+    float spinDeceleration = 1000;
 
     ResourceHandle<Sprite> gatling_fire_0;
     ResourceHandle<Sprite> gatling_fire_1;

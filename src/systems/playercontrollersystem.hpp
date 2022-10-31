@@ -97,7 +97,7 @@ private:
             character.idleAnimation = player.player.getIdleAnimation();
             character.walkAnimation = player.player.getWalkAnimation();
             character.runAnimation = player.player.getRunAnimation();
-            character.fallAnimation = player.player.getFallAnimation();
+            // character.fallAnimation = player.player.getFallAnimation();
             character.deathAnimation = player.player.getDeathAnimation();
 
             bool shoot = false;
@@ -212,7 +212,7 @@ private:
 
                 std::uniform_int_distribution<std::mt19937::result_type> distribution(0, 1000);
 
-                float v = 1.0f * (((float)distribution(rng) / 1000.0f)-0.5f);
+                float v = 1.0f * (((float) distribution(rng) / 1000.0f) - 0.5f);
 
                 auto rotation = Vec3f(0, 0, muzzleRect.rotation);
                 auto muzzleWorld = TransformComponent::walkHierarchy(muzzleTransform, scene);
