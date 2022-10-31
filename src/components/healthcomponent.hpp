@@ -22,7 +22,7 @@
 
 #include "xengine.hpp"
 
-struct HealthComponent : public Messageable {
+struct HealthComponent : public Component {
     float health = 100.0f;
 
     Messageable &operator<<(const Message &message) override {
@@ -34,6 +34,10 @@ struct HealthComponent : public Messageable {
         message = Message(xng::Message::DICTIONARY);
         message["health"] = health;
         return message;
+    }
+
+    std::type_index getType() const override {
+        return typeid(HealthComponent);
     }
 };
 

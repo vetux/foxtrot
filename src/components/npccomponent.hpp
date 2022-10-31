@@ -20,7 +20,20 @@
 #ifndef FOXTROT_NPCCOMPONENT_HPP
 #define FOXTROT_NPCCOMPONENT_HPP
 
-struct NpcComponent {
+#include "xengine.hpp"
+
+struct NpcComponent : public Component {
+    Messageable &operator<<(const Message &message) override {
+        throw std::runtime_error("Not implemented");
+    }
+
+    Message &operator>>(Message &message) const override {
+        throw std::runtime_error("Not implemented");
+    }
+
+    std::type_index getType() const override {
+        return typeid(NpcComponent);
+    }
 };
 
 #endif //FOXTROT_NPCCOMPONENT_HPP

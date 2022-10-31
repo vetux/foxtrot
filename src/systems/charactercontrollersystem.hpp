@@ -165,11 +165,11 @@ public:
     }
 
     void onComponentUpdate(const EntityHandle &entity,
-                           const std::any &oldComponent,
-                           const std::any &newComponent) override {
-        if (oldComponent.type() == typeid(HealthComponent)) {
-            auto oldHealth = std::any_cast<HealthComponent>(oldComponent);
-            auto newHealth = std::any_cast<HealthComponent>(newComponent);
+                           const Component &oldComponent,
+                           const Component &newComponent) override {
+        if (oldComponent.getType() == typeid(HealthComponent)) {
+            auto oldHealth = dynamic_cast<const HealthComponent&>(oldComponent);
+            auto newHealth = dynamic_cast<const HealthComponent&>(newComponent);
             if (newHealth.health < oldHealth.health) {
                 damageEnts.insert(entity);
             }

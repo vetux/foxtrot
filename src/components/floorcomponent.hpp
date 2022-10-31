@@ -22,13 +22,17 @@
 
 #include "xengine.hpp"
 
-struct FloorComponent : public Messageable {
+struct FloorComponent : public Component {
     Messageable &operator<<(const Message &message) override {
         return *this;
     }
 
     Message &operator>>(Message &message) const override {
         return message;
+    }
+
+    std::type_index getType() const override {
+        return typeid(FloorComponent);
     }
 };
 

@@ -22,7 +22,7 @@
 
 #include "xengine.hpp"
 
-struct BackdropComponent : public Messageable {
+struct BackdropComponent : public Component {
     ResourceHandle<Sprite> daySprite;
     ResourceHandle<Sprite> nightSprite;
 
@@ -37,6 +37,10 @@ struct BackdropComponent : public Messageable {
         daySprite >> message["daySprite"];
         nightSprite >> message["nightSprite"];
         return message;
+    }
+
+    std::type_index getType() const override {
+        return typeid(BackdropComponent);
     }
 };
 

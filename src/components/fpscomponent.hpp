@@ -20,15 +20,19 @@
 #ifndef FOXTROT_FPSCOMPONENT_HPP
 #define FOXTROT_FPSCOMPONENT_HPP
 
-#include "io/messageable.hpp"
+#include "xengine.hpp"
 
-struct FpsComponent : public xng::Messageable {
+struct FpsComponent : public xng::Component {
     Messageable &operator<<(const Message &message) override {
         return *this;
     }
 
     Message &operator>>(Message &message) const override {
         return message;
+    }
+
+    std::type_index getType() const override {
+        return typeid(FpsComponent);
     }
 };
 #endif //FOXTROT_FPSCOMPONENT_HPP

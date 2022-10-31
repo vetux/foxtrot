@@ -26,7 +26,7 @@
 
 using namespace xng;
 
-struct PlayerComponent : public Messageable {
+struct PlayerComponent : public Component {
     ResourceHandle<SpriteAnimation> idleAnimation;
     ResourceHandle<SpriteAnimation> walkAnimation;
 
@@ -50,6 +50,10 @@ struct PlayerComponent : public Messageable {
         idleAnimationLow >> message["idleAnimationLow"];
         walkAnimationLow >> message["walkAnimationLow"];
         return message;
+    }
+
+    std::type_index getType() const override {
+        return typeid(PlayerComponent);
     }
 };
 

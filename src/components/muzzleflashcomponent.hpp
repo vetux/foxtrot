@@ -20,8 +20,20 @@
 #ifndef FOXTROT_MUZZLEFLASHCOMPONENT_HPP
 #define FOXTROT_MUZZLEFLASHCOMPONENT_HPP
 
-struct MuzzleFlashComponent {
+#include "xengine.hpp"
 
+struct MuzzleFlashComponent : public Component {
+    Messageable &operator<<(const Message &message) override {
+        throw std::runtime_error("Not implemented");
+    }
+
+    Message &operator>>(Message &message) const override {
+        throw std::runtime_error("Not implemented");
+    }
+
+    std::type_index getType() const override {
+        return typeid(MuzzleFlashComponent);
+    }
 };
 
 #endif //FOXTROT_MUZZLEFLASHCOMPONENT_HPP

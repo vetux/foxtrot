@@ -22,11 +22,22 @@
 
 #include "xengine.hpp"
 
-struct BulletComponent {
-public:
+struct BulletComponent : public Component {
     float damage;
     ResourceHandle<SpriteAnimation> destroyAnimation;
     bool destroy = false;
+
+    std::type_index getType() const override {
+        return typeid(BulletComponent);
+    }
+
+    Messageable &operator<<(const Message &message) override {
+        throw std::runtime_error("Not implemented");
+    }
+
+    Message &operator>>(Message &message) const override {
+        throw std::runtime_error("Not implemented");
+    }
 };
 
 #endif //FOXTROT_BULLETCOMPONENT_HPP

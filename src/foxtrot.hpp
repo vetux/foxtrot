@@ -87,6 +87,8 @@ public:
                           window->getRenderTarget().getDescription().size);
         window->swapBuffers();
         window->update();
+
+        targetFramerate = 300;
     }
 
     ~Foxtrot() override {

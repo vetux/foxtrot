@@ -27,7 +27,7 @@
 
 using namespace xng;
 
-struct InputComponent : public Messageable {
+struct InputComponent : public Component {
     int slot = 0; // The InputSystem decides how to map input devices to slots, negative slots are not updated by the InputSystem
 
     bool aim = false; // If true the user wants to aim to the aimPosition
@@ -58,6 +58,10 @@ struct InputComponent : public Messageable {
         message["reload"] = reload;
         movement >> message["movement"];
         return message;
+    }
+
+    std::type_index getType() const override {
+        return typeid(InputComponent);
     }
 };
 

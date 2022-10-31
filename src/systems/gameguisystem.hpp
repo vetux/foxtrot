@@ -105,10 +105,13 @@ public:
             healthGui.updateComponent(healthText);
         }
 
-        float fps = deltaTime > 0 ? 1.0f / deltaTime : 0;
+        float fps = deltaTime > 0 ? std::round(1.0f / deltaTime) : 0;
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(0) << fps;
+        std::string fpsStr = stream.str();
         for (auto &pair: scene.getPool<FpsComponent>()) {
             auto text = scene.getComponent<TextComponent>(pair.first);
-            text.text = std::to_string(fps);
+            text.text = fpsStr;
             scene.updateComponent(pair.first, text);
         }
     }

@@ -24,7 +24,7 @@
 
 #include "player.hpp"
 
-struct CharacterControllerComponent : public Messageable {
+struct CharacterControllerComponent : public Component {
     bool enabled = true;
 
     ResourceHandle<SpriteAnimation> idleAnimation;
@@ -67,6 +67,10 @@ struct CharacterControllerComponent : public Messageable {
         deathAnimation >> message["deathAnimation"];
         message["facingLeft"] = facingLeft;
         return message;
+    }
+
+    std::type_index getType() const override {
+        return typeid(CharacterControllerComponent);
     }
 };
 
