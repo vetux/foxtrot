@@ -38,7 +38,7 @@ class Foxtrot : public Application, public EventListener, public ConsoleOutput, 
 public:
     Foxtrot(int argc, char *argv[]) : Application(argc, argv, "Foxtrot", {640, 480}),
                                       fontDriver(DriverRegistry::load<FontDriver>("freetype")),
-                                      archive(std::filesystem::current_path().append("assets")),
+                                      archive(std::filesystem::current_path().append("assets").string()),
                                       shaderCompiler(DriverRegistry::load<SPIRVCompiler>("shaderc")),
                                       shaderDecompiler(DriverRegistry::load<SPIRVDecompiler>("spirv-cross")),
                                       ren2d(*renderDevice,

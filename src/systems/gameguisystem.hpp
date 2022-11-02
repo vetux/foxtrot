@@ -20,6 +20,8 @@
 #ifndef FOXTROT_GAMEGUISYSTEM_HPP
 #define FOXTROT_GAMEGUISYSTEM_HPP
 
+#include <sstream>
+
 #include "xengine.hpp"
 
 #include "components/playercomponent.hpp"
