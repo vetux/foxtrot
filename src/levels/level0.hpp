@@ -34,6 +34,7 @@
 #include "systems/gameguisystem.hpp"
 #include "systems/cursorsystem.hpp"
 
+//TODO: Fix box2d collisions not working.
 class Level0 : public Level, public EventListener {
 public:
     Level0(EventBus &eventBus,
@@ -55,7 +56,7 @@ public:
               gameGuiSystem(window.getInput(), eventBus),
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
-              physicsSystem(*world, eventBus, 30, 1.0f / 300),
+              physicsSystem(*world, eventBus, 1, 1.0f / 300),
               cameraSystem(window.getRenderTarget(), Vec2f(-10100, -10100), Vec2f(10100, 100)),
               cursorSystem(window.getInput()),
               audioSystem(audioDevice, ResourceRegistry::getDefaultRegistry()),

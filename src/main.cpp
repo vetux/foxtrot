@@ -20,10 +20,10 @@
 #include "foxtrot.hpp"
 
 int main(int argc, char *argv[]) {
-    try {
+    //try {
         return Foxtrot(argc, argv).loop();
-    } catch (std::exception &e) {
+  /*  } catch (std::exception &e) {
         std::cout << e.what();
         throw e;
-    }
+    }*/
 }
