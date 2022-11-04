@@ -46,6 +46,7 @@ namespace SmallBullet {
         auto rb = RigidBodyComponent();
         auto col = ColliderDesc();
         col.isSensor = false;
+        col.density = 10;
         col.shape.vertices.emplace_back(Vec3f(-4, -4, 0));
         col.shape.vertices.emplace_back(Vec3f(4, -4, 0));
         col.shape.vertices.emplace_back(Vec3f(4, 4, 0));
@@ -55,7 +56,6 @@ namespace SmallBullet {
         rb.type = RigidBody::DYNAMIC;
         rb.velocity = velocity;
         rb.is2D = true;
-        rb.mass = 1;
         ent.createComponent(rb);
         auto sprite = SpriteComponent();
         sprite.flipSprite.x = velocity.x < 0;
