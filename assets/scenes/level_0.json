@@ -242,7 +242,7 @@
                   }
                 },
                 {
-                  "density": 5,
+                  "density": 10,
                   "friction": 1,
                   "isSensor": true,
                   "shape": {
@@ -333,6 +333,7 @@
               "colliders": [
                 {
                   "friction": 0.5,
+                  "density": 10,
                   "shape": {
                     "vertices": [
                       {
@@ -431,6 +432,7 @@
               "is2D": true,
               "colliders": [
                 {
+                  "density": 10,
                   "shape": {
                     "primitive": "quad",
                     "vertices": [
@@ -489,6 +491,7 @@
               "is2D": true,
               "colliders": [
                 {
+                  "density": 10,
                   "shape": {
                     "primitive": "quad",
                     "vertices": [
@@ -547,6 +550,7 @@
               "is2D": true,
               "colliders": [
                 {
+                  "density": 10,
                   "shape": {
                     "primitive": "quad",
                     "vertices": [
@@ -606,6 +610,7 @@
               "is2D": true,
               "colliders": [
                 {
+                  "density": 10,
                   "shape": {
                     "primitive": "quad",
                     "vertices": [
