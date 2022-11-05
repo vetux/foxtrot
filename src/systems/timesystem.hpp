@@ -20,7 +20,7 @@
 #ifndef FOXTROT_TIMESYSTEM_HPP
 #define FOXTROT_TIMESYSTEM_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "components/backdropcomponent.hpp"
 
@@ -37,7 +37,7 @@ public:
               nightDuration(nightDuration),
               duskSpeed(duskSpeed) {}
 
-    void update(DeltaTime deltaTime, EntityScene &scene) override {
+    void update(DeltaTime deltaTime, EntityScene &scene, EventBus &eventBus) override {
         time += deltaTime;
 
         const auto totalDuration = dayDuration + nightDuration;

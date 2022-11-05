@@ -20,7 +20,7 @@
 #ifndef FOXTROT_FPSCOMPONENT_HPP
 #define FOXTROT_FPSCOMPONENT_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 struct FpsComponent : public xng::Component {
     Messageable &operator<<(const Message &message) override {

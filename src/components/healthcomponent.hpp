@@ -20,7 +20,7 @@
 #ifndef FOXTROT_HEALTHCOMPONENT_HPP
 #define FOXTROT_HEALTHCOMPONENT_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 struct HealthComponent : public Component {
     float health = 100.0f;

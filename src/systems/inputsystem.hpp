@@ -20,7 +20,7 @@
 #ifndef FOXTROT_INPUTSYSTEM_HPP
 #define FOXTROT_INPUTSYSTEM_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "components/inputcomponent.hpp"
 #include "components/healthcomponent.hpp"
@@ -32,7 +32,7 @@ public:
     explicit InputSystem(Input &input)
             : input(input) {}
 
-    void update(DeltaTime deltaTime, EntityScene &scene) override {
+    void update(DeltaTime deltaTime, EntityScene &scene, EventBus &eventBus) override {
         std::map<EntityHandle, InputComponent> updates;
         for (auto &pair: scene.getPool<InputComponent>()) {
             if (pair.second.slot < 0)

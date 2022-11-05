@@ -22,7 +22,7 @@
 
 #include <random>
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "components/muzzleflashcomponent.hpp"
 #include "components/charactercontrollercomponent.hpp"
@@ -36,11 +36,9 @@ public:
     PlayerControllerSystem()
             : rng(dev()) {}
 
-    void start(EntityScene &scene) override {
-        System::start(scene);
-    }
+    void start(EntityScene &scene, EventBus &eventBus) override {}
 
-    void stop(EntityScene &scene) override {
+    void stop(EntityScene &scene, EventBus &eventBus) override {
         for (auto &ent: weaponEntities) {
             scene.destroy(ent.first);
         }
@@ -54,7 +52,7 @@ public:
     }
 
 private:
-    void update(DeltaTime deltaTime, EntityScene &scene) override {
+    void update(DeltaTime deltaTime, EntityScene &scene, EventBus &eventBus) override {
         std::set<EntityHandle> delHandles;
         for (auto &pair: scene.getPool<MuzzleFlashComponent>()) {
             auto &anim = scene.getComponent<SpriteAnimationComponent>(pair.first);

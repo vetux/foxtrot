@@ -20,7 +20,7 @@
 #ifndef FOXTROT_MAINMENU_HPP
 #define FOXTROT_MAINMENU_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "level.hpp"
 #include "events/loadlevelevent.hpp"
@@ -31,16 +31,16 @@ using namespace xng;
 
 class MainMenu : public Level, public EventListener {
 public:
-    MainMenu(EventBus &eventBus,
+    MainMenu(std::shared_ptr<EventBus> eventBus,
              Window &window,
              Renderer2D &ren2d,
              FontDriver &fontDriver)
             : eventBus(eventBus),
-              guiEventSystem(window, eventBus),
+              guiEventSystem(window),
               canvasRenderSystem(ren2d,
                                  window.getRenderTarget(),
                                  fontDriver),
-              menuGuiSystem(eventBus, window.getInput()) {
+              menuGuiSystem(window.getInput()) {
     }
 
     LevelID getID() override {
@@ -49,15 +49,16 @@ public:
 
     void onStart(ECS &ecs) override {
         auto handle = ResourceHandle<EntityScene>(Uri("scenes/menu.json"));
-        eventBus.addListener(*this);
+        eventBus->addListener(*this);
         scene = std::make_shared<EntityScene>(handle.get());
-        ecs.setSystems({guiEventSystem, menuGuiSystem, spriteAnimationSystem, canvasRenderSystem});
         ecs.setScene(scene);
+        ecs.setEventBus(eventBus);
+        ecs.setSystems({guiEventSystem, menuGuiSystem, spriteAnimationSystem, canvasRenderSystem});
         ecs.start();
     }
 
     void onStop(ECS &ecs) override {
-        eventBus.removeListener(*this);
+        eventBus->removeListener(*this);
         ecs.stop();
         ecs.setScene({});
         ecs.setSystems({});
@@ -83,7 +84,7 @@ public:
     }
 
 private:
-    EventBus &eventBus;
+    std::shared_ptr<EventBus> eventBus;
 
     GuiEventSystem guiEventSystem;
     CanvasRenderSystem canvasRenderSystem;

@@ -20,7 +20,7 @@
 #ifndef FOXTROT_BULLETCOMPONENT_HPP
 #define FOXTROT_BULLETCOMPONENT_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 struct BulletComponent : public Component {
     float damage;

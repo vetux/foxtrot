@@ -20,7 +20,7 @@
 #ifndef FOXTROT_INPUTCOMPONENT_HPP
 #define FOXTROT_INPUTCOMPONENT_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "weapon.hpp"
 #include "player.hpp"

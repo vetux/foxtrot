@@ -20,7 +20,7 @@
 #ifndef FOXTROT_CHARACTERCONTROLLERCOMPONENT_HPP
 #define FOXTROT_CHARACTERCONTROLLERCOMPONENT_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "player.hpp"
 

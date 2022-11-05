@@ -20,8 +20,7 @@
 #ifndef FOXTROT_FOXTROT_HPP
 #define FOXTROT_FOXTROT_HPP
 
-#include "app/application.hpp"
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "levels/mainmenu.hpp"
 #include "levels/level0.hpp"
@@ -45,6 +44,7 @@ public:
                                             *shaderCompiler,
                                             *shaderDecompiler),
                                       ecs(),
+                                      eventBus(std::make_shared<EventBus>()),
                                       levelLoader(window->getRenderTarget(),
                                                   ren2d,
                                                   ecs,
@@ -82,7 +82,7 @@ public:
         console.addOutput(*this);
         console.addParser(*this);
 
-        eventBus.addListener(*this);
+        eventBus->addListener(*this);
         ren2d.renderClear(window->getRenderTarget(), ColorRGBA::black(), {},
                           window->getRenderTarget().getDescription().size);
         window->swapBuffers();
@@ -92,7 +92,7 @@ public:
     }
 
     ~Foxtrot() override {
-        eventBus.removeListener(*this);
+        eventBus->removeListener(*this);
     }
 
     void onEvent(const Event &event) override {
@@ -293,7 +293,7 @@ private:
 
     DirectoryArchive archive;
     Renderer2D ren2d;
-    EventBus eventBus;
+    std::shared_ptr<EventBus> eventBus;
     ECS ecs;
 
     LevelLoader levelLoader;

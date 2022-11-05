@@ -20,7 +20,7 @@
 #ifndef FOXTROT_CAMERASYSTEM_HPP
 #define FOXTROT_CAMERASYSTEM_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "components/charactercontrollercomponent.hpp"
 
@@ -33,7 +33,7 @@ public:
               cameraBoundMin(std::move(cameraMin)),
               cameraBoundMax(std::move(cameraMax)) {}
 
-    void update(DeltaTime deltaTime, EntityScene &scene) override {
+    void update(DeltaTime deltaTime, EntityScene &scene, EventBus &eventBus) override {
         Vec3f playerPosition;
         for (auto &pair: scene.getPool<CharacterControllerComponent>()) {
             auto &tcomp = scene.getComponent<TransformComponent>(pair.first);

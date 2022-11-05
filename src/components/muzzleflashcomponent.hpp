@@ -20,7 +20,7 @@
 #ifndef FOXTROT_MUZZLEFLASHCOMPONENT_HPP
 #define FOXTROT_MUZZLEFLASHCOMPONENT_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 struct MuzzleFlashComponent : public Component {
     Messageable &operator<<(const Message &message) override {

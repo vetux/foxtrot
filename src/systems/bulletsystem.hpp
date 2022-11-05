@@ -20,7 +20,7 @@
 #ifndef FOXTROT_BULLETSYSTEM_HPP
 #define FOXTROT_BULLETSYSTEM_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "components/bulletcomponent.hpp"
 #include "components/healthcomponent.hpp"
@@ -29,16 +29,21 @@ using namespace xng;
 
 class BulletSystem : public System, EventListener {
 public:
-    explicit BulletSystem(EventBus &bus)
-            : bus(bus) {
-        bus.addListener(*this);
+    explicit BulletSystem() {
     }
 
     ~BulletSystem() override {
-        bus.removeListener(*this);
     }
 
-    void update(DeltaTime deltaTime, EntityScene &scene) override {
+    void start(EntityScene &scene, EventBus &eventBus) override {
+        eventBus.addListener(*this);
+    }
+
+    void stop(EntityScene &scene, EventBus &eventBus) override {
+        eventBus.removeListener(*this);
+    }
+
+    void update(DeltaTime deltaTime, EntityScene &scene, EventBus &eventBus) override {
         for (auto &ev: contactEvents) {
             if (ev.type == xng::ContactEvent::BEGIN_CONTACT) {
                 EntityHandle bullet;
@@ -108,7 +113,6 @@ private:
         }
     }
 
-    EventBus bus;
     std::vector<ContactEvent> contactEvents;
 };
 

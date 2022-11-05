@@ -20,7 +20,7 @@
 #ifndef FOXTROT_SMALLBULLET_HPP
 #define FOXTROT_SMALLBULLET_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "components/bulletcomponent.hpp"
 

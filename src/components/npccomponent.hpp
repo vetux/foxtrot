@@ -20,7 +20,7 @@
 #ifndef FOXTROT_NPCCOMPONENT_HPP
 #define FOXTROT_NPCCOMPONENT_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 struct NpcComponent : public Component {
     Messageable &operator<<(const Message &message) override {

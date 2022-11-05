@@ -20,7 +20,7 @@
 #ifndef FOXTROT_LOADLEVELEVENT_HPP
 #define FOXTROT_LOADLEVELEVENT_HPP
 
-#include "event/event.hpp"
+#include "xng/event/event.hpp"
 
 #include "level.hpp"
 

@@ -20,7 +20,7 @@
 #ifndef FOXTROT_CHARACTERCONTROLLERSYSTEM_HPP
 #define FOXTROT_CHARACTERCONTROLLERSYSTEM_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "components/charactercontrollercomponent.hpp"
 #include "components/floorcomponent.hpp"
@@ -33,24 +33,21 @@ using namespace xng;
 
 class CharacterControllerSystem : public System, public EventListener, public EntityScene::Listener {
 public:
-    explicit CharacterControllerSystem(EventBus &eventBus)
-            : eventBus(eventBus) {
+    CharacterControllerSystem() {}
+
+    virtual ~CharacterControllerSystem() {}
+
+    void start(EntityScene &scene, EventBus &eventBus) override {
         eventBus.addListener(*this);
-    }
-
-    virtual ~CharacterControllerSystem() {
-        eventBus.removeListener(*this);
-    }
-
-    void start(EntityScene &scene) override {
         scene.addListener(*this);
     }
 
-    void stop(EntityScene &scene) override {
+    void stop(EntityScene &scene, EventBus &eventBus) override {
+        eventBus.removeListener(*this);
         scene.removeListener(*this);
     }
 
-    void update(DeltaTime deltaTime, EntityScene &scene) override {
+    void update(DeltaTime deltaTime, EntityScene &scene, EventBus &eventBus) override {
         for (auto &ent: damageEnts) {
             if (scene.checkComponent<CharacterControllerComponent>(ent)) {
                 auto comp = scene.getComponent<CharacterControllerComponent>(ent);
@@ -168,8 +165,8 @@ public:
                            const Component &oldComponent,
                            const Component &newComponent) override {
         if (oldComponent.getType() == typeid(HealthComponent)) {
-            auto oldHealth = dynamic_cast<const HealthComponent&>(oldComponent);
-            auto newHealth = dynamic_cast<const HealthComponent&>(newComponent);
+            auto oldHealth = dynamic_cast<const HealthComponent &>(oldComponent);
+            auto newHealth = dynamic_cast<const HealthComponent &>(newComponent);
             if (newHealth.health < oldHealth.health) {
                 damageEnts.insert(entity);
             }
@@ -177,8 +174,6 @@ public:
     }
 
 private:
-    EventBus &eventBus;
-
     std::set<EntityHandle> damageEnts;
 };
 

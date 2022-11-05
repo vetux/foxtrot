@@ -20,7 +20,7 @@
 #ifndef FOXTROT_CURSORSYSTEM_HPP
 #define FOXTROT_CURSORSYSTEM_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 using namespace xng;
 
@@ -28,7 +28,7 @@ class CursorSystem : public System {
 public:
     CursorSystem(Input &input) : input(input) {}
 
-    void start(EntityScene &scene) override {
+    void start(EntityScene &scene, EventBus &eventBus) override {
         Entity ent = scene.createEntity();
         auto rt = CanvasTransformComponent();
         rt.center = Vec2f(32, 32);
@@ -42,11 +42,11 @@ public:
         crossHairEntity = ent;
     }
 
-    void stop(EntityScene &scene) override {
+    void stop(EntityScene &scene, EventBus &eventBus) override {
         scene.destroy(crossHairEntity.getHandle());
     }
 
-    void update(DeltaTime deltaTime, EntityScene &scene) override {
+    void update(DeltaTime deltaTime, EntityScene &scene, EventBus &eventBus) override {
         for (auto &player: scene.getPool<PlayerComponent>()) {
             auto &ic = scene.getComponent<InputComponent>(player.first);
             input.setMouseCursorHidden(ic.aim);

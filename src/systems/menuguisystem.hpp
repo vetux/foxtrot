@@ -20,39 +20,44 @@
 #ifndef FOXTROT_MENUGUISYSTEM_HPP
 #define FOXTROT_MENUGUISYSTEM_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 using namespace xng;
 
 class MenuGuiSystem : public System, public EventListener {
 public:
-    explicit MenuGuiSystem(EventBus &bus, Input &input)
-            : eventBus(bus), input(input) {}
+    explicit MenuGuiSystem(Input &input)
+            : input(input) {}
 
-    void start(EntityScene &scene) override {
+    void start(EntityScene &scene, EventBus &eventBus) override {
         eventBus.addListener(*this);
     }
 
-    void stop(EntityScene &scene) override {
+    void stop(EntityScene &scene, EventBus &eventBus) override {
         eventBus.removeListener(*this);
     }
 
-    void update(DeltaTime deltaTime, EntityScene &scene) override {}
+    void update(DeltaTime deltaTime, EntityScene &scene, EventBus &eventBus) override {
+        for (auto &ev : events){
+            eventBus.invoke(ev);
+        }
+        events.clear();
+    }
 
     void onEvent(const Event &event) override {
         if (event.getEventType() == typeid(GuiEvent)) {
             auto &ev = event.as<GuiEvent>();
             if (ev.id == "button_start") {
                 if (ev.type == GuiEvent::BUTTON_CLICK) {
-                    eventBus.invoke(LoadLevelEvent(LEVEL_ZERO));
+                    events.emplace_back(LoadLevelEvent(LEVEL_ZERO));
                 }
             }
         }
     }
 
 private:
-    EventBus &eventBus;
     Input &input;
+    std::vector<LoadLevelEvent> events;
 };
 
 #endif //FOXTROT_MENUGUISYSTEM_HPP

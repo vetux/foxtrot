@@ -37,26 +37,26 @@
 //TODO: Fix box2d collisions not working.
 class Level0 : public Level, public EventListener {
 public:
-    Level0(EventBus &eventBus,
+    Level0(std::shared_ptr<EventBus> eventBus,
            Window &window,
            Renderer2D &ren2d,
            FontDriver &fontDriver,
            AudioDevice &audioDevice)
             : eventBus(eventBus),
               target(window.getRenderTarget()),
-              eventSystem(window, eventBus),
-              guiEventSystem(window, eventBus),
+              eventSystem(window),
+              guiEventSystem(window),
               inputSystem(window.getInput()),
-              characterControllerSystem(eventBus),
+              characterControllerSystem(),
               playerControllerSystem(),
               canvasRenderSystem(ren2d,
                                  window.getRenderTarget(),
                                  fontDriver),
-              bulletSystem(eventBus),
-              gameGuiSystem(window.getInput(), eventBus),
+              bulletSystem(),
+              gameGuiSystem(window.getInput()),
               physicsDriver(DriverRegistry::load<PhysicsDriver>("box2d")),
               world(physicsDriver->createWorld()),
-              physicsSystem(*world, eventBus, 30, 1.0f / 300),
+              physicsSystem(*world, 30, 1.0f / 300),
               cameraSystem(window.getRenderTarget(), Vec2f(-10100, -10100), Vec2f(10100, 100)),
               cursorSystem(window.getInput()),
               audioSystem(audioDevice, ResourceRegistry::getDefaultRegistry()),
@@ -91,7 +91,7 @@ public:
     }
 
     void onStart(ECS &ecs) override {
-        eventBus.addListener(*this);
+        eventBus->addListener(*this);
         ecs.setSystems(
                 {eventSystem,
                  guiEventSystem,
@@ -114,6 +114,7 @@ public:
 
                  audioSystem});
         ecs.setScene(scene);
+        ecs.setEventBus(eventBus);
         ecs.start();
     }
 
@@ -126,7 +127,7 @@ public:
         ecs.setScene({});
         ecs.setSystems({});
         scene = {};
-        eventBus.removeListener(*this);
+        eventBus->removeListener(*this);
     }
 
     void onEvent(const Event &event) override {
@@ -146,7 +147,8 @@ public:
 private:
     RenderTarget &target;
     Renderer2D &ren2d;
-    EventBus &eventBus;
+
+    std::shared_ptr<EventBus> eventBus;
 
     std::shared_ptr<EntityScene> scene;
 

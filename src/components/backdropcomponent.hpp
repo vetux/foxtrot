@@ -20,7 +20,7 @@
 #ifndef FOXTROT_BACKDROPCOMPONENT_HPP
 #define FOXTROT_BACKDROPCOMPONENT_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 struct BackdropComponent : public Component {
     ResourceHandle<Sprite> daySprite;

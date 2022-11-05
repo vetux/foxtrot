@@ -20,7 +20,7 @@
 #ifndef FOXTROT_ITEM_HPP
 #define FOXTROT_ITEM_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 using namespace xng;
 

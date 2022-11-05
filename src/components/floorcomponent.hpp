@@ -20,7 +20,7 @@
 #ifndef FOXTROT_FLOORCOMPONENT_HPP
 #define FOXTROT_FLOORCOMPONENT_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 struct FloorComponent : public Component {
     Messageable &operator<<(const Message &message) override {

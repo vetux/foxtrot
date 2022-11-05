@@ -20,7 +20,7 @@
 #ifndef FOXTROT_WEAPON_HPP
 #define FOXTROT_WEAPON_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "item.hpp"
 

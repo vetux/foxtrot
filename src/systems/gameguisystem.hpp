@@ -22,7 +22,7 @@
 
 #include <sstream>
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 #include "components/playercomponent.hpp"
 #include "components/fpscomponent.hpp"
@@ -31,10 +31,10 @@ using namespace xng;
 
 class GameGuiSystem : public System, public EventListener {
 public:
-    explicit GameGuiSystem(Input &input, EventBus &bus)
-            : input(input), eventBus(bus) {}
+    explicit GameGuiSystem(Input &input)
+            : input(input) {}
 
-    void start(EntityScene &scene) override {
+    void start(EntityScene &scene, EventBus &eventBus) override {
         eventBus.addListener(*this);
 
         toolbarEntity = scene.createEntity();
@@ -52,7 +52,7 @@ public:
         createSlotEntities(scene);
     }
 
-    void stop(EntityScene &scene) override {
+    void stop(EntityScene &scene, EventBus &eventBus) override {
         eventBus.removeListener(*this);
         scene.destroyEntity(toolbarEntity);
         for (auto &ent: slotEntities) {
@@ -61,7 +61,7 @@ public:
         slotEntities.clear();
     }
 
-    void update(DeltaTime deltaTime, EntityScene &scene) override {
+    void update(DeltaTime deltaTime, EntityScene &scene, EventBus &eventBus) override {
         for (auto &pair: scene.getPool<InputComponent>()) {
             auto &health = scene.getComponent<HealthComponent>(pair.first);
             if (health.health > 0 && pair.second.aim) {
@@ -158,7 +158,6 @@ private:
     }
 
     Input &input;
-    EventBus &eventBus;
 
     Entity toolbarEntity;
     std::vector<Entity> slotEntities;

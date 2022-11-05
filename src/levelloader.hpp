@@ -20,7 +20,7 @@
 #ifndef FOXTROT_LEVELLOADER_HPP
 #define FOXTROT_LEVELLOADER_HPP
 
-#include "xengine.hpp"
+#include "xng/xng.hpp"
 
 using namespace xng;
 
@@ -29,7 +29,7 @@ public:
     LevelLoader(RenderTarget &target,
                 Renderer2D &ren2d,
                 ECS &ecs,
-                EventBus &eventBus,
+                std::shared_ptr<EventBus> eventBus,
                 Window &window,
                 FontDriver &fontDriver,
                 AudioDevice &audioDevice)
