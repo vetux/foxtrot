@@ -34,7 +34,6 @@
 #include "systems/gameguisystem.hpp"
 #include "systems/cursorsystem.hpp"
 
-//TODO: Fix box2d collisions not working.
 class Level0 : public Level, public EventListener {
 public:
     Level0(std::shared_ptr<EventBus> eventBus,
