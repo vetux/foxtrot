@@ -36,10 +36,10 @@ using namespace xng;
 class Foxtrot : public Application, public EventListener, public ConsoleOutput, public ConsoleParser {
 public:
     Foxtrot(int argc, char *argv[]) : Application(argc, argv, "Foxtrot", {640, 480}),
-                                      fontDriver(DriverLoader::load<FontDriver>("freetype")),
+                                      fontDriver(FontDriver::load(xng::FREETYPE)),
                                       archive(std::filesystem::current_path().append("assets").string()),
-                                      shaderCompiler(DriverLoader::load<SPIRVCompiler>("shaderc")),
-                                      shaderDecompiler(DriverLoader::load<SPIRVDecompiler>("spirv-cross")),
+                                      shaderCompiler(SPIRVCompiler::load(xng::SHADERC)),
+                                      shaderDecompiler(SPIRVDecompiler::load(xng::SPIRV_CROSS)),
                                       ren2d(*renderDevice,
                                             *shaderCompiler,
                                             *shaderDecompiler),
@@ -63,7 +63,7 @@ public:
         auto parsers = std::vector<std::unique_ptr<ResourceParser>>();
         parsers.emplace_back(std::make_unique<JsonParser>());
         parsers.emplace_back(std::make_unique<StbiParser>());
-        parsers.emplace_back(DriverLoader::load<ResourceParser>("sndfile"));
+        parsers.emplace_back(ResourceParser::load(xng::LIBSNDFILE));
 
         ResourceRegistry::getDefaultRegistry().setImporter(ResourceImporter(std::move(parsers)));
         ResourceRegistry::getDefaultRegistry().addArchive("file", std::make_shared<DirectoryArchive>(archive));

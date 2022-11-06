@@ -53,7 +53,7 @@ public:
                                  fontDriver),
               bulletSystem(),
               gameGuiSystem(window.getInput()),
-              physicsDriver(DriverLoader::load<PhysicsDriver>("box2d")),
+              physicsDriver(PhysicsDriver::load(xng::BOX2D)),
               world(physicsDriver->createWorld()),
               physicsSystem(*world, 30, 1.0f / 300),
               cameraSystem(window.getRenderTarget(), Vec2f(-10100, -10100), Vec2f(10100, 100)),
