@@ -52,10 +52,10 @@ namespace SmallBullet {
         col.shape.vertices.emplace_back(Vec3f(4, 4, 0));
         col.shape.vertices.emplace_back(Vec3f(-4, 4, 0));
         col.shape.primitive = xng::QUAD;
+        col.shape.type = xng::COLLIDER_2D;
         rb.colliders.emplace_back(col);
         rb.type = RigidBody::DYNAMIC;
         rb.velocity = velocity;
-        rb.is2D = true;
         ent.createComponent(rb);
         auto sprite = SpriteComponent();
         sprite.flipSprite.x = velocity.x < 0;
