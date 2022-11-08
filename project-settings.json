@@ -1,0 +1,11 @@
+{
+  "name": "Foxtrot",
+  "assetBundles": [
+    {
+      "name": "Assets",
+      "scheme": "assets",
+      "directory": "assets"
+    }
+  ],
+  "buildSettings": []
+}

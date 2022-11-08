@@ -5,7 +5,13 @@
           "name": "MainCanvas",
           "components": {
             "CanvasComponent": {
-              "clear": true
+              "clear": true,
+              "clearColor": {
+                "r": 255,
+                "g": 0,
+                "b": 0,
+                "a": 255
+              }
             }
           }
         },
