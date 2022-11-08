@@ -1,0 +1,55 @@
+{
+  "colliders": [
+    {
+      "name": "collider",
+      "shape": {
+        "vertices": [
+          {
+            "x": -10,
+            "y": -60
+          },
+          {
+            "x": 10,
+            "y": -60
+          },
+          {
+            "x": 10,
+            "y": 60
+          },
+          {
+            "x": -10,
+            "y": 60
+          }
+        ]
+      },
+      "density": 10,
+      "friction": 1
+    },
+    {
+      "name": "sensor",
+      "shape": {
+        "vertices": [
+          {
+            "x": -10,
+            "y": -60
+          },
+          {
+            "x": 10,
+            "y": -60
+          },
+          {
+            "x": 10,
+            "y": -62
+          },
+          {
+            "x": -10,
+            "y": -62
+          }
+        ]
+      },
+      "density": 10,
+      "friction": 1,
+      "isSensor": true
+    }
+  ]
+}

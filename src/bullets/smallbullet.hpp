@@ -29,11 +29,46 @@ using namespace xng;
 namespace SmallBullet {
     static const std::string animUri = "animations/bullet_small.json";
 
+    static const std::string colPath = "colliders/smallbullet.json";
+
+    static bool initialized = false;
+
+    void init() {
+        if (initialized){
+            return;
+        }
+        initialized = true;
+        ColliderDesc desc;
+        desc.isSensor = false;
+        desc.density = 10;
+        desc.shape.vertices.emplace_back(Vec3f(-4, -4, 0));
+        desc.shape.vertices.emplace_back(Vec3f(4, -4, 0));
+        desc.shape.vertices.emplace_back(Vec3f(4, 4, 0));
+        desc.shape.vertices.emplace_back(Vec3f(-4, 4, 0));
+        desc.shape.type = xng::COLLIDER_2D;
+        auto msg = JsonParser::createBundle({
+                                                    std::make_pair<>(std::string(),
+                                                                     std::reference_wrapper<ColliderDesc>(desc))
+                                            });
+        std::stringstream stream;
+        JsonProtocol().serialize(stream, msg);
+        std::vector<uint8_t> bytes;
+        auto str = stream.str();
+        for (auto &c: str) {
+            bytes.emplace_back(c);
+        }
+        ResourceRegistry::getDefaultRegistry().getArchiveT<MemoryArchive>("memory").addData(
+                colPath,
+                bytes);
+    }
+
     Entity create(EntityScene &scene,
                   const Transform &transform,
                   const Vec3f &velocity,
                   const std::string &canvas,
                   float damage = 10) {
+        init();
+
         auto ent = scene.createEntity();
         auto t = TransformComponent();
         t.transform = transform;
@@ -44,16 +79,7 @@ namespace SmallBullet {
         rt.canvas = canvas;
         ent.createComponent(rt);
         auto rb = RigidBodyComponent();
-        auto col = ColliderDesc();
-        col.isSensor = false;
-        col.density = 10;
-        col.shape.vertices.emplace_back(Vec3f(-4, -4, 0));
-        col.shape.vertices.emplace_back(Vec3f(4, -4, 0));
-        col.shape.vertices.emplace_back(Vec3f(4, 4, 0));
-        col.shape.vertices.emplace_back(Vec3f(-4, 4, 0));
-        col.shape.primitive = xng::QUAD;
-        col.shape.type = xng::COLLIDER_2D;
-        rb.colliders.emplace_back(col);
+        rb.colliders.emplace_back(Uri("memory://" + colPath));
         rb.type = RigidBody::DYNAMIC;
         rb.velocity = velocity;
         ent.createComponent(rb);

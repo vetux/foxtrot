@@ -212,59 +212,15 @@
             "CharacterControllerComponent": {},
             "RigidBodyComponent": {
               "type": "dynamic",
-              "is2D": true,
               "lockedAxes": {
                 "z": true
               },
               "colliders": [
                 {
-                  "density": 10,
-                  "friction": 1,
-                  "shape": {
-                    "vertices": [
-                      {
-                        "x": -10,
-                        "y": -60
-                      },
-                      {
-                        "x": 10,
-                        "y": -60
-                      },
-                      {
-                        "x": 10,
-                        "y": 60
-                      },
-                      {
-                        "x": -10,
-                        "y": 60
-                      }
-                    ]
-                  }
+                  "uri": "colliders/playercollider.json/collider"
                 },
                 {
-                  "density": 10,
-                  "friction": 1,
-                  "isSensor": true,
-                  "shape": {
-                    "vertices": [
-                      {
-                        "x": -10,
-                        "y": -60
-                      },
-                      {
-                        "x": 10,
-                        "y": -60
-                      },
-                      {
-                        "x": 10,
-                        "y": -62
-                      },
-                      {
-                        "x": -10,
-                        "y": -62
-                      }
-                    ]
-                  }
+                  "uri": "colliders/playercollider.json/sensor"
                 }
               ]
             }
@@ -329,31 +285,9 @@
             },
             "FloorComponent": {},
             "RigidBodyComponent": {
-              "is2D": true,
               "colliders": [
                 {
-                  "friction": 0.5,
-                  "density": 10,
-                  "shape": {
-                    "vertices": [
-                      {
-                        "x": 200,
-                        "y": 0
-                      },
-                      {
-                        "x": 150,
-                        "y": 55
-                      },
-                      {
-                        "x": -150,
-                        "y": 55
-                      },
-                      {
-                        "x": -200,
-                        "y": 0
-                      }
-                    ]
-                  }
+                  "uri": "colliders/gunshopcollider.json"
                 }
               ]
             }
@@ -429,31 +363,9 @@
               "layer": 1
             },
             "RigidBodyComponent": {
-              "is2D": true,
               "colliders": [
                 {
-                  "density": 10,
-                  "shape": {
-                    "primitive": "quad",
-                    "vertices": [
-                      {
-                        "x": 1,
-                        "y": -5000
-                      },
-                      {
-                        "x": 1,
-                        "y": 5000
-                      },
-                      {
-                        "x": -1,
-                        "y": 5000
-                      },
-                      {
-                        "x": -1,
-                        "y": -5000
-                      }
-                    ]
-                  }
+                  "uri": "colliders/boundscollider.json/vertical"
                 }
               ]
             }
@@ -488,31 +400,9 @@
               "layer": 1
             },
             "RigidBodyComponent": {
-              "is2D": true,
               "colliders": [
                 {
-                  "density": 10,
-                  "shape": {
-                    "primitive": "quad",
-                    "vertices": [
-                      {
-                        "x": 1,
-                        "y": -5000
-                      },
-                      {
-                        "x": 1,
-                        "y": 5000
-                      },
-                      {
-                        "x": -1,
-                        "y": 5000
-                      },
-                      {
-                        "x": -1,
-                        "y": -5000
-                      }
-                    ]
-                  }
+                  "uri": "colliders/boundscollider.json/vertical"
                 }
               ]
             }
@@ -547,31 +437,9 @@
               "layer": 1
             },
             "RigidBodyComponent": {
-              "is2D": true,
               "colliders": [
                 {
-                  "density": 10,
-                  "shape": {
-                    "primitive": "quad",
-                    "vertices": [
-                      {
-                        "x": -10000,
-                        "y": 1
-                      },
-                      {
-                        "x": 10000,
-                        "y": 1
-                      },
-                      {
-                        "x": 10000,
-                        "y": -1
-                      },
-                      {
-                        "x": -10000,
-                        "y": -1
-                      }
-                    ]
-                  }
+                  "uri": "colliders/boundscollider.json/horizontal"
                 }
               ]
             }
@@ -607,31 +475,9 @@
               "layer": 1
             },
             "RigidBodyComponent": {
-              "is2D": true,
               "colliders": [
                 {
-                  "density": 10,
-                  "shape": {
-                    "primitive": "quad",
-                    "vertices": [
-                      {
-                        "x": -10000,
-                        "y": 1
-                      },
-                      {
-                        "x": 10000,
-                        "y": 1
-                      },
-                      {
-                        "x": 10000,
-                        "y": -1
-                      },
-                      {
-                        "x": -10000,
-                        "y": -1
-                      }
-                    ]
-                  }
+                  "uri": "colliders/boundscollider.json/horizontal"
                 }
               ]
             }
