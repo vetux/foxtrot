@@ -49,18 +49,18 @@ public:
         for (auto &pair: scene.getPool<BackdropComponent>()) {
             auto sprite = scene.getComponent<SpriteComponent>(pair.first);
             sprite.sprite = pair.second.daySprite;
-            sprite.spriteB = pair.second.nightSprite;
+            sprite.mixSprite = pair.second.nightSprite;
             if (isDay) {
-                if (sprite.blendScale != 0) {
-                    sprite.blendScale -= duskSpeed * deltaTime;
-                    if (sprite.blendScale < 0)
-                        sprite.blendScale = 0;
+                if (sprite.mix != 0) {
+                    sprite.mix -= duskSpeed * deltaTime;
+                    if (sprite.mix < 0)
+                        sprite.mix = 0;
                 }
             } else {
-                if (sprite.blendScale != 1) {
-                    sprite.blendScale += duskSpeed * deltaTime;
-                    if (sprite.blendScale > 1)
-                        sprite.blendScale = 1;
+                if (sprite.mix != 1) {
+                    sprite.mix += duskSpeed * deltaTime;
+                    if (sprite.mix > 1)
+                        sprite.mix = 1;
                 }
             }
             scene.updateComponent(pair.first, sprite);
