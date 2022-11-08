@@ -48,7 +48,7 @@ public:
     }
 
     void onStart(ECS &ecs) override {
-        auto handle = ResourceHandle<EntityScene>(Uri("scenes/menu.json"));
+        auto handle = ResourceHandle<EntityScene>(Uri("scenes/menu.xscene"));
         eventBus->addListener(*this);
         scene = std::make_shared<EntityScene>(handle.get());
         ecs.setScene(scene);

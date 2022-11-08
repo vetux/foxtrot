@@ -36,7 +36,7 @@ public:
         rt.canvas = "OverlayCanvas";
         ent.createComponent(rt);
         auto sprite = SpriteComponent();
-        sprite.sprite = ResourceHandle<Sprite>(Uri("file://sprites/crosshair.json/target"));
+        sprite.sprite = ResourceHandle<Sprite>(Uri("file://sprites/crosshair.xbundle/target"));
         sprite.layer = 10;
         ent.createComponent(sprite);
         crossHairEntity = ent;

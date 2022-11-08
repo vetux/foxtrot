@@ -27,9 +27,9 @@
 using namespace xng;
 
 namespace SmallBullet {
-    static const std::string animUri = "animations/bullet_small.json";
+    static const std::string animUri = "animations/bullet_small.xbundle";
 
-    static const std::string colPath = "colliders/smallbullet.json";
+    static const std::string colPath = "colliders/smallbullet.xbundle";
 
     static bool initialized = false;
 

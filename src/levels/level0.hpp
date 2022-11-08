@@ -71,7 +71,7 @@ public:
 
     void startLoad(LoadListener &listener) override {
         loadTask = ThreadPool::getPool().addTask([this, &listener]() {
-            auto handle = ResourceHandle<EntityScene>(Uri("scenes/level_0.json"));
+            auto handle = ResourceHandle<EntityScene>(Uri("scenes/level_0.xscene"));
             auto s = handle.get();
             scene = std::make_shared<EntityScene>(s);
             listener.onLoadProgress(getID(), 0.5);

@@ -1,6 +1,4 @@
 {
-  "scenes": [
-    {
       "name": "menu",
       "entities": [
         {
@@ -84,18 +82,18 @@
             "ButtonComponent": {
               "id": "button_start",
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "spriteHover": {
-                "uri": "sprites/button_b_hover.json"
+                "uri": "sprites/button_b_hover.xbundle"
               },
               "spritePressed": {
-                "uri": "sprites/button_b_pressed.json"
+                "uri": "sprites/button_b_pressed.xbundle"
               }
             },
             "SpriteComponent": {
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "layer": 1
             },
@@ -145,18 +143,18 @@
             "ButtonComponent": {
               "id": "button_new_game",
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "spriteHover": {
-                "uri": "sprites/button_b_hover.json"
+                "uri": "sprites/button_b_hover.xbundle"
               },
               "spritePressed": {
-                "uri": "sprites/button_b_pressed.json"
+                "uri": "sprites/button_b_pressed.xbundle"
               }
             },
             "SpriteComponent": {
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "layer": 1
             },
@@ -206,18 +204,18 @@
             "ButtonComponent": {
               "id": "button_load",
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "spriteHover": {
-                "uri": "sprites/button_b_hover.json"
+                "uri": "sprites/button_b_hover.xbundle"
               },
               "spritePressed": {
-                "uri": "sprites/button_b_pressed.json"
+                "uri": "sprites/button_b_pressed.xbundle"
               }
             },
             "SpriteComponent": {
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "layer": 1
             },
@@ -267,18 +265,18 @@
             "ButtonComponent": {
               "id": "button_settings",
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "spriteHover": {
-                "uri": "sprites/button_b_hover.json"
+                "uri": "sprites/button_b_hover.xbundle"
               },
               "spritePressed": {
-                "uri": "sprites/button_b_pressed.json"
+                "uri": "sprites/button_b_pressed.xbundle"
               }
             },
             "SpriteComponent": {
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "layer": 1
             },
@@ -328,18 +326,18 @@
             "ButtonComponent": {
               "id": "button_quit",
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "spriteHover": {
-                "uri": "sprites/button_b_hover.json"
+                "uri": "sprites/button_b_hover.xbundle"
               },
               "spritePressed": {
-                "uri": "sprites/button_b_pressed.json"
+                "uri": "sprites/button_b_pressed.xbundle"
               }
             },
             "SpriteComponent": {
               "sprite": {
-                "uri": "sprites/button_b.json"
+                "uri": "sprites/button_b.xbundle"
               },
               "layer": 1
             },
@@ -365,6 +363,4 @@
           }
         }
       ]
-    }
-  ]
 }

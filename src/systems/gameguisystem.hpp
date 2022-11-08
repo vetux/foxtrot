@@ -46,7 +46,7 @@ public:
         rt.anchor = xng::CanvasTransformComponent::TOP_CENTER;
         toolbarEntity.createComponent(rt);
         auto sprite = SpriteComponent();
-        sprite.sprite = ResourceHandle<Sprite>(Uri("sprites/toolbar.json"));
+        sprite.sprite = ResourceHandle<Sprite>(Uri("sprites/toolbar.xbundle"));
         toolbarEntity.createComponent(sprite);
 
         createSlotEntities(scene);
@@ -136,9 +136,9 @@ private:
             ent.createComponent(rt);
             ent.createComponent(SpriteComponent());
             auto btn = ButtonComponent();
-            btn.sprite = ResourceHandle<Sprite>(Uri("sprites/celltile.json/idle"));
-            btn.spriteHover = ResourceHandle<Sprite>(Uri("sprites/celltile.json/hover"));
-            btn.spritePressed = ResourceHandle<Sprite>(Uri("sprites/celltile.json/press"));
+            btn.sprite = ResourceHandle<Sprite>(Uri("sprites/celltile.xbundle/idle"));
+            btn.spriteHover = ResourceHandle<Sprite>(Uri("sprites/celltile.xbundle/hover"));
+            btn.spritePressed = ResourceHandle<Sprite>(Uri("sprites/celltile.xbundle/press"));
             btn.id = TOOLBAR_BUTTON + std::to_string(i);
             ent.createComponent(btn);
         }

@@ -25,8 +25,8 @@
 class Revolver : public Weapon {
 public:
     explicit Revolver()
-            : sprite(Uri("sprites/revolver.json/0")),
-              spriteReload(Uri("sprites/revolver.json/2")) {
+            : sprite(Uri("sprites/revolver.xbundle/0")),
+              spriteReload(Uri("sprites/revolver.xbundle/2")) {
         reloadDuration = 2;
         clipSize = 9;
         bulletSpread = 5;
@@ -56,7 +56,7 @@ public:
             ret.sprite = sprite;
         }
 
-        ret.muzzleFlash = ResourceHandle<SpriteAnimation>(Uri("animations/muzzle_a.json"));
+        ret.muzzleFlash = ResourceHandle<SpriteAnimation>(Uri("animations/muzzle_a.xbundle"));
         ret.muzzleSize = {50, 50};
         ret.muzzleCenter = {5, 25};
         ret.muzzleOffset = {-60, 15};

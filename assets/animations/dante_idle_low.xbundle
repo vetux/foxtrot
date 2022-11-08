@@ -3,25 +3,25 @@
     "keyframes": [
       {
         "sprite": {
-          "uri": "sprites/dante_idle_low.json"
+          "uri": "sprites/dante_idle_low.xbundle"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_idle_low_1.json"
+          "uri": "sprites/dante_idle_low_1.xbundle"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_idle_low_2.json"
+          "uri": "sprites/dante_idle_low_2.xbundle"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_idle_low_3.json"
+          "uri": "sprites/dante_idle_low_3.xbundle"
         },
         "duration": 1
       }

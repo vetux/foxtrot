@@ -3,18 +3,18 @@
     "keyframes": [
       {
         "sprite": {
-          "uri": "sprites/john_idle_0.json"
+          "uri": "sprites/dante_fall.xbundle/0"
         },
-        "duration": 10
+        "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/john_idle_1.json"
+          "uri": "sprites/dante_fall.xbundle/1"
         },
         "duration": 1
       }
     ],
-    "animationDuration": 6
+    "animationFps": 12
   }
   ]
 }
