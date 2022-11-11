@@ -89,6 +89,8 @@ public:
         window->update();
 
         targetFramerate = 300;
+
+        ecs.setEventBus(eventBus);
     }
 
     ~Foxtrot() override {

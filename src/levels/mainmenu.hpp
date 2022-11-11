@@ -36,6 +36,7 @@ public:
              Renderer2D &ren2d,
              FontDriver &fontDriver)
             : eventBus(eventBus),
+              eventSystem(window),
               guiEventSystem(window),
               canvasRenderSystem(ren2d,
                                  window.getRenderTarget(),
@@ -53,7 +54,7 @@ public:
         scene = std::make_shared<EntityScene>(handle.get());
         ecs.setScene(scene);
         ecs.setEventBus(eventBus);
-        ecs.setSystems({guiEventSystem, menuGuiSystem, spriteAnimationSystem, canvasRenderSystem});
+        ecs.setSystems({eventSystem, guiEventSystem, menuGuiSystem, spriteAnimationSystem, canvasRenderSystem});
         ecs.start();
     }
 
@@ -86,6 +87,7 @@ public:
 private:
     std::shared_ptr<EventBus> eventBus;
 
+    EventSystem eventSystem;
     GuiEventSystem guiEventSystem;
     CanvasRenderSystem canvasRenderSystem;
     SpriteAnimationSystem spriteAnimationSystem;

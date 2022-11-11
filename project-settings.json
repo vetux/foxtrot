@@ -1,11 +1,1 @@
-{
-  "name": "Foxtrot",
-  "assetBundles": [
-    {
-      "name": "Assets",
-      "scheme": "assets",
-      "directory": "assets"
-    }
-  ],
-  "buildSettings": []
-}
+{"assetBundles":[{"compress":1,"directory":"assets","encrypt":0,"key":"","name":"Assets","scheme":"assets"}],"buildSettings":[{"buildDir":"build","cmakeCommand":"cmake","gameTargetName":"foxtrot","incDirs":"src/","linkedLibraries":"xengine","lnkDirs":"","name":"Default","optimization":0,"pluginTargetName":"plugin","srcDirs":"src/","targetPlatform":3},{"buildDir":"","cmakeCommand":"","gameTargetName":"","incDirs":"","linkedLibraries":"","lnkDirs":"","name":"New Build Configuration","optimization":0,"pluginTargetName":"","srcDirs":"","targetPlatform":0}],"name":"Foxtrot"}
