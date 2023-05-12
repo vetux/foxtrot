@@ -3,49 +3,49 @@
     "keyframes": [
       {
         "sprite": {
-          "uri": "sprites/dante_run_low.xbundle"
+          "uri": "sprites/dante_run_low.json"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_run_low_1.xbundle"
+          "uri": "sprites/dante_run_low_1.json"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_run_low_2.xbundle"
+          "uri": "sprites/dante_run_low_2.json"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_run_low_3.xbundle"
+          "uri": "sprites/dante_run_low_3.json"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_run_low_4.xbundle"
+          "uri": "sprites/dante_run_low_4.json"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_run_low_5.xbundle"
+          "uri": "sprites/dante_run_low_5.json"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_run_low_6.xbundle"
+          "uri": "sprites/dante_run_low_6.json"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_run_low_7.xbundle"
+          "uri": "sprites/dante_run_low_7.json"
         },
         "duration": 1
       }

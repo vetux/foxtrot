@@ -30,14 +30,14 @@ public:
 
     void start(EntityScene &scene, EventBus &eventBus) override {
         Entity ent = scene.createEntity();
-        auto rt = CanvasTransformComponent();
-        rt.center = Vec2f(32, 32);
-        rt.rect.dimensions = Vec2f(64, 64);
-        rt.canvas = "OverlayCanvas";
+        auto rt = RectTransformComponent();
+        rt.rectTransform.center = Vec2f(32, 32);
+        rt.rectTransform.size = Vec2f(64, 64);
+        rt.parent = "OverlayCanvas";
         ent.createComponent(rt);
         auto sprite = SpriteComponent();
-        sprite.sprite = ResourceHandle<Sprite>(Uri("file://sprites/crosshair.xbundle/target"));
-        sprite.layer = 10;
+        sprite.sprite = ResourceHandle<Sprite>(Uri("file://sprites/crosshair.json/target"));
+        //sprite.layer = 10;
         ent.createComponent(sprite);
         crossHairEntity = ent;
     }
@@ -51,9 +51,9 @@ public:
             auto &ic = scene.getComponent<InputComponent>(player.first);
             input.setMouseCursorHidden(ic.aim);
 
-            auto rt = crossHairEntity.getComponent<CanvasTransformComponent>();
+            auto rt = crossHairEntity.getComponent<RectTransformComponent>();
             if (ic.aim) {
-                rt.rect.position = input.getMouse().position.convert<float>();
+                rt.rectTransform.position = input.getMouse().position.convert<float>();
             }
             rt.enabled = ic.aim;
             crossHairEntity.updateComponent(rt);

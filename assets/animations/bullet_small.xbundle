@@ -3,7 +3,7 @@
     "keyframes": [
       {
         "sprite": {
-          "uri": "sprites/bullet_small.xbundle"
+          "uri": "sprites/bullet_small.json"
         },
         "duration": 1
       }

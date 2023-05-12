@@ -20,6 +20,8 @@
 #ifndef FOXTROT_MAINMENU_HPP
 #define FOXTROT_MAINMENU_HPP
 
+#include <utility>
+
 #include "xng/xng.hpp"
 
 #include "level.hpp"
@@ -33,53 +35,58 @@ class MainMenu : public Level, public EventListener {
 public:
     MainMenu(std::shared_ptr<EventBus> eventBus,
              Window &window,
+             RenderTarget &target,
              Renderer2D &ren2d,
              FontDriver &fontDriver)
-            : eventBus(eventBus),
-              eventSystem(window),
-              guiEventSystem(window),
-              canvasRenderSystem(ren2d,
-                                 window.getRenderTarget(),
-                                 fontDriver),
-              menuGuiSystem(window.getInput()) {
+            : eventBus(std::move(eventBus)),
+              guiEventSystem(std::make_shared<GuiEventSystem>(window)),
+              menuGuiSystem(std::make_shared<MenuGuiSystem>(window.getInput())),
+              spriteAnimationSystem(std::make_shared<SpriteAnimationSystem>()),
+              canvasRenderSystem(std::make_shared<CanvasRenderSystem>(ren2d,
+                                                                      target,
+                                                                      fontDriver)) {
+    }
+
+    ~MainMenu() {
+
     }
 
     LevelID getID() override {
         return LEVEL_MAIN_MENU;
     }
 
-    void onStart(ECS &ecs) override {
-        auto handle = ResourceHandle<EntityScene>(Uri("scenes/menu.xscene"));
+    void onStart() override {
+        auto handle = ResourceHandle<EntityScene>(Uri("scenes/menu.json"));
         eventBus->addListener(*this);
         scene = std::make_shared<EntityScene>(handle.get());
-        ecs.setScene(scene);
-        ecs.setEventBus(eventBus);
-        ecs.setSystems({eventSystem, guiEventSystem, menuGuiSystem, spriteAnimationSystem, canvasRenderSystem});
+        ecs = SystemRuntime({SystemPipeline(xng::SystemPipeline::TICK_FRAME,
+                                            {guiEventSystem,
+                                             menuGuiSystem,
+                                             spriteAnimationSystem,
+                                             canvasRenderSystem})},
+                            scene,
+                            eventBus);
         ecs.start();
     }
 
-    void onStop(ECS &ecs) override {
+    void onStop() override {
         eventBus->removeListener(*this);
         ecs.stop();
-        ecs.setScene({});
-        ecs.setSystems({});
+        ecs = SystemRuntime();
         scene = {};
     }
 
-    void onUpdate(ECS &ecs, DeltaTime deltaTime) override {
+    void onUpdate(DeltaTime deltaTime) override {
         ecs.update(deltaTime);
     }
 
     void onEvent(const Event &event) override {
-        if (event.getEventType() == typeid(InputEvent)) {
-            auto &ev = event.as<InputEvent>();
-            if (ev.deviceType == xng::InputEvent::DEVICE_KEYBOARD) {
-                auto &kbev = std::get<KeyboardEventData>(ev.data);
-                if (kbev.type == xng::KeyboardEventData::KEYBOARD_KEY_DOWN
-                    && kbev.key == xng::KEY_F1) {
-                    drawDebug = !drawDebug;
-                    canvasRenderSystem.setDrawDebugGeometry(drawDebug);
-                }
+        if (event.getEventType() == typeid(KeyboardEvent)) {
+            auto &kbev = event.as<KeyboardEvent>();
+            if (kbev.type == xng::KeyboardEvent::KEYBOARD_KEY_DOWN
+                && kbev.key == xng::KEY_F1) {
+                drawDebug = !drawDebug;
+                canvasRenderSystem->setDrawDebugGeometry(drawDebug);
             }
         }
     }
@@ -87,13 +94,14 @@ public:
 private:
     std::shared_ptr<EventBus> eventBus;
 
-    EventSystem eventSystem;
-    GuiEventSystem guiEventSystem;
-    CanvasRenderSystem canvasRenderSystem;
-    SpriteAnimationSystem spriteAnimationSystem;
-    MenuGuiSystem menuGuiSystem;
+    std::shared_ptr<GuiEventSystem> guiEventSystem;
+    std::shared_ptr<CanvasRenderSystem> canvasRenderSystem;
+    std::shared_ptr<SpriteAnimationSystem> spriteAnimationSystem;
+    std::shared_ptr<MenuGuiSystem> menuGuiSystem;
 
     std::shared_ptr<EntityScene> scene;
+
+    SystemRuntime ecs;
 
     bool drawDebug = false;
 };

@@ -40,12 +40,12 @@ struct InputComponent : public Component {
     Player::Pose pose = Player::GUN_HIP;
 
     Messageable &operator<<(const Message &message) override {
-        slot = message.value("slot", 0);
-        aim = message.value("aim", false);
-        aimPosition << message.value("aimPosition");
-        fire = message.value("fire", false);
-        reload = message.value("reload", false);
-        movement << message.value("movement");
+        message.value("slot", slot);
+        message.value("aim", aim, false);
+        message.value("aimPosition", aimPosition);
+        message.value("fire", fire);
+        message.value("reload", reload);
+        message.value("movement", movement);
         return *this;
     }
 

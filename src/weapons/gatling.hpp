@@ -161,7 +161,7 @@ public:
                 break;
         }
 
-        ret.muzzleFlash = ResourceHandle<SpriteAnimation>(Uri("animations/muzzle_a.xbundle"));
+        ret.muzzleFlash = ResourceHandle<SpriteAnimation>(Uri("animations/muzzle_a.json"));
         ret.muzzleSize = {100, 100};
         ret.muzzleCenter = {10, 50};
         ret.muzzleOffset = {-80, 0};

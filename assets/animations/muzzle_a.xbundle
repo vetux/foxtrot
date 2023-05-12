@@ -4,25 +4,25 @@
       "keyframes": [
         {
           "sprite": {
-            "uri": "sprites/muzzle_a_0.xbundle"
+            "uri": "sprites/muzzle_a_0.json"
           },
           "duration": 1
         },
         {
           "sprite": {
-            "uri": "sprites/muzzle_a_1.xbundle"
+            "uri": "sprites/muzzle_a_1.json"
           },
           "duration": 1
         },
         {
           "sprite": {
-            "uri": "sprites/muzzle_a_2.xbundle"
+            "uri": "sprites/muzzle_a_2.json"
           },
           "duration": 1
         },
         {
           "sprite": {
-            "uri": "sprites/muzzle_a_3.xbundle"
+            "uri": "sprites/muzzle_a_3.json"
           },
           "duration": 1
         }

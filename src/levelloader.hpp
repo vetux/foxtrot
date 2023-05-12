@@ -28,40 +28,50 @@ class LevelLoader : Level::LoadListener {
 public:
     LevelLoader(RenderTarget &target,
                 Renderer2D &ren2d,
-                ECS &ecs,
-                std::shared_ptr<EventBus> eventBus,
                 Window &window,
                 FontDriver &fontDriver,
-                AudioDevice &audioDevice)
+                PhysicsDriver &physicsDriver,
+                AudioDevice &audioDevice,
+                std::shared_ptr<EventBus> eventBus)
             : target(target),
               ren2d(ren2d),
-              ecs(ecs) {
-        levels[LEVEL_MAIN_MENU] = std::make_unique<MainMenu>(eventBus,
-                                                             window,
-                                                             ren2d,
-                                                             fontDriver);
-        levels[LEVEL_ZERO] = std::make_unique<Level0>(eventBus,
-                                                      window,
-                                                      ren2d,
-                                                      fontDriver,
-                                                      audioDevice);
-    }
+              window(window),
+              fontDriver(fontDriver),
+              physicsDriver(physicsDriver),
+              audioDevice(audioDevice),
+              eventBus(std::move(eventBus)) {}
 
     ~LevelLoader() {
-        if (loadedLevel != LEVEL_NULL) {
-            levels.at(loadedLevel)->awaitLoad();
-            levels.at(loadedLevel)->onStop(ecs);
+        if (currentLevel) {
+            currentLevel->awaitLoad();
+            currentLevel->onStop();
+        }
+        if (nextLevel) {
+            nextLevel->awaitLoad();
+            nextLevel->onStop();
         }
     }
 
     void loadLevel(LevelID id) {
-        requestedLevel = id;
-    }
-
-    Level &getLevel() {
-        auto &ret = *levels.at(loadedLevel);
-        ret.awaitLoad();
-        return ret;
+        switch (id) {
+            default:
+            case LEVEL_MAIN_MENU:
+                nextLevel = std::make_unique<MainMenu>(eventBus,
+                                                       window,
+                                                       target,
+                                                       ren2d,
+                                                       fontDriver);
+                break;
+            case LEVEL_ZERO:
+                nextLevel = std::make_unique<Level0>(eventBus,
+                                                     window,
+                                                     target,
+                                                     ren2d,
+                                                     fontDriver,
+                                                     physicsDriver,
+                                                     audioDevice);
+                break;
+        }
     }
 
     void update(DeltaTime deltaTime) {
@@ -69,23 +79,23 @@ public:
             drawLoadingScreen();
         } else if (initLevel) {
             initLevel = false;
-            levels.at(loadedLevel)->awaitLoad();
-            levels.at(loadedLevel)->onStart(ecs);
-            levels.at(loadedLevel)->onUpdate(ecs, deltaTime);
-        } else if (requestedLevel != LEVEL_NULL) {
-            if (loadedLevel != LEVEL_NULL) {
-                levels.at(loadedLevel)->onStop(ecs);
-                levels.at(loadedLevel)->unload();
+            currentLevel->awaitLoad();
+            currentLevel->onStart();
+            currentLevel->onUpdate(deltaTime);
+        } else if (nextLevel) {
+            if (currentLevel) {
+                currentLevel->onStop();
+                currentLevel->unload();
             }
-            loadedLevel = requestedLevel;
-            requestedLevel = LEVEL_NULL;
+            currentLevel = std::move(nextLevel);
+            nextLevel = nullptr;
             loading = true;
             loadingProgress = 0;
-            levels.at(loadedLevel)->startLoad(*this);
+            currentLevel->startLoad(*this);
             drawLoadingScreen();
         } else {
-            levels.at(loadedLevel)->awaitLoad();
-            levels.at(loadedLevel)->onUpdate(ecs, deltaTime);
+            currentLevel->awaitLoad();
+            currentLevel->onUpdate(deltaTime);
         }
     }
 
@@ -110,7 +120,7 @@ private:
         auto size = targetSize;
         size.x /= 3;
         size.y /= 10;
-        ren2d.renderBegin(target, true, clearColor);
+        ren2d.renderBegin(target, clearColor);
         ren2d.draw(Rectf(targetSize / 2 - size / 2, size), barBgColor, true);
         ren2d.draw(Rectf(targetSize / 2 - size / 2, {size.x * loadingProgress, size.y}), barColor, true);
         ren2d.renderPresent();
@@ -118,11 +128,14 @@ private:
 
     RenderTarget &target;
     Renderer2D &ren2d;
-    ECS &ecs;
+    Window &window;
+    FontDriver &fontDriver;
+    PhysicsDriver &physicsDriver;
+    AudioDevice &audioDevice;
+    std::shared_ptr<EventBus> eventBus;
 
-    LevelID requestedLevel = LEVEL_NULL;
-    LevelID loadedLevel = LEVEL_NULL;
-    std::map<LevelID, std::unique_ptr<Level>> levels;
+    std::unique_ptr<Level> currentLevel;
+    std::unique_ptr<Level> nextLevel;
 
     bool initLevel = false;
     std::exception_ptr loadException;

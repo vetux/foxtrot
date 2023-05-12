@@ -61,15 +61,13 @@ public:
         std::map<EntityHandle, CharacterControllerComponent> characterUpdates;
         for (auto &pair: scene.getPool<CharacterControllerComponent>()) {
             auto &tcomp = scene.getComponent<TransformComponent>(pair.first);
-            auto &rt = scene.getComponent<CanvasTransformComponent>(pair.first);
+            auto &rt = scene.getComponent<RectTransformComponent>(pair.first);
             auto rb = scene.getComponent<RigidBodyComponent>(pair.first);
             auto anim = scene.getComponent<SpriteAnimationComponent>(pair.first);
             auto sprite = scene.getComponent<SpriteComponent>(pair.first);
             auto health = scene.getComponent<HealthComponent>(pair.first);
             auto input = scene.getComponent<InputComponent>(pair.first);
             auto character = pair.second;
-
-            auto &canvas = scene.getComponent<CanvasComponent>(scene.getEntityByName(rt.canvas));
 
             character.isOnFloor = false;
             for (auto &tcPair: rb.touchingColliders) {
@@ -129,13 +127,13 @@ public:
             // Apply direction
             if (rb.velocity.x != 0 && input.movement.x != 0) {
                 character.facingLeft = rb.velocity.x > 0;
-                sprite.flipSprite.x = character.facingLeft;
+                //sprite.flipSprite.x = character.facingLeft;
             }
 
             // Apply damage mix color
             if (character.damageTimer > 0) {
                 sprite.mix = character.damageMix;
-                sprite.mixColor = character.damageColor;
+                sprite.mixColor = ColorRGBA(character.damageColor.r(), character.damageColor.g(), character.damageColor.b(), 255);
             } else {
                 sprite.mix = 0;
             }

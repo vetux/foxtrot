@@ -64,10 +64,15 @@ private:
             scene.destroy(ent);
         }
 
+        EntityHandle canvasEnt;
+        for (auto &pair: scene.getPool<CanvasComponent>()){
+            canvasEnt = pair.first;
+        }
+
         std::map<EntityHandle, PlayerComponent> playerUpdates;
         for (auto &pair: scene.getPool<PlayerComponent>()) {
             auto &tcomp = scene.getComponent<TransformComponent>(pair.first);
-            auto &rt = scene.getComponent<CanvasTransformComponent>(pair.first);
+            auto &rt = scene.getComponent<RectTransformComponent>(pair.first);
             auto &rb = scene.getComponent<RigidBodyComponent>(pair.first);
             auto anim = scene.getComponent<SpriteAnimationComponent>(pair.first);
             auto &sprite = scene.getComponent<SpriteComponent>(pair.first);
@@ -75,8 +80,6 @@ private:
             auto character = scene.getComponent<CharacterControllerComponent>(pair.first);
             auto &input = scene.getComponent<InputComponent>(pair.first);
             auto player = pair.second;
-
-            auto &canvas = scene.getComponent<CanvasComponent>(scene.getEntityByName(rt.canvas));
 
             if (weaponEntities.find(pair.first) == weaponEntities.end()) {
                 createWeaponEntity(pair.first, scene);
@@ -118,7 +121,7 @@ private:
             auto weaponEnt = weaponEntities.at(pair.first);
             auto weaponSprite = weaponEnt.getComponent<SpriteComponent>();
             auto weaponTransform = weaponEnt.getComponent<TransformComponent>();
-            auto weaponRect = weaponEnt.getComponent<CanvasTransformComponent>();
+            auto weaponRect = weaponEnt.getComponent<RectTransformComponent>();
 
             auto visuals = player.player.getWeapon().getVisuals();
 
@@ -126,26 +129,28 @@ private:
             if (character.facingLeft)
                 offset.x *= -1;
 
-            weaponSprite.layer = -1;
+          //  weaponSprite.layer = -1;
             weaponSprite.sprite = visuals.sprite;
             weaponTransform.transform.setPosition(
                     {offset.x,
                      offset.y,
                      0});
-            weaponRect.canvas = "MainCanvas";
-            weaponRect.rect.dimensions = visuals.size;
-            weaponRect.center = visuals.center;
+            weaponRect.parent = "MainCanvas";
+            weaponRect.rectTransform.size = visuals.size;
+            weaponRect.rectTransform.center = visuals.center;
             if (character.facingLeft) {
-                weaponRect.center.x = weaponRect.rect.dimensions.x - weaponRect.center.x;
+                weaponRect.rectTransform.center.x = weaponRect.rectTransform.size.x - weaponRect.rectTransform.center.x;
             }
-            weaponSprite.flipSprite.x = character.facingLeft;
+    //        weaponSprite.flipSprite.x = character.facingLeft;
+
+            auto &canvas = scene.getComponent<CanvasComponent>(canvasEnt);
 
             auto weaponWorld = TransformComponent::walkHierarchy(weaponTransform, scene);
             auto dir = input.aimPosition.convert<float>() -
                        Vec2f(-weaponWorld.getPosition().x - canvas.cameraPosition.x,
                              -weaponWorld.getPosition().y - canvas.cameraPosition.y);
 
-            auto angle = numeric_cast<float>(getAngle(dir));
+            auto angle = static_cast<float>(getAngle(dir));
 
             auto bounds = player.player.getWeapon().getAngleBounds();
 
@@ -154,14 +159,14 @@ private:
                     angle = std::clamp(angle + 360, bounds.x + 180, bounds.y + 180);
                 else
                     angle = std::clamp(angle, bounds.x + 180, bounds.y + 180);
-                weaponRect.rotation = angle + 180;
+                weaponRect.rectTransform.rotation = angle + 180;
             } else {
                 angle = std::clamp(angle, bounds.x, bounds.y);
-                weaponRect.rotation = angle;
+                weaponRect.rectTransform.rotation = angle;
             }
 
             if (!input.aim) {
-                weaponRect.rotation = 0;
+                weaponRect.rectTransform.rotation = 0;
             }
 
             if (shoot) {
@@ -170,25 +175,25 @@ private:
 
                 auto muzzleSprite = muzzleEnt.getComponent<SpriteComponent>();
                 auto muzzleTransform = muzzleEnt.getComponent<TransformComponent>();
-                auto muzzleRect = muzzleEnt.getComponent<CanvasTransformComponent>();
+                auto muzzleRect = muzzleEnt.getComponent<RectTransformComponent>();
                 auto muzzleAnim = muzzleEnt.getComponent<SpriteAnimationComponent>();
 
                 muzzleAnim.animation = visuals.muzzleFlash;
                 muzzleAnim.enabled = true;
 
-                muzzleRect.rect.dimensions = visuals.muzzleSize;
+                muzzleRect.rectTransform.size = visuals.muzzleSize;
 
                 auto flash = visuals.muzzleFlash.get();
                 muzzleSprite.sprite = flash.getFrame();
-                muzzleSprite.layer = -1;
+               // muzzleSprite.layer = -1;
 
-                muzzleRect.canvas = "MainCanvas";
-                muzzleRect.rect.dimensions = visuals.muzzleSize;
-                muzzleRect.center = visuals.muzzleCenter;
+                muzzleRect.parent = "MainCanvas";
+                muzzleRect.rectTransform.size = visuals.muzzleSize;
+                muzzleRect.rectTransform.center = visuals.muzzleCenter;
                 if (input.aim) {
-                    muzzleRect.rotation = angle;
+                    muzzleRect.rectTransform.rotation = angle;
                 } else {
-                    muzzleRect.rotation = character.facingLeft ? 180 : 0;
+                    muzzleRect.rectTransform.rotation = character.facingLeft ? 180 : 0;
                 }
 
                 if (character.facingLeft) {
@@ -198,7 +203,7 @@ private:
                 auto vec = rotateVectorAroundPoint(Vec2f(weaponWorld.getPosition().x, weaponWorld.getPosition().y) +
                                                    visuals.muzzleOffset,
                                                    Vec2f(weaponWorld.getPosition().x, weaponWorld.getPosition().y),
-                                                   muzzleRect.rotation);
+                                                   muzzleRect.rectTransform.rotation);
                 muzzleTransform.transform.setPosition({vec.x, vec.y, 0});
 
                 muzzleEnt.updateComponent(muzzleSprite);
@@ -206,13 +211,13 @@ private:
                 muzzleEnt.updateComponent(muzzleRect);
                 muzzleEnt.updateComponent(muzzleAnim);
 
-                auto aimDir = normalize(rotateVectorAroundPoint(Vec2f(-1, 0), {}, muzzleRect.rotation));
+                auto aimDir = normalize(rotateVectorAroundPoint(Vec2f(-1, 0), {}, muzzleRect.rectTransform.rotation));
 
                 std::uniform_int_distribution<std::mt19937::result_type> distribution(0, 1000);
 
                 float v = 1.0f * (((float) distribution(rng) / 1000.0f) - 0.5f);
 
-                auto rotation = Vec3f(0, 0, muzzleRect.rotation);
+                auto rotation = Vec3f(0, 0, muzzleRect.rectTransform.rotation);
                 auto muzzleWorld = TransformComponent::walkHierarchy(muzzleTransform, scene);
                 float spreadAngle = player.player.getWeapon().getBulletSpread() * v;
                 auto velocity = rotateVectorAroundPoint(aimDir, {}, spreadAngle);
@@ -281,7 +286,7 @@ private:
 
         auto ent = scene.createEntity();
         TransformComponent transform;
-        CanvasTransformComponent rect;
+        RectTransformComponent rect;
         SpriteComponent sprite;
 
         transform.parent = scene.getEntityName(targetPlayer);
@@ -298,7 +303,7 @@ private:
         auto ent = scene.createEntity();
 
         TransformComponent transform;
-        CanvasTransformComponent rect;
+        RectTransformComponent rect;
         SpriteComponent sprite;
         MuzzleFlashComponent muzzleFlashComponent;
         SpriteAnimationComponent animationComponent;

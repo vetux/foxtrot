@@ -35,35 +35,35 @@ public:
     };
 
     Player()
-            : idleAnimationAim(Uri("animations/dante_idle.xbundle")),
-              walkAnimationAim(Uri("animations/dante_run.xbundle")),
-              runAnimationAim(Uri("animations/dante_run.xbundle")),
-              idleAnimationHip(Uri("animations/dante_idle_low.xbundle")),
-              runAnimationHip(Uri("animations/dante_run_low.xbundle")),
-              walkAnimationHip(Uri("animations/dante_run_low.xbundle")),
-              fallAnimation(Uri("animations/dante_fall.xbundle")),
-              deathAnimation(Uri("animations/dante_death.xbundle")),
+            : idleAnimationAim(Uri("animations/dante_idle.json")),
+              walkAnimationAim(Uri("animations/dante_run.json")),
+              runAnimationAim(Uri("animations/dante_run.json")),
+              idleAnimationHip(Uri("animations/dante_idle_low.json")),
+              runAnimationHip(Uri("animations/dante_run_low.json")),
+              walkAnimationHip(Uri("animations/dante_run_low.json")),
+              fallAnimation(Uri("animations/dante_fall.json")),
+              deathAnimation(Uri("animations/dante_death.json")),
               pistol(),
-              gatling(ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/0")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/2")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/4")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/6")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/8")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/10")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/12")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/14")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/16")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/18")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/1")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/3")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/5")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/7")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/9")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/11")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/13")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/15")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/17")),
-                      ResourceHandle<Sprite>(Uri("sprites/gatling.xbundle/19"))) {}
+              gatling(ResourceHandle<Sprite>(Uri("sprites/gatling.json/0")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/2")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/4")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/6")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/8")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/10")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/12")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/14")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/16")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/18")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/1")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/3")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/5")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/7")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/9")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/11")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/13")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/15")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/17")),
+                      ResourceHandle<Sprite>(Uri("sprites/gatling.json/19"))) {}
 
     Weapon &getWeapon() {
         switch (equippedWeapon) {
@@ -106,17 +106,17 @@ public:
     }
 
     Vec2f getWeaponOffset() {
-       /* if (falling){
-            return Vec2f(-30, 50);
-        } else {*/
-            switch (pose) {
-                default:
-                case GUN_AIM:
-                    return Vec2f(-45, 35);
-                case GUN_HIP:
-                    return Vec2f(-25, 5);
-            }
-       // }
+        /* if (falling){
+             return Vec2f(-30, 50);
+         } else {*/
+        switch (pose) {
+            default:
+            case GUN_AIM:
+                return Vec2f(-45, 35);
+            case GUN_HIP:
+                return Vec2f(-25, 5);
+        }
+        // }
     }
 
     void setInventory(const Inventory &inv) {
@@ -135,8 +135,8 @@ public:
         return account;
     }
 
-    void setIsFalling(bool value){
-        falling = value ;
+    void setIsFalling(bool value) {
+        falling = value;
     }
 
     float getMaxVelocity() {
@@ -189,9 +189,9 @@ public:
     }
 
     Messageable &operator<<(const Message &message) override {
-        account << message.value("account");
-        inventory << message.value("inventory");
-        equippedWeapon = (Weapon::Type) message.value("equippedWeapon", (int) Weapon::NONE);
+        message.value("account", account);
+        message.value("inventory", inventory);
+        message.value("equippedWeapon", reinterpret_cast<int &>(equippedWeapon), static_cast<int>(Weapon::NONE));
         return *this;
     }
 

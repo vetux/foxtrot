@@ -4,25 +4,25 @@
       "keyframes": [
         {
           "sprite": {
-            "uri": "sprites/john_run_0.xbundle"
+            "uri": "sprites/john_run_0.json"
           },
           "duration": 1
         },
         {
           "sprite": {
-            "uri": "sprites/john_run_1.xbundle"
+            "uri": "sprites/john_run_1.json"
           },
           "duration": 1
         },
         {
           "sprite": {
-            "uri": "sprites/john_run_2.xbundle"
+            "uri": "sprites/john_run_2.json"
           },
           "duration": 1
         },
         {
           "sprite": {
-            "uri": "sprites/john_run_3.xbundle"
+            "uri": "sprites/john_run_3.json"
           },
           "duration": 1
         }

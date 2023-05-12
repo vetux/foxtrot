@@ -35,23 +35,24 @@ using namespace xng;
 
 class Foxtrot : public Application, public EventListener, public ConsoleOutput, public ConsoleParser {
 public:
-    Foxtrot(int argc, char *argv[]) : Application(argc, argv, "Foxtrot", {640, 480}),
-                                      fontDriver(FontDriver::load(xng::FREETYPE)),
+    Foxtrot(int argc, char *argv[]) : Application(argc, argv),
                                       archive(std::filesystem::current_path().append("assets").string()),
-                                      shaderCompiler(SPIRVCompiler::load(xng::SHADERC)),
-                                      shaderDecompiler(SPIRVDecompiler::load(xng::SPIRV_CROSS)),
+                                      displayDriver(),
+                                      gpuDriver(),
+                                      window(displayDriver.createWindow(xng::OPENGL_4_6)),
+                                      renderDevice(gpuDriver.createRenderDevice()),
+                                      screenTarget(window->getRenderTarget(*renderDevice)),
                                       ren2d(*renderDevice,
-                                            *shaderCompiler,
-                                            *shaderDecompiler),
-                                      ecs(),
+                                            shaderCompiler,
+                                            shaderDecompiler),
                                       eventBus(std::make_shared<EventBus>()),
-                                      levelLoader(window->getRenderTarget(),
+                                      levelLoader(*screenTarget,
                                                   ren2d,
-                                                  ecs,
-                                                  eventBus,
                                                   *window,
-                                                  *fontDriver,
-                                                  *audioDevice) {
+                                                  fontDriver,
+                                                  physicsDriver,
+                                                  *audioDevice,
+                                                  eventBus) {
         REGISTER_COMPONENT(BackdropComponent)
         REGISTER_COMPONENT(CharacterControllerComponent)
         REGISTER_COMPONENT(FloorComponent)
@@ -63,34 +64,32 @@ public:
         auto parsers = std::vector<std::unique_ptr<ResourceParser>>();
         parsers.emplace_back(std::make_unique<JsonParser>());
         parsers.emplace_back(std::make_unique<StbiParser>());
-        parsers.emplace_back(ResourceParser::load(xng::LIBSNDFILE));
+        parsers.emplace_back(std::make_unique<SndFileParser>());
 
         ResourceRegistry::getDefaultRegistry().setImporter(ResourceImporter(std::move(parsers)));
         ResourceRegistry::getDefaultRegistry().addArchive("file", std::make_shared<DirectoryArchive>(archive));
         ResourceRegistry::getDefaultRegistry().setDefaultScheme("file");
 
-        ResourceHandle<RawAsset> fontAsset(Uri("fonts/Space_Mono/SpaceMono-Regular.ttf"));
+        ResourceHandle<RawResource> fontAsset(Uri("fonts/Space_Mono/SpaceMono-Regular.ttf"));
 
         std::string str = std::string(fontAsset.get().bytes.begin(), fontAsset.get().bytes.end());
         std::stringstream stream(str);
-        consoleFont = fontDriver->createFont(stream);
+        consoleFont = fontDriver.createFont(stream);
 
-        consoleFont->setPixelSize(Vec2i(0, 25));
-
-        consoleTextRenderer = std::make_unique<TextRenderer>(*consoleFont, ren2d);
+        consoleTextRenderer = std::make_unique<TextRenderer>(*consoleFont, ren2d, Vec2i(0, 25));
 
         console.addOutput(*this);
         console.addParser(*this);
 
         eventBus->addListener(*this);
-        ren2d.renderClear(window->getRenderTarget(), ColorRGBA::black(), {},
-                          window->getRenderTarget().getDescription().size);
+        ren2d.renderClear(*screenTarget,
+                          ColorRGBA::black(),
+                          {},
+                          screenTarget->getDescription().size);
         window->swapBuffers();
         window->update();
 
-        targetFramerate = 300;
-
-        ecs.setEventBus(eventBus);
+        frameLimiter.setTargetFrameRate(144);
     }
 
     ~Foxtrot() override {
@@ -100,34 +99,32 @@ public:
     void onEvent(const Event &event) override {
         if (event.getEventType() == typeid(LoadLevelEvent)) {
             auto &ev = event.as<LoadLevelEvent>();
+            currentLevel = ev.name;
             levelLoader.loadLevel(ev.name);
-        } else if (event.getEventType() == typeid(InputEvent)) {
-            auto &ev = event.as<InputEvent>();
-            if (ev.deviceType == xng::InputEvent::DEVICE_KEYBOARD) {
-                auto kbev = std::get<KeyboardEventData>(ev.data);
-                if (kbev.type == xng::KeyboardEventData::KEYBOARD_KEY_DOWN) {
-                    auto key = kbev.key;
-                    switch (key) {
-                        case KEY_F5:
-                            ResourceRegistry::getDefaultRegistry().reloadAllResources();
-                            break;
-                        case KEY_BACKSPACE:
-                            if (!consoleInput.empty())
-                                consoleInput.pop_back();
-                            break;
-                        case KEY_RETURN:
-                            console.invokeCommand(consoleInput);
-                            consoleInput = "";
-                            break;
-                        case KEY_F12:
-                            consoleOpen = !consoleOpen;
-                            break;
-                    }
-                } else if (kbev.type == xng::KeyboardEventData::KEYBOARD_CHAR_INPUT) {
-                    if (consoleOpen) {
-                        if (kbev.character < 128) {
-                            consoleInput += static_cast<char>(kbev.character);
-                        }
+        } else if (event.getEventType() == typeid(KeyboardEvent)) {
+            auto kbev = event.as<KeyboardEvent>();
+            if (kbev.type == xng::KeyboardEvent::KEYBOARD_KEY_DOWN) {
+                auto key = kbev.key;
+                switch (key) {
+                    case KEY_F5:
+                        ResourceRegistry::getDefaultRegistry().reloadAllResources();
+                        break;
+                    case KEY_BACKSPACE:
+                        if (!consoleInput.empty())
+                            consoleInput.pop_back();
+                        break;
+                    case KEY_RETURN:
+                        console.invokeCommand(consoleInput);
+                        consoleInput = "";
+                        break;
+                    case KEY_F12:
+                        consoleOpen = !consoleOpen;
+                        break;
+                }
+            } else if (kbev.type == xng::KeyboardEvent::KEYBOARD_CHARACTER_INPUT) {
+                if (consoleOpen) {
+                    if (kbev.value < 128) {
+                        consoleInput += static_cast<char>(kbev.value);
                     }
                 }
             }
@@ -144,7 +141,7 @@ public:
                     levelLoader.loadLevel(parseLevelID(command.arguments.at(0)));
                 }},
                 {"reloadlevel", [this]() {
-                    levelLoader.loadLevel(levelLoader.getLevel().getID());
+                    levelLoader.loadLevel(currentLevel);
                 }},
                 {"fps",         [this, &printer]() {
                     printer.print(std::to_string(fpsAverage));
@@ -170,10 +167,10 @@ protected:
     void update(DeltaTime deltaTime) override {
         fps = deltaTime > 0 ? 1.0f / deltaTime : 0;
         fpsAverage = fpsAlpha * fpsAverage + (1.0f - fpsAlpha) * fps;
-        ren2d.renderClear(window->getRenderTarget(),
+        ren2d.renderClear(*screenTarget,
                           ColorRGBA::yellow(),
                           {},
-                          window->getRenderTarget().getDescription().size);
+                          screenTarget->getDescription().size);
         levelLoader.update(deltaTime);
         if (consoleOpen) {
             updateConsole(deltaTime);
@@ -189,15 +186,15 @@ private:
     void updateConsole(DeltaTime deltaTime) {
         const float inputHeight = 50;
         const float spacingBetweenInputOutput = 15;
-        auto winSize = window->getRenderTarget().getDescription().size.convert<float>();
+        auto winSize = screenTarget->getDescription().size.convert<float>();
         auto conSize = Vec2f{winSize.x, winSize.y / 3 + spacingBetweenInputOutput};
         auto inputSize = Vec2f{winSize.x, inputHeight + spacingBetweenInputOutput};
         auto outputSize = Vec2f{winSize.x, conSize.y - inputSize.y};
         auto inputPos = Vec2f(0, outputSize.y + inputSize.y / 2 + spacingBetweenInputOutput);
         auto outputPos = Vec2f();
 
-        ren2d.renderBegin(window->getRenderTarget(), false);
-        ren2d.draw(Rectf(outputPos, conSize), ColorRGBA::grey(1, 225));
+        ren2d.renderBegin(*screenTarget, false, {}, {}, screenTarget->getDescription().size, {});
+        ren2d.draw(Rectf(outputPos, conSize), ColorRGBA::gray(1, 225));
         ren2d.renderPresent();
 
         updateConsoleInput(inputPos, inputSize);
@@ -205,24 +202,38 @@ private:
     }
 
     void updateConsoleInput(Vec2f inputPos, const Vec2f &inputSize) {
-        auto inputText = consoleTextRenderer->render("> " + consoleInput, TextRenderProperties{.lineHeight = 20});
-        auto textSize = inputText.getTexture().getDescription().size.convert<float>();
+        if (renderedConsoleInput != consoleInput) {
+            renderedConsoleInput = consoleInput;
+            auto inputText = consoleTextRenderer->render("> " + consoleInput, TextLayout{.lineHeight = 20});
+            inputTextHandle = ren2d.createTexture(inputText.getImage());
+        }
 
         const auto padding = 25;
 
         inputPos.x += padding;
         inputPos.y -= padding;
 
-        ren2d.renderBegin(window->getRenderTarget(), false);
+        ren2d.renderBegin(*screenTarget, false, {}, {}, screenTarget->getDescription().size, {});
+
+        auto textSize = inputTextHandle.size.convert<float>();
 
         if (textSize.x + padding * 2 > inputSize.x) {
             auto diff = textSize.x - inputSize.x;
-            ren2d.draw(inputText,
-                       Rectf({-(textSize.x * consoleInputScroll) + diff + padding, 0}, {inputSize.x, textSize.y}),
-                       Rectf({inputPos.x - padding, inputPos.y}, {inputSize.x, textSize.y}), ColorRGBA::white());
+            ren2d.draw(Rectf({-(textSize.x * consoleInputScroll) + diff + padding, 0}, {inputSize.x, textSize.y}),
+                       Rectf({inputPos.x - padding, inputPos.y}, {inputSize.x, textSize.y}),
+                       inputTextHandle,
+                       {},
+                       0,
+                       NEAREST,
+                       ColorRGBA::white());
         } else {
-            ren2d.draw(inputText, Rectf({}, textSize),
-                       Rectf(inputPos, textSize), ColorRGBA::white());
+            ren2d.draw(Rectf({}, textSize),
+                       Rectf(inputPos, textSize),
+                       inputTextHandle,
+                       {},
+                       0,
+                       NEAREST,
+                       ColorRGBA::white());
         }
 
         ren2d.renderPresent();
@@ -233,42 +244,51 @@ private:
         if (!consoleOutput.empty()) {
             const auto padding = 15;
 
-            if (consoleOutput != outputText.getText()) {
-                outputText = consoleTextRenderer->render(consoleOutput,
-                                                         TextRenderProperties{.lineHeight = 20,
-                                                                 .lineWidth = (int) outputSize.x - padding * 2,
-                                                                 .alignment = xng::ALIGN_LEFT});
+            if (renderedConsoleOutput != consoleOutput) {
+                renderedConsoleOutput = consoleOutput;
+                auto outputText = consoleTextRenderer->render(consoleOutput,
+                                                              TextLayout{.lineHeight = 20,
+                                                                      .lineWidth = (int) outputSize.x - padding * 2,
+                                                                      .alignment = xng::TEXT_ALIGN_LEFT});
+                outputTextHandle = ren2d.createTexture(outputText.getImage());
             }
 
-            textSize = outputText.getTexture().getDescription().size.convert<float>();
+            textSize = outputTextHandle.size.convert<float>();
+
             auto displaySize = outputSize;
 
             displaySize.x -= padding * 2;
             outputPos.x += padding;
 
-            ren2d.renderBegin(window->getRenderTarget(), false);
+            ren2d.renderBegin(*screenTarget, false, {}, {}, screenTarget->getDescription().size, {});
 
             if (displaySize.y < outputSize.y) {
                 auto diff = outputSize.y - displaySize.y;
                 outputPos.y += diff;
-                ren2d.draw(outputText,
-                           Rectf({}, displaySize),
+                ren2d.draw(Rectf({}, displaySize),
                            Rectf(outputPos, displaySize),
+                           outputTextHandle,
+                           {},
+                           0,
+                           NEAREST,
                            ColorRGBA::white());
             } else {
                 auto diff = textSize.y - outputSize.y;
-                ren2d.draw(outputText,
-                           Rectf({0, -(textSize.y * consoleOutputScroll) + diff}, displaySize),
+                ren2d.draw(Rectf({0, -(textSize.y * consoleOutputScroll) + diff}, displaySize),
                            Rectf(outputPos, displaySize),
+                           outputTextHandle,
+                           {},
+                           0,
+                           NEAREST,
                            ColorRGBA::white());
             }
 
             ren2d.renderPresent();
         }
 
-        if (window->getInput().getMouse().wheelDelta > 0) {
+        if (window->getInput().getMouse().wheelDelta.y > 0) {
             consoleScrollUp(deltaTime, textSize, outputSize);
-        } else if (window->getInput().getMouse().wheelDelta < 0) {
+        } else if (window->getInput().getMouse().wheelDelta.y < 0) {
             consoleScrollDown(deltaTime, textSize);
         }
     }
@@ -289,14 +309,23 @@ private:
             consoleOutputScroll += (1000 / textSize.y) * deltaTime;
     }
 
-    std::unique_ptr<FontDriver> fontDriver;
-    std::unique_ptr<SPIRVCompiler> shaderCompiler;
-    std::unique_ptr<SPIRVDecompiler> shaderDecompiler;
+    freetype::FtFontDriver fontDriver;
+    shaderc::ShaderCCompiler shaderCompiler;
+    spirv_cross::SpirvCrossDecompiler shaderDecompiler;
+    opengl::OGLGpuDriver gpuDriver;
+    glfw::GLFWDisplayDriver displayDriver;
+    openal::OALAudioDriver audioDriver;
+    box2d::PhysicsDriverBox2D physicsDriver;
+
+    std::unique_ptr<Window> window;
+    std::unique_ptr<RenderDevice> renderDevice;
+    std::unique_ptr<RenderTarget> screenTarget;
+
+    std::unique_ptr<AudioDevice> audioDevice;
 
     DirectoryArchive archive;
     Renderer2D ren2d;
     std::shared_ptr<EventBus> eventBus;
-    ECS ecs;
 
     LevelLoader levelLoader;
 
@@ -308,6 +337,12 @@ private:
     std::unique_ptr<Font> consoleFont;
     std::unique_ptr<TextRenderer> consoleTextRenderer;
 
+    TextureAtlasHandle inputTextHandle;
+    TextureAtlasHandle outputTextHandle;
+
+    std::string renderedConsoleInput;
+    std::string renderedConsoleOutput;
+
     float consoleInputScroll = 0;
     float consoleOutputScroll = 0;
 
@@ -318,7 +353,7 @@ private:
     float fpsAverage = 0;
     float fpsAlpha = 0.9;
 
-    Text outputText;
+    LevelID currentLevel;
 };
 
 #endif //FOXTROT_FOXTROT_HPP

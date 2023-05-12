@@ -49,12 +49,12 @@ struct CharacterControllerComponent : public Component {
     bool isOnFloor = true;
 
     Messageable &operator<<(const Message &message) override {
-        enabled = message.value("enabled", true);
-        idleAnimation << message.value("idleAnimation");
-        walkAnimation << message.value("walkAnimation");
-        runAnimation << message.value("runAnimation");
-        deathAnimation << message.value("deathAnimation");
-        facingLeft = message.value("facingLeft", false);
+        message.value("enabled", enabled, true);
+        message.value("idleAnimation", idleAnimation);
+        message.value("walkAnimation", walkAnimation);
+        message.value("runAnimation", runAnimation);
+        message.value("deathAnimation", deathAnimation);
+        message.value("facingLeft", facingLeft, false);
         return *this;
     }
 

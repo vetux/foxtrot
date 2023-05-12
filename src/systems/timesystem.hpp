@@ -41,7 +41,7 @@ public:
         time += deltaTime;
 
         const auto totalDuration = dayDuration + nightDuration;
-        auto days = numeric_cast<int>(time / totalDuration);
+        auto days = static_cast<int>(time / totalDuration);
         auto timeOfDay = time - (days * totalDuration);
 
         bool isDay = timeOfDay < dayDuration;
@@ -49,7 +49,7 @@ public:
         for (auto &pair: scene.getPool<BackdropComponent>()) {
             auto sprite = scene.getComponent<SpriteComponent>(pair.first);
             sprite.sprite = pair.second.daySprite;
-            sprite.mixSprite = pair.second.nightSprite;
+            sprite.mixColor = ColorRGBA::black();
             if (isDay) {
                 if (sprite.mix != 0) {
                     sprite.mix -= duskSpeed * deltaTime;

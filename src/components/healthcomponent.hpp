@@ -26,7 +26,7 @@ struct HealthComponent : public Component {
     float health = 100.0f;
 
     Messageable &operator<<(const Message &message) override {
-        health = message.value("health", 100.0f);
+        message.value("health", health, 100.0f);
         return *this;
     }
 

@@ -27,8 +27,8 @@ struct BackdropComponent : public Component {
     ResourceHandle<Sprite> nightSprite;
 
     Messageable &operator<<(const Message &message) override {
-        daySprite << message.value("daySprite");
-        nightSprite << message.value("nightSprite");
+        message.value("daySprite", daySprite);
+        message.value("nightSprite", nightSprite);
         return *this;
     }
 

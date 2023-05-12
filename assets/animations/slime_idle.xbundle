@@ -4,25 +4,25 @@
       "keyframes": [
         {
           "sprite": {
-            "uri": "sprites/slime_idle_0.xbundle"
+            "uri": "sprites/slime_idle_0.json"
           },
           "duration": 1
         },
         {
           "sprite": {
-            "uri": "sprites/slime_idle_1.xbundle"
+            "uri": "sprites/slime_idle_1.json"
           },
           "duration": 1
         },
         {
           "sprite": {
-            "uri": "sprites/slime_idle_2.xbundle"
+            "uri": "sprites/slime_idle_2.json"
           },
           "duration": 1
         },
         {
           "sprite": {
-            "uri": "sprites/slime_idle_3.xbundle"
+            "uri": "sprites/slime_idle_3.json"
           },
           "duration": 1
         }

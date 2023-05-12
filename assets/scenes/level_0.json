@@ -188,27 +188,27 @@
             },
             "SpriteComponent": {
               "sprite": {
-                "uri": "sprites/john_idle_0.xbundle"
+                "uri": "sprites/john_idle_0.json"
               },
               "layer": 0
             },
             "SpriteAnimationComponent": {
               "animation": {
-                "uri": "animations/john_idle.xbundle"
+                "uri": "animations/john_idle.json"
               }
             },
             "PlayerComponent": {
               "idleAnimation": {
-                "uri": "animations/dante_idle.xbundle"
+                "uri": "animations/dante_idle.json"
               },
               "walkAnimation": {
-                "uri": "animations/dante_run.xbundle"
+                "uri": "animations/dante_run.json"
               },
               "idleAnimationLow": {
-                "uri": "animations/dante_idle_low.xbundle"
+                "uri": "animations/dante_idle_low.json"
               },
               "walkAnimationLow": {
-                "uri": "animations/dante_run_low.xbundle"
+                "uri": "animations/dante_run_low.json"
               }
             },
             "HealthComponent": {},
@@ -221,10 +221,10 @@
               },
               "colliders": [
                 {
-                  "uri": "colliders/playercollider.xbundle/collider"
+                  "uri": "colliders/playercollider.json/collider"
                 },
                 {
-                  "uri": "colliders/playercollider.xbundle/sensor"
+                  "uri": "colliders/playercollider.json/sensor"
                 }
               ]
             }
@@ -253,7 +253,7 @@
             },
             "SpriteComponent": {
               "sprite": {
-                "uri": "sprites/gunshop_closed.xbundle"
+                "uri": "sprites/gunshop_closed.json"
               },
               "layer": -10
             }
@@ -283,7 +283,7 @@
             },
             "SpriteComponent": {
               "sprite": {
-                "uri": "sprites/gunshop_railing.xbundle"
+                "uri": "sprites/gunshop_railing.json"
               },
               "layer": 1
             },
@@ -291,7 +291,7 @@
             "RigidBodyComponent": {
               "colliders": [
                 {
-                  "uri": "colliders/gunshopcollider.xbundle"
+                  "uri": "colliders/gunshopcollider.json"
                 }
               ]
             }
@@ -310,10 +310,10 @@
             },
             "BackdropComponent": {
               "daySprite": {
-                "uri": "sprites/backdrop.xbundle"
+                "uri": "sprites/backdrop.json"
               },
               "nightSprite": {
-                "uri": "sprites/backdrop_night.xbundle"
+                "uri": "sprites/backdrop_night.json"
               }
             },
             "CanvasTransformComponent": {
@@ -332,7 +332,7 @@
             },
             "SpriteComponent": {
               "sprite": {
-                "uri": "sprites/backdrop.xbundle"
+                "uri": "sprites/backdrop.json"
               },
               "layer": -100
             }
@@ -369,7 +369,7 @@
             "RigidBodyComponent": {
               "colliders": [
                 {
-                  "uri": "colliders/boundscollider.xbundle/vertical"
+                  "uri": "colliders/boundscollider.json/vertical"
                 }
               ]
             }
@@ -406,7 +406,7 @@
             "RigidBodyComponent": {
               "colliders": [
                 {
-                  "uri": "colliders/boundscollider.xbundle/vertical"
+                  "uri": "colliders/boundscollider.json/vertical"
                 }
               ]
             }
@@ -443,7 +443,7 @@
             "RigidBodyComponent": {
               "colliders": [
                 {
-                  "uri": "colliders/boundscollider.xbundle/horizontal"
+                  "uri": "colliders/boundscollider.json/horizontal"
                 }
               ]
             }
@@ -481,7 +481,7 @@
             "RigidBodyComponent": {
               "colliders": [
                 {
-                  "uri": "colliders/boundscollider.xbundle/horizontal"
+                  "uri": "colliders/boundscollider.json/horizontal"
                 }
               ]
             }

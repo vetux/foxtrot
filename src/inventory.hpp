@@ -69,8 +69,9 @@ public:
 
     Messageable &operator<<(const Message &message) override {
         cells.clear();
-        for (auto &pair: message.asMap()) {
-            cells.insert(std::pair(std::stoi(pair.first), Cell(pair.second["id"], pair.second["count"])));
+        for (auto &pair: message.asDictionary()) {
+            cells.insert(std::pair(std::stoi(pair.first), Cell(pair.second["id"].asInt(),
+                                                               pair.second["count"].asInt())));
         }
         return *this;
     }

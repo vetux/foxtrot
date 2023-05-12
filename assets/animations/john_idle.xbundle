@@ -3,13 +3,13 @@
     "keyframes": [
       {
         "sprite": {
-          "uri": "sprites/john_idle_0.xbundle"
+          "uri": "sprites/john_idle_0.json"
         },
         "duration": 10
       },
       {
         "sprite": {
-          "uri": "sprites/john_idle_1.xbundle"
+          "uri": "sprites/john_idle_1.json"
         },
         "duration": 1
       }

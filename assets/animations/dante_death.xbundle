@@ -3,13 +3,13 @@
     "keyframes": [
       {
         "sprite": {
-          "uri": "sprites/dante_death.xbundle/0"
+          "uri": "sprites/dante_death.json/0"
         },
         "duration": 1
       },
       {
         "sprite": {
-          "uri": "sprites/dante_death.xbundle/1"
+          "uri": "sprites/dante_death.json/1"
         },
         "duration": 1
       }

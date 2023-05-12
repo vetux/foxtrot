@@ -36,10 +36,10 @@ struct PlayerComponent : public Component {
     Player player;
 
     Messageable &operator<<(const Message &message) override {
-        idleAnimation << message.value("idleAnimation");
-        walkAnimation << message.value("walkAnimation");
-        idleAnimationLow << message.value("idleAnimationLow");
-        walkAnimationLow << message.value("walkAnimationLow");
+        message.value("idleAnimation", idleAnimation);
+        message.value("walkAnimation", walkAnimation);
+        message.value("idleAnimationLow", idleAnimationLow);
+        message.value("walkAnimationLow", walkAnimationLow);
         return *this;
     }
 

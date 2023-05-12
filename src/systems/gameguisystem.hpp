@@ -38,15 +38,15 @@ public:
         eventBus.addListener(*this);
 
         toolbarEntity = scene.createEntity();
-        auto rt = CanvasTransformComponent();
-        rt.canvas = "GuiCanvas";
-        rt.rect.position = {0, 50};
-        rt.rect.dimensions = Vec2f{352, 64} * 2;
-        rt.center = rt.rect.dimensions / 2;
-        rt.anchor = xng::CanvasTransformComponent::TOP_CENTER;
+        auto rt = RectTransformComponent();
+        rt.parent = "GuiCanvas";
+        rt.rectTransform.position = {0, 50};
+        rt.rectTransform.size = Vec2f{352, 64} * 2;
+        rt.rectTransform.center = rt.rectTransform.size / 2;
+        rt.rectTransform.alignment = xng::RectTransform::RECT_ALIGN_CENTER_TOP;
         toolbarEntity.createComponent(rt);
         auto sprite = SpriteComponent();
-        sprite.sprite = ResourceHandle<Sprite>(Uri("sprites/toolbar.xbundle"));
+        sprite.sprite = ResourceHandle<Sprite>(Uri("sprites/toolbar.json"));
         toolbarEntity.createComponent(sprite);
 
         createSlotEntities(scene);
@@ -88,7 +88,7 @@ public:
             if (plc.player.getWeapon().getReloadTimer() > 0) {
                 ammoText.textColor = ColorRGBA::yellow();
             } else {
-                ammoText.textColor = ColorRGBA::grey();
+                ammoText.textColor = ColorRGBA::gray();
             }
             ammoGui.updateComponent(ammoText);
 
@@ -126,19 +126,19 @@ private:
     void createSlotEntities(EntityScene &scene) {
         for (int i = 0; i < 10; i++) {
             auto ent = scene.createEntity();
-            auto rt = CanvasTransformComponent();
-            rt.canvas = "GuiCanvas";
-            rt.rect.position = getToolbarSlotPosition(i);
-            rt.rect.position.y = 50;
-            rt.rect.dimensions = Vec2f{32, 32} * 2;
-            rt.center = rt.rect.dimensions / 2;
-            rt.anchor = xng::CanvasTransformComponent::TOP_CENTER;
+            auto rt = RectTransformComponent();
+            rt.parent = "GuiCanvas";
+            rt.rectTransform.position = getToolbarSlotPosition(i);
+            rt.rectTransform.position.y = 50;
+            rt.rectTransform.size = Vec2f{32, 32} * 2;
+            rt.rectTransform.center = rt.rectTransform.size / 2;
+            rt.rectTransform.alignment = xng::RectTransform::RECT_ALIGN_CENTER_TOP;
             ent.createComponent(rt);
             ent.createComponent(SpriteComponent());
             auto btn = ButtonComponent();
-            btn.sprite = ResourceHandle<Sprite>(Uri("sprites/celltile.xbundle/idle"));
-            btn.spriteHover = ResourceHandle<Sprite>(Uri("sprites/celltile.xbundle/hover"));
-            btn.spritePressed = ResourceHandle<Sprite>(Uri("sprites/celltile.xbundle/press"));
+            btn.sprite = ResourceHandle<Sprite>(Uri("sprites/celltile.json/idle"));
+            btn.spriteHover = ResourceHandle<Sprite>(Uri("sprites/celltile.json/hover"));
+            btn.spritePressed = ResourceHandle<Sprite>(Uri("sprites/celltile.json/press"));
             btn.id = TOOLBAR_BUTTON + std::to_string(i);
             ent.createComponent(btn);
         }
@@ -146,7 +146,7 @@ private:
 
     void updateSlotEntity(int slot) {
         auto ent = slotEntities.at(slot);
-        auto rt = ent.getComponent<CanvasTransformComponent>();
+        auto rt = ent.getComponent<RectTransformComponent>();
     }
 
     Vec2f getToolbarSlotPosition(int slot) {
@@ -165,10 +165,10 @@ private:
     const std::string TOOLBAR_BUTTON = "#btntoolbar_";
 
     Vec2f toolbarBase = {};
-    CanvasTransformComponent::Anchor toolbarAnchor;
+    RectTransform::Alignment toolbarAnchor;
 
     Vec2f inventoryBase = {};
-    CanvasTransformComponent::Anchor inventoryAnchor;
+    RectTransform::Alignment inventoryAnchor;
 };
 
 #endif //FOXTROT_GAMEGUISYSTEM_HPP

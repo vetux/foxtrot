@@ -20,6 +20,8 @@
 #ifndef FOXTROT_LEVEL_HPP
 #define FOXTROT_LEVEL_HPP
 
+#include "xng/xng.hpp"
+
 #include "levelname.hpp"
 
 class Level {
@@ -45,11 +47,11 @@ public:
     virtual void unload() {};
 
     // Lifecycle interface
-    virtual void onStart(ECS &ecs) {};
+    virtual void onStart() {};
 
-    virtual void onUpdate(ECS &ecs, DeltaTime deltaTime) {};
+    virtual void onUpdate(xng::DeltaTime deltaTime) {};
 
-    virtual void onStop(ECS &ecs) {};
+    virtual void onStop() {};
 };
 
 #endif //FOXTROT_LEVEL_HPP

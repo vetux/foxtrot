@@ -38,27 +38,28 @@ class Level0 : public Level, public EventListener {
 public:
     Level0(std::shared_ptr<EventBus> eventBus,
            Window &window,
+           RenderTarget &target,
            Renderer2D &ren2d,
            FontDriver &fontDriver,
+           PhysicsDriver &physicsDriver,
            AudioDevice &audioDevice)
-            : eventBus(eventBus),
-              target(window.getRenderTarget()),
-              eventSystem(window),
-              guiEventSystem(window),
-              inputSystem(window.getInput()),
-              characterControllerSystem(),
-              playerControllerSystem(),
-              canvasRenderSystem(ren2d,
-                                 window.getRenderTarget(),
-                                 fontDriver),
-              bulletSystem(),
-              gameGuiSystem(window.getInput()),
-              physicsDriver(PhysicsDriver::load(xng::BOX2D)),
-              world(physicsDriver->createWorld()),
-              physicsSystem(*world, 30, 1.0f / 300),
-              cameraSystem(window.getRenderTarget(), Vec2f(-10100, -10100), Vec2f(10100, 100)),
-              cursorSystem(window.getInput()),
-              audioSystem(audioDevice, ResourceRegistry::getDefaultRegistry()),
+            : eventBus(std::move(eventBus)),
+              target(target),
+              physicsDriver(physicsDriver),
+              world(physicsDriver.createWorld()),
+              guiEventSystem(std::make_shared<GuiEventSystem>(window)),
+              inputSystem(std::make_shared<InputSystem>(window.getInput())),
+              characterControllerSystem(std::make_shared<CharacterControllerSystem>()),
+              playerControllerSystem(std::make_shared<PlayerControllerSystem>()),
+              canvasRenderSystem(std::make_shared<CanvasRenderSystem>(ren2d,
+                                                                      target,
+                                                                      fontDriver)),
+              bulletSystem(std::make_shared<BulletSystem>()),
+              gameGuiSystem(std::make_shared<GameGuiSystem>(window.getInput())),
+              physicsSystem(std::make_shared<PhysicsSystem>(*world, 30, 1.0f / 300)),
+              cameraSystem(std::make_shared<CameraSystem>(target, Vec2f(-10100, -10100), Vec2f(10100, 100))),
+              cursorSystem(std::make_shared<CursorSystem>(window.getInput())),
+              audioSystem(std::make_shared<AudioSystem>(audioDevice, ResourceRegistry::getDefaultRegistry())),
               ren2d(ren2d) {
         world->setGravity(Vec3f(0, -20, 0));
     }
@@ -71,7 +72,7 @@ public:
 
     void startLoad(LoadListener &listener) override {
         loadTask = ThreadPool::getPool().addTask([this, &listener]() {
-            auto handle = ResourceHandle<EntityScene>(Uri("scenes/level_0.xscene"));
+            auto handle = ResourceHandle<EntityScene>(Uri("scenes/level_0.json"));
             auto s = handle.get();
             scene = std::make_shared<EntityScene>(s);
             listener.onLoadProgress(getID(), 0.5);
@@ -89,56 +90,50 @@ public:
         Level::unload();
     }
 
-    void onStart(ECS &ecs) override {
+    void onStart() override {
         eventBus->addListener(*this);
-        ecs.setSystems(
-                {eventSystem,
-                 guiEventSystem,
+        ecs = SystemRuntime({SystemPipeline(xng::SystemPipeline::TICK_FRAME,
+                                            {guiEventSystem,
 
-                 physicsSystem,
+                                             physicsSystem,
 
-                 daytimeSystem,
-                 inputSystem,
-                 characterControllerSystem,
-                 playerControllerSystem,
-                 bulletSystem,
+                                             daytimeSystem,
+                                             inputSystem,
+                                             characterControllerSystem,
+                                             playerControllerSystem,
+                                             bulletSystem,
 
-                 cameraSystem,
+                                             cameraSystem,
 
-                 gameGuiSystem,
-                 cursorSystem,
+                                             gameGuiSystem,
+                                             cursorSystem,
 
-                 spriteAnimationSystem,
-                 canvasRenderSystem,
+                                             spriteAnimationSystem,
+                                             canvasRenderSystem,
 
-                 audioSystem});
-        ecs.setScene(scene);
-        ecs.setEventBus(eventBus);
+                                             audioSystem})},
+                            scene,
+                            eventBus);
         ecs.start();
     }
 
-    void onUpdate(ECS &ecs, DeltaTime deltaTime) override {
+    void onUpdate(DeltaTime deltaTime) override {
         ecs.update(deltaTime);
     }
 
-    void onStop(ECS &ecs) override {
-        ecs.stop();
-        ecs.setScene({});
-        ecs.setSystems({});
+    void onStop() override {
+        ecs = SystemRuntime();
         scene = {};
         eventBus->removeListener(*this);
     }
 
     void onEvent(const Event &event) override {
-        if (event.getEventType() == typeid(InputEvent)) {
-            auto &ev = event.as<InputEvent>();
-            if (ev.deviceType == xng::InputEvent::DEVICE_KEYBOARD) {
-                auto &kbev = std::get<KeyboardEventData>(ev.data);
-                if (kbev.type == xng::KeyboardEventData::KEYBOARD_KEY_DOWN
-                    && kbev.key == xng::KEY_F1) {
-                    drawDebug = !drawDebug;
-                    canvasRenderSystem.setDrawDebugGeometry(drawDebug);
-                }
+        if (event.getEventType() == typeid(KeyboardEvent)) {
+            auto &kbev = event.as<KeyboardEvent>();
+            if (kbev.type == xng::KeyboardEvent::KEYBOARD_KEY_DOWN
+                && kbev.key == xng::KEY_F1) {
+                drawDebug = !drawDebug;
+                canvasRenderSystem->setDrawDebugGeometry(drawDebug);
             }
         }
     }
@@ -147,29 +142,31 @@ private:
     RenderTarget &target;
     Renderer2D &ren2d;
 
+    PhysicsDriver &physicsDriver;
+
     std::shared_ptr<EventBus> eventBus;
 
     std::shared_ptr<EntityScene> scene;
 
-    std::unique_ptr<PhysicsDriver> physicsDriver;
     std::unique_ptr<World> world;
 
-    EventSystem eventSystem;
-    CanvasRenderSystem canvasRenderSystem;
-    SpriteAnimationSystem spriteAnimationSystem;
-    AudioSystem audioSystem;
-    InputSystem inputSystem;
+    SystemRuntime ecs;
 
-    GuiEventSystem guiEventSystem;
-    TimeSystem daytimeSystem;
-    CharacterControllerSystem characterControllerSystem;
-    PlayerControllerSystem playerControllerSystem;
-    GameGuiSystem gameGuiSystem;
-    CursorSystem cursorSystem;
+    std::shared_ptr<CanvasRenderSystem> canvasRenderSystem;
+    std::shared_ptr<SpriteAnimationSystem> spriteAnimationSystem;
+    std::shared_ptr<AudioSystem> audioSystem;
+    std::shared_ptr<InputSystem> inputSystem;
 
-    PhysicsSystem physicsSystem;
-    CameraSystem cameraSystem;
-    BulletSystem bulletSystem;
+    std::shared_ptr<GuiEventSystem> guiEventSystem;
+    std::shared_ptr<TimeSystem> daytimeSystem;
+    std::shared_ptr<CharacterControllerSystem> characterControllerSystem;
+    std::shared_ptr<PlayerControllerSystem> playerControllerSystem;
+    std::shared_ptr<GameGuiSystem> gameGuiSystem;
+    std::shared_ptr<CursorSystem> cursorSystem;
+
+    std::shared_ptr<PhysicsSystem> physicsSystem;
+    std::shared_ptr<CameraSystem> cameraSystem;
+    std::shared_ptr<BulletSystem> bulletSystem;
 
     bool drawDebug = false;
 

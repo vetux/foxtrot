@@ -27,9 +27,9 @@
 using namespace xng;
 
 namespace SmallBullet {
-    static const std::string animUri = "animations/bullet_small.xbundle";
+    static const std::string animUri = "animations/bullet_small.json";
 
-    static const std::string colPath = "colliders/smallbullet.xbundle";
+    static const std::string colPath = "colliders/smallbullet.json";
 
     static bool initialized = false;
 
@@ -46,10 +46,9 @@ namespace SmallBullet {
         desc.shape.vertices.emplace_back(Vec3f(4, 4, 0));
         desc.shape.vertices.emplace_back(Vec3f(-4, 4, 0));
         desc.shape.type = xng::COLLIDER_2D;
-        auto msg = JsonParser::createBundle({
-                                                    std::make_pair<>(std::string(),
-                                                                     std::reference_wrapper<ColliderDesc>(desc))
-                                            });
+        auto bundle = ResourceBundle();
+        bundle.add("", std::make_unique<ColliderDesc>(desc));
+        auto msg = JsonParser::createBundle(bundle);
         std::stringstream stream;
         JsonProtocol().serialize(stream, msg);
         std::vector<uint8_t> bytes;
@@ -73,10 +72,10 @@ namespace SmallBullet {
         auto t = TransformComponent();
         t.transform = transform;
         ent.createComponent(t);
-        auto rt = CanvasTransformComponent();
-        rt.rect.dimensions = Vec2f(16, 16);
-        rt.center = Vec2f(8, 8);
-        rt.canvas = canvas;
+        auto rt = RectTransformComponent();
+        rt.rectTransform.size = Vec2f(16, 16);
+        rt.rectTransform.center = Vec2f(8, 8);
+        rt.parent = canvas;
         ent.createComponent(rt);
         auto rb = RigidBodyComponent();
         rb.colliders.emplace_back(Uri("memory://" + colPath));
@@ -84,8 +83,8 @@ namespace SmallBullet {
         rb.velocity = velocity;
         ent.createComponent(rb);
         auto sprite = SpriteComponent();
-        sprite.flipSprite.x = velocity.x < 0;
-        sprite.layer = 5;
+      //  sprite.flipSprite.x = velocity.x < 0;
+   //     sprite.layer = 5;
         ent.createComponent(sprite);
         auto anim = SpriteAnimationComponent();
         anim.animation = ResourceHandle<SpriteAnimation>(Uri(animUri));

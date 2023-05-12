@@ -88,18 +88,18 @@
         "ButtonComponent": {
           "id": "button_start",
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "spriteHover": {
-            "uri": "sprites/button_b_hover.xbundle"
+            "uri": "sprites/button_b_hover.json"
           },
           "spritePressed": {
-            "uri": "sprites/button_b_pressed.xbundle"
+            "uri": "sprites/button_b_pressed.json"
           }
         },
         "SpriteComponent": {
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "layer": 1
         },
@@ -149,18 +149,18 @@
         "ButtonComponent": {
           "id": "button_new_game",
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "spriteHover": {
-            "uri": "sprites/button_b_hover.xbundle"
+            "uri": "sprites/button_b_hover.json"
           },
           "spritePressed": {
-            "uri": "sprites/button_b_pressed.xbundle"
+            "uri": "sprites/button_b_pressed.json"
           }
         },
         "SpriteComponent": {
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "layer": 1
         },
@@ -210,18 +210,18 @@
         "ButtonComponent": {
           "id": "button_load",
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "spriteHover": {
-            "uri": "sprites/button_b_hover.xbundle"
+            "uri": "sprites/button_b_hover.json"
           },
           "spritePressed": {
-            "uri": "sprites/button_b_pressed.xbundle"
+            "uri": "sprites/button_b_pressed.json"
           }
         },
         "SpriteComponent": {
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "layer": 1
         },
@@ -271,18 +271,18 @@
         "ButtonComponent": {
           "id": "button_settings",
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "spriteHover": {
-            "uri": "sprites/button_b_hover.xbundle"
+            "uri": "sprites/button_b_hover.json"
           },
           "spritePressed": {
-            "uri": "sprites/button_b_pressed.xbundle"
+            "uri": "sprites/button_b_pressed.json"
           }
         },
         "SpriteComponent": {
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "layer": 1
         },
@@ -332,18 +332,18 @@
         "ButtonComponent": {
           "id": "button_quit",
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "spriteHover": {
-            "uri": "sprites/button_b_hover.xbundle"
+            "uri": "sprites/button_b_hover.json"
           },
           "spritePressed": {
-            "uri": "sprites/button_b_pressed.xbundle"
+            "uri": "sprites/button_b_pressed.json"
           }
         },
         "SpriteComponent": {
           "sprite": {
-            "uri": "sprites/button_b.xbundle"
+            "uri": "sprites/button_b.json"
           },
           "layer": 1
         },
